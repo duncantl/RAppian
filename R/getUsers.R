@@ -1,11 +1,11 @@
 getAppianLogins =
-function(app.cookie = cookie("appian.cookie"), verbose = FALSE)
+function(asDf = TRUE, app.cookie = cookie("appian.cookie"), verbose = FALSE)
 {
     u = "https://ucdavistest.appiancloud.com/suite/rest/a/applications/latest/app/admin/page/users"
 # Cookie was last added and the necessary element
     js = getURLContent(u, httpheader = c(
-                          "X-Appian-features" = "7ffceebc",
-                          "X-APPIAN-CSRF-TOKEN" = "0bf74a5b-a190-4bd9-b649-6252c160ccd6"
+                          "X-Appian-features" = "7ffceebc"
+#                          "X-APPIAN-CSRF-TOKEN" = "0bf74a5b-a190-4bd9-b649-6252c160ccd6"
 #                          "x-appian-suppress-www-authenticate" ="true",
 #                          "X-Client-Mode" = "ADMIN",
 #                          "X-Appian-Ui-State" = "stateful",
@@ -18,8 +18,11 @@ function(app.cookie = cookie("appian.cookie"), verbose = FALSE)
                    verbose = verbose)
 
     ans = fromJSON(rawToChar(js))
-    tbl = ans$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contents[[2]]$columns
-    mkTable(tbl)
+    if(asDf) {
+        tbl = ans$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contents[[2]]$columns
+        mkTable(tbl)
+    } else
+        ans
 }
 
 mkTable =
