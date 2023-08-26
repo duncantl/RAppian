@@ -18,15 +18,17 @@ function(app.cookie = cookie("appian.cookie"), verbose = FALSE)
                    verbose = verbose)
 
     ans = fromJSON(rawToChar(js))
-
-#         ans$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contents[[2]]$columns[[2]]$data
-    
     tbl = ans$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contents[[2]]$columns
-#    ns$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contentsa[[2]]$columns
-    ans =data.frame(ids = tbl[[2]]$data,
-                    emails = tbl[[5]]$data,
-                    first = tbl[[3]]$data,
-                    last = tbl[[4]]$data)
+    mkTable(tbl)
+}
+
+mkTable =
+function(tbl)    
+{
+#   ans = data.frame(ids = tbl[[2]]$data,
+#                    emails = tbl[[5]]$data,
+#                    first = tbl[[3]]$data,
+#                    last = tbl[[4]]$data)
 
     flds = sapply(tbl, function(x) x$field)
     w = flds != ""
