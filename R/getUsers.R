@@ -16,7 +16,21 @@ function(app.cookie = cookie("appian.cookie"), verbose = FALSE)
                    cookie = app.cookie,
                    useragent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:109.0) Gecko/20100101 Firefox/117.0",
                    verbose = verbose)
-ans = fromJSON(rawToChar(js))
 
-ans$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contents[[2]]$columns[[2]]$data
+    ans = fromJSON(rawToChar(js))
+
+#         ans$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contents[[2]]$columns[[2]]$data
+    
+    tbl = ans$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contents[[2]]$columns
+#    ns$ui$centerPaneContent$contents[[1]]$contents[[1]]$columns[[1]]$contentsa[[2]]$columns
+    ans =data.frame(ids = tbl[[2]]$data,
+                    emails = tbl[[5]]$data,
+                    first = tbl[[3]]$data,
+                    last = tbl[[4]]$data)
+
+    flds = sapply(tbl, function(x) x$field)
+    w = flds != ""
+    ans = lapply(which(w), function(i) tbl[[i]]$data)
+    names(ans) = flds[w]
+    as.data.frame(ans)
 }
