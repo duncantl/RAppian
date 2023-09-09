@@ -31,7 +31,12 @@ function(doc)
     if(is.character(doc))
         doc = xmlParse(doc)
 
-    xpathSApply(doc, "//interface/name | //rule/name | //outboundIntegration/name | /contentHaul/*[2]/name | //recordType/@name", xmlValue)
+    r = xmlRoot(doc)
+    xp = switch(xmlName(r),
+           "processModelHaul" = "//x:process_model_port//x:meta//x:name//x:value",
+           "//interface/name | //rule/name | //outboundIntegration/name | /contentHaul/*[2]/name | //recordType/@name")
+
+    xpathSApply(doc, xp, xmlValue, namespaces = c(x = "http://www.appian.com/ae/types/2009"))
 }
 
 xmlValue.XMLAttributeValue =
@@ -44,5 +49,8 @@ function(doc)
     if(is.character(doc))
         doc = xmlParse(doc)
 
-    names(xmlRoot(doc))[2]
+    r = xmlRoot(doc)
+    switch(xmlName(r),
+           "processModelHaul" = "processModel",
+           names()[2])
 }
