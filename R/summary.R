@@ -33,6 +33,7 @@ function(dir = ".", xf = list.files(dir, recursive = TRUE, full = TRUE, pattern 
 
 
 # Original version
+# Show difference between this and the one below in the book.
 function(a, b)
 {
     vals = union(a$type, b$type)
@@ -50,9 +51,11 @@ compareTypeCounts =
 function(...)
 {
     args = list(...)
+    # Get the union of all type values 
     vals = unique(unlist(lapply(args, `[[`, "type")))
+    # Count the number in each instance, with 0s for unobserved types for an instance
     ans = lapply(args, function(x) as.integer(table(factor(x$type, vals))))
-    ans = as.data.frame(ans)
-    rownames(ans) = vals
+    ans = as.data.frame(ans, row.names = vals)
+    # largest to smallest
     ans[ order(ans[[1]], decreasing = TRUE), ]
 }
