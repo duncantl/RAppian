@@ -1,0 +1,10 @@
+Package: RAppian
+Title: Read Exported XML descriptions of Appian applications
+Description: This allows us to explore different aspects
+ of an Appian application, including the SAIL code, the
+ different record types, constants, interfaces, process models, ...
+Author: Duncan Temple Lang
+Maintainer: Duncan Temple Lang <dtemplelang@ucdavis.edu>
+Version: 0.1-0
+License: GPL2
+Imports: XML, RJSONIO
