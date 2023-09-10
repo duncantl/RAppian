@@ -16,7 +16,11 @@ uses =
 function(file, txt = paste(readLines(file), collapse = "\n"),
           toplevel = toplevelUUIDs())
 {
-    regmatches(txt, gregexpr(uuidRX3, txt))[[1]]
+    uuids = regmatches(txt, gregexpr(uuidRX3, txt))[[1]]
+    if(length(toplevel))
+        intersect(uuids, toplevel)
+    else
+        uuids
 }
 
 toplevelUUIDs =
@@ -24,3 +28,4 @@ function(dir = ".", af = list.files(dir, recursive = TRUE, pattern = "\\.xml$"))
 {
     gsub("\\.xml$", "", basename(af))
 }
+
