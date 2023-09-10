@@ -20,8 +20,12 @@ function(doc)
     con = xmlRoot(doc)[["constant"]]
     data.frame(name = xmlValue(con[["name"]]),
                uuid = xmlValue(con[["uuid"]]),
-               value = xmlValue(con[["typedValue"]][["value"]]),
-               type = xmlValue(con[["typedValue"]][["type"]][["name"]]))
+               value = if(xmlSize(con[["typedValue"]][["value"]]) > 1)
+                           paste(xmlSApply(con[["typedValue"]][["value"]], xmlValue), collapse = "; ")
+                       else
+                           xmlValue(con[["typedValue"]][["value"]]),
+               type = xmlValue(con[["typedValue"]][["type"]][["name"]]),
+               numValues = xmlSize(con[["typedValue"]][["value"]]))
 }
 
 
