@@ -10,6 +10,9 @@ function(dir, showOthers = TRUE)
     info = data.frame(name = sapply(xf, getName),
                       type = sapply(xf, getDocType),
                       file = xf)
+
+    class(info) = "AppianAppInfo"
+    info
 }
 
 mkCodeInfo =
@@ -23,4 +26,33 @@ function(dir = ".", xf = list.files(dir, recursive = TRUE, full = TRUE, pattern 
                        type = sapply(names(code), getDocType),
                        file = names(code),
                        code = code)
+    class(code2) = "AppianCodeInfo"
+
+    code2
+}
+
+
+# Original version
+function(a, b)
+{
+    vals = union(a$type, b$type)
+    tt1 = table(factor(a$type, vals))
+    tt2 = table(factor(b$type, vals))
+
+    ans = data.frame(a = as.integer(tt1), b = as.integer(tt2), row.names = vals)
+    ans[ order(ans$a, decreasing = TRUE), ]
+}
+
+compareTypeCounts =
+    # Version that takes an arbitrary number of instances to compare and allows
+    # us to use our own names
+    # o = compareTypeCounts(test = test, dev = dev, dev0 = dev0)
+function(...)
+{
+    args = list(...)
+    vals = unique(unlist(lapply(args, `[[`, "type")))
+    ans = lapply(args, function(x) as.integer(table(factor(x$type, vals))))
+    ans = as.data.frame(ans)
+    rownames(ans) = vals
+    ans[ order(ans[[1]], decreasing = TRUE), ]
 }
