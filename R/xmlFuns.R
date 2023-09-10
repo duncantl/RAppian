@@ -41,14 +41,16 @@ function(doc)
     xp = switch(xmlName(r),
                 "processModelHaul" = "//x:process_model_port//x:meta//x:name//x:value",
                 "groupHaul" = "/groupHaul/group/name",
+                "groupTypeHaul" = "/groupTypeHaul/groupType/name",                
            "//interface/name | //rule/name | //outboundIntegration/name | /contentHaul/*[2]/name | //recordType/@name")
 
-    xpathSApply(doc, xp, xmlValue, namespaces = AppianTypesNS)
+    ans = xpathSApply(doc, xp, xmlValue, namespaces = AppianTypesNS)
+    if(length(ans))
+        ans
+    else
+        NA
 }
 
-xmlValue.XMLAttributeValue =
-function(x, ...)
-      unname( x )
 
 getDocType =
 function(doc)
