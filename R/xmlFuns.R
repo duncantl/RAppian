@@ -25,6 +25,8 @@ function(doc)
 }
 
 
+AppianTypesNS = c(x = "http://www.appian.com/ae/types/2009")
+
 getName =
 function(doc)
 {
@@ -36,7 +38,7 @@ function(doc)
            "processModelHaul" = "//x:process_model_port//x:meta//x:name//x:value",
            "//interface/name | //rule/name | //outboundIntegration/name | /contentHaul/*[2]/name | //recordType/@name")
 
-    xpathSApply(doc, xp, xmlValue, namespaces = c(x = "http://www.appian.com/ae/types/2009"))
+    xpathSApply(doc, xp, xmlValue, namespaces = AppianTypesNS)
 }
 
 xmlValue.XMLAttributeValue =
@@ -52,5 +54,42 @@ function(doc)
     r = xmlRoot(doc)
     switch(xmlName(r),
            "processModelHaul" = "processModel",
-           names()[2])
+           names(r)[2])
+}
+
+
+procModelNodes =
+function(doc)
+{
+    if(is.character(doc))
+        doc = xmlParse(doc)
+
+    getNodeSet(doc, "//x:process_model_port//x:nodes/x:node", AppianTypesNS)
+}
+
+
+recordTypeInfo =
+function(doc)
+{
+    if(is.character(doc))
+        doc = xmlParse(doc)
+
+    tmp = do.call(rbind, xpathApply(doc, "//field", mkFieldInfo))
+    tmp$isRecordId = tmp$isRecordId == "true"
+    
+    tmp
+}
+
+mkFieldInfo =
+    #
+    # For recordTypeInfo
+    # return a 1-row data.frame describing the field
+    #
+    # Todo
+    # + add relationsthip(s) to other tables.
+    #
+function(x)
+{
+    vars = c("fieldName", "sourceFieldType", "isRecordId")
+    ans = as.data.frame(structure(lapply(x[vars], xmlValue), names = vars))
 }
