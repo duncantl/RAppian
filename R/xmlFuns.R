@@ -75,7 +75,7 @@ function(doc)
         doc = xmlParse(doc)
 
     tmp = do.call(rbind, xpathApply(doc, "//field", mkFieldInfo))
-    tmp$isRecordId = tmp$isRecordId == "true"
+    tmp$isRecordId = (tmp$isRecordId == "true")
     
     tmp
 }
@@ -91,5 +91,22 @@ mkFieldInfo =
 function(x)
 {
     vars = c("fieldName", "sourceFieldType", "isRecordId")
-    ans = as.data.frame(structure(lapply(x[vars], xmlValue), names = vars))
+
+    # XX Bug in XML package  [.XMLNode
+    #    tmp0 = structure(lapply(x[vars, all = TRUE], xmlValue), names = vars)
+    # Changes the order of the results in x[vars] or x[vars, all = TRUE] and
+    # so setting the names puts the fieldName on sourceFieldType and vice verse
+    #
+
+    tmp = lapply(x[vars, all = TRUE], xmlValue)
+    tmp = tmp[vars]
+    
+    as.data.frame(tmp)
+}
+
+showRecordType =
+function(doc, info = recordTypeInfo(doc), name = getName(doc))
+{
+    c(paste0("+ ", name),
+      sprintf("   +  %s (%s) ", info$fieldName, info$sourceFieldType))
 }
