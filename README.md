@@ -1,11 +1,11 @@
 # RAppian
 
-This is currently a relatively simple package to analyze (XML) data exported
-from an Appian instance for an application or package.
+This is currently a relatively simple package to analyze (XML) data exported from an Appian instance for an application or package.
 The exported information includes all the relevant objects we see in the Appian Designer.
 
 The Appian Designer allows us to get almost all of the data we explore via this package.
 However, it is a different interface and exploration model, specifically, not programmatic.
+Exploring them in R rather than the Appian Designer helps me to think more clearly, or at least differently.
 
 It is convenient to have the information in R as
 + we can explore the objects programmatically,
@@ -22,3 +22,5 @@ We can compare
 + catalog all the expression rules, constants and interfaces we might be able to reuse
 + find the connections between record types for all record types together.
 
+
+In the future, we might add some tests that we can do here to identify potential issues with what we develop.
