@@ -98,13 +98,13 @@ function(x)
     vars = c("fieldName", "sourceFieldType", "isRecordId")
 
     # XX Bug in XML package  [.XMLNode
-    #    tmp0 = structure(lapply(x[vars, all = TRUE], xmlValue), names = vars)
+    tmp = structure(lapply(x[vars, all = TRUE], xmlValue), names = vars)
     # Changes the order of the results in x[vars] or x[vars, all = TRUE] and
     # so setting the names puts the fieldName on sourceFieldType and vice verse
     #
 
-    tmp = lapply(x[vars, all = TRUE], xmlValue)
-    tmp = tmp[vars]
+#    tmp = lapply(x[vars, all = TRUE], xmlValue)
+#    tmp = tmp[vars]
     
     as.data.frame(tmp)
 }
