@@ -1,4 +1,39 @@
 import(XML)
 import(RJSONIO)
 
-exportPattern(".*")
+#exportPattern(".*")
+
+# xmlNames.R
+export(
+    getName,
+    getDocType,
+    getConstantInfo,
+    getCode)
+
+export(procModelNodes)
+
+
+
+# sailCode.R
+
+export(findCalls, getDomains)
+
+# get all UUIDs in a document/text
+export(getUUIDs,
+       mkUUIDMap)
+
+# recordTypes.R
+export(
+    recordTypeInfo
+    recordType,
+    showRecordType,
+    recordType2Markdown,
+    getUUID
+)
+
+
+
+# summary.R
+export(mkAppInfo, mkSummary)
+export(mkCodeInfo)
+export(ocompareTypeCounts)
