@@ -3,6 +3,9 @@ import(RJSONIO)
 
 #exportPattern(".*")
 
+# transformToR.R
+export(StoR)
+
 # xmlNames.R
 export(
     getName,
@@ -24,7 +27,7 @@ export(getUUIDs,
 
 # recordTypes.R
 export(
-    recordTypeInfo
+    recordTypeInfo,
     recordType,
     showRecordType,
     recordType2Markdown,
@@ -36,4 +39,4 @@ export(
 # summary.R
 export(mkAppInfo, mkSummary)
 export(mkCodeInfo)
-export(ocompareTypeCounts)
+export(compareTypeCounts)
