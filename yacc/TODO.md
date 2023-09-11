@@ -10,8 +10,9 @@
    `ri!committeeMemberDetails`[`fv!index]`[`
 ```
    + 2 (217 264) have a  `name: = call` in the SAIL code and the = is a problem in the R code
-   + 1  (107) in R code, call tostring(..., )    has no final argument. In SAIL code, it is "".  Removing ""
+   + √ 1  (107) in R code, call tostring(..., )    has no final argument. In SAIL code, it is "".  Removing ""
       + Line 59 of the SAIL code.
+	  + Fixed in fixStringConcat() which uses a lookbehind and ahead to 
    + 1 (109) \\+ in a regular expression in the SAIL code causes problems in R's reading of the string.   
    + 1 (133) has a trailing , at the end of the SAIL code.
 
