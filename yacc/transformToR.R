@@ -83,7 +83,14 @@ function(x)
     # but converted "ID #" to "ID `
     # Real problem is that # is within " "
     x = gsub('#"(SYSTEM_SYSRULES[^"]+)"', "`\\1`", x)
-    x = gsub('#"(_[a-f]-|urn:appian:record-(type|field|relationship):v1:)([-0-9a-f_/]+)"', "`\\1\\2\\3`", x)
+    x = gsub('#"(_[a-f]-|urn:appian:record-(type|field|relationship):v1:)([-0-9a-f_/]+)"', "`\\1\\3`", x)
+    # The extra = at okey== is because we have already transformed the =
+    # ??? Whe should possible transform
+    # #"urn:appian:function:v1:a:isusermemberofgroup?okey=a!isUserMemberOfGroup"
+    # at the very start of the transformation (StoR)
+    x = gsub('#"urn:appian:function:v1:a:isusermemberofgroup\\?okey==([^"]+)"', "\\1", x)    
+
+    x = gsub('(#"urn:appian:function:v1:a:update")', "`\\1`", x)
     x = gsub('#"([-0-9a-f_]+)"', "`\\1`", x)    
 }
 
