@@ -11,7 +11,7 @@ if(FALSE) {
     v = lapply(input, function(x) try(StoR(x, TRUE)))
     err0 = err
     err = sapply(v, inherits, 'try-error')
-    msg = sapply(v[err], function(x) attr(x, "condition")$message)    
+    msg = trimws(sapply(v[err], function(x) attr(x, "condition")$message))
     table(err)
     which(!err0 & err)
       # going backwards
@@ -35,7 +35,7 @@ function(x, parse = FALSE)
 {
     # clean any trailing , and nonsense.
     x = gsub(",[[:space:]]+$", "", x)
-    
+
     x = removeComments(x)
     x = combineStringLiterals(x)
     x = mkList(x)
