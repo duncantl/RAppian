@@ -1,4 +1,4 @@
-mkSummary =
+mkSummary = mkAppInfo =
 function(dir, showOthers = TRUE)
 {
     xf = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$")
@@ -11,22 +11,25 @@ function(dir, showOthers = TRUE)
                       type = sapply(xf, getDocType),
                       file = xf)
 
-    class(info) = "AppianAppInfo"
+    class(info) = c("AppianAppInfo", class(info))
     info
 }
 
 mkCodeInfo =
 function(dir = ".", xf = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$"))    
 {
-    code = lapply(xf, getCode)
+    if(all(grepl("^\\./", xf)))
+        xf = substring(xf, 3)
+    
+    code = sapply(xf, getCode)
     names(code) = xf
-    code = code[sapply(code, length) > 0]
 
+    code = code[sapply(code, length) > 0]
     code2 = data.frame(name = sapply(names(code), getName),
                        type = sapply(names(code), getDocType),
                        file = names(code),
-                       code = code)
-    class(code2) = "AppianCodeInfo"
+                       code = as.character(code))
+    class(code2) = c("AppianCodeInfo", class(code2))
 
     code2
 }
