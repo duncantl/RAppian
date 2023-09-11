@@ -11,6 +11,7 @@ if(FALSE) {
     v = lapply(input, function(x) try(StoR(x, TRUE)))
     err0 = err
     err = sapply(v, inherits, 'try-error')
+    msg = sapply(v[err], function(x) attr(x, "condition")$message)    
     table(err)
     which(!err0 & err)
       # going backwards
