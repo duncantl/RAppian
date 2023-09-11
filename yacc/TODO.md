@@ -4,17 +4,22 @@
    + some of the 399 require tryCatch() to 
       + fix adjacent "" ""
 	  + fix & starting new  lines
-+ Of the 7
-   +  2 (99 131) have misplaced ` in the R code
++ Of the 7 that we can't parse
+   + 2 (217 264) have a  `name: = call` in the SAIL code and the = is a problem in the R code
+   + X  1 (109) \\+ in a regular expression in the SAIL code causes problems in R's reading of the string.      
+   + √ 2 (99 131) have misplaced ` in the R code
 ```
    `ri!committeeMemberDetails`[`fv!index]`[`
 ```
-   + 2 (217 264) have a  `name: = call` in the SAIL code and the = is a problem in the R code
-   + √ 1  (107) in R code, call tostring(..., )    has no final argument. In SAIL code, it is "".  Removing ""
+      + With other changes (removing ""), these now work, but problem persists.
+```
+y = 'a!save(ri!committeeMemberDetails[fv!index][#"urn:appian:record-field:v1:f5e6320d-b81b-4372-b877-392149c7636f/747833ee-ec79-4571-9fba-ed9c9733bed2"],
+            null)'
+```
+   + [broken again] 1  (107) in R code, call tostring(..., )    has no final argument. In SAIL code, it is "".  Removing ""
       + Line 59 of the SAIL code.
 	  + Fixed in fixStringConcat() which uses a lookbehind and ahead to 
-   + 1 (109) \\+ in a regular expression in the SAIL code causes problems in R's reading of the string.   
-   + √ 1 (133) has a trailing , at the end of the SAIL code.
+   + [broken again] 1 (133) has a trailing , at the end of the SAIL code.
        + remove trailing material at start of StoR
 
 # Issue 
