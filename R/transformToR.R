@@ -10,6 +10,8 @@ function(x, parse = FALSE)
     # clean any trailing , and nonsense.
     x = gsub(",[[:space:]]*$", "", x)
 
+    x = gsub("(![a-zA-Z0-9]+)\\.\\[", "\\1[", x)
+
     # Fix the "....""...." or "....."""
     x = fixAdjStrings(x)
     
