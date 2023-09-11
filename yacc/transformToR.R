@@ -71,7 +71,7 @@ function(x, parse = FALSE)
                  error = function(e) {
                      tryCatch(parse(text = fixStringConcat(x)),
                          error = function(e) {
-                           parse(text = gsub("\\n", "", fixStringConcat(x)))
+                           parse(text = collapseLines(fixStringConcat(x)))
                          })
                      })
     }
@@ -79,6 +79,11 @@ function(x, parse = FALSE)
     else
         x
 }
+
+collapseLines =
+function(x)
+   gsub("\\n", "", x)
+
 
 fixStringConcat =
 function(x)
