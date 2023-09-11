@@ -61,7 +61,10 @@ function(x, parse = FALSE)
     if(parse) {
         tryCatch(parse(text = x),
                  error = function(e) {
-                     parse(text = fixStringConcat(x))
+                     tryCatch(parse(text = fixStringConcat(x)),
+                         error = function(e) {
+                           parse(text = gsub("\\n", "", fixStringConcat(x)))
+                         })
                      })
     }
     
