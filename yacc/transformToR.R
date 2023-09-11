@@ -146,14 +146,14 @@ function(x)
 dp = 
 function(x, i = seq_len(length(y)), transform = TRUE)
 {
+    if(transform)
+        x = StoR(x)
+    
     y = strsplit(x, "\\n")[[1]]
     
     if(length(i) == 1)
         i = 1:i
 
-    if(transform)
-        x = StoR(x)
-    
     cat(paste(i, y[i]), sep = "\n")
 }
 
