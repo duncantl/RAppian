@@ -3,39 +3,16 @@
 if(FALSE)
     x = test.code$code[69]
 
-if(FALSE) {
-    # in the ExportedTest/ directory
-    invisible(lapply(file.path("../../RAppian/yacc", c("removeComments.R", "transformToR.R")), source))    
-    test.code = mkCodeInfo()
-    input = test.code$code
-    v = lapply(input, function(x) try(StoR(x, TRUE)))
-    err0 = err
-    err = sapply(v, inherits, 'try-error')
-    msg = trimws(sapply(v[err], function(x) attr(x, "condition")$message))
-    table(err)
-    which(!err0 & err)
-      # going backwards
-
-    dear = grepl("Dear", input)
-    dearerr = grepl("Dear", input[err])    
-    table(dear & err)
-    table(dear, err)    
-    # Now 4 with Dear that we couldn't parse.
-    #
-   
-
-    length(unique(gsub("^\\<text\\>:[0-9]+:[0-9]+: ", "", msg)))
-
-    length(unique(gsub("^\\<text\\>:[0-9]+:[0-9]+: ([^ ]+) .*", "\\1", msg)))    
-}
-
 
 StoR =
 function(x, parse = FALSE)
 {
     # clean any trailing , and nonsense.
-    x = gsub(",[[:space:]]+$", "", x)
+    x = gsub(",[[:space:]]*$", "", x)
 
+    # Fix the "....""...." or "....."""
+    x = fixAdjStrings(x)
+    
     x = removeComments(x)
     x = combineStringLiterals(x)
     x = mkList(x)
@@ -83,6 +60,17 @@ function(x, parse = FALSE)
 collapseLines =
 function(x)
    gsub("\\n", "", x)
+
+
+
+fixAdjStrings =
+function(x)
+{
+    while(grepl('"([^"]+)""([^"]*)"', x)) {
+        x = gsub('"([^"]+)""([^"]*)"', '"\\1\\2"', x)
+    }
+    x
+}
 
 
 fixStringConcat =
