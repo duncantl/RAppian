@@ -31,7 +31,10 @@ function(x, parse = FALSE)
     x = mkList(x)
 
     x = gsub("^= *", "", x)
-    
+
+    # when this is done is important.
+    # Can end up with !===
+    x = changeOperators(x)    
 
     x = escapeUUIDs(x)
    
@@ -43,10 +46,10 @@ function(x, parse = FALSE)
 
     x = gsub("repeat\\(", "Repeat(", x)    
 
-    # when this is done is important.
-    # Can end up with !===
-    x = changeOperators(x)
+    # Fix _ https://docs.appian.com/suite/help/22.2/Expressions.html#advanced-evaluation
 
+    x = gsub("= _([,)])", "= `_`\\1", x)
+    x = gsub("\\(_([,)])", "(`_`\\1", x)    
    
     if(parse)
         parse(text = x)
