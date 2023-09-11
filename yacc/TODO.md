@@ -1,10 +1,30 @@
-+ For UUIDs, put the # prefix ?
+# Status
+
++ 7 of 399 don't parse
+   + some of the 399 require tryCatch() to 
+      + fix adjacent "" ""
+	  + fix & starting new  lines
++ Of the 7
+   +  2 (99 131) have misplaced ` in the R code
+```
+   `ri!committeeMemberDetails`[`fv!index]`[`
+```
+   + 2 (217 264) have a  `name: = call` in the SAIL code and the = is a problem in the R code
+   + 1  (107) in R code, call tostring(..., )    has no final argument. In SAIL code, it is "".  Removing ""
+      + Line 59 of the SAIL code.
+   + 1 (109) \\+ in a regular expression in the SAIL code causes problems in R's reading of the string.   
+   + 1 (133) has a trailing , at the end of the SAIL code.
+
+# Issue 
+
 
 + `ri!committeeMemberDetails[fv!index][#"ur...."] 
     transformed erroneously to 
 	`ri!committeeMemberDetails`[`fv!index]`[`urn:appian:record-field:v1:f5e6320d-b81b-4372-b877-392149c7636f/787584d6-f0aa-4e79-8aa4-791714e4e4ea`]
 	+ note the tick in the fv!index doesn't end inside the ] but after it.
     + input[99]
+
++ 
 
 + = in the SAIL code `subject: = #"_a-0000ea6a-ed23-8000-9bab-011c48011c48_47165"(` leads to = == `_a...(`.
      + input[ 217 264 ]
@@ -26,3 +46,9 @@
 
 
 + The 10 inputs containing "Dear".
+
+
+
+# Done
+
++ √ For UUIDs, put the # prefix ?
