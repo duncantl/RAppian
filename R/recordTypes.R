@@ -135,7 +135,7 @@ function(x)
     as.data.frame(tmp)
 }
 
-showRecordType =
+showRecordType = recordType2Markdown =
 function(doc, info = recordTypeInfo(doc), name = getName(doc))
 {
     c(paste0("+ ", name),
