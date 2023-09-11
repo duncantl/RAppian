@@ -75,7 +75,11 @@ function(x, parse = FALSE)
 fixStringConcat =
 function(x)
 {
-    gsub('""', '', x)
+    #    gsub('""', '', x)
+    # replace "" with nothing but not if it is after ", " and also has , or ) after it as in
+    #   foo(a, b, "") or
+    #   foo(a, b, "", 1)
+    gsub('(?<!, )""(?>![,)])', '', x, perl = TRUE)
 }
 
 
