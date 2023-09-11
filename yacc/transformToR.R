@@ -44,11 +44,16 @@ function(x, parse = FALSE)
 
     # when this is done is important.
     # Can end up with !===
-    x = changeOperators(x)    
+    x = changeOperators(x)
+
+
+    x = gsub("(![a-zA-Z0-9]+)\\.", "\\1$", x)    
 
     x = escapeUUIDs(x)
-   
-    x = gsub('([a-z]+)!([^:(),["[:space:] ]+)', "`\\1!\\2`", x)
+
+    #  put ticks 
+    #    x = gsub('([a-z]+)!([^:(),["[:space:] ]+)', "`\\1!\\2`", x)
+    x = gsub('([a-z]+)!([a-zA-Z0-9]+)', "`\\1!\\2`", x)    
     x = gsub(": ", " = ", x)
     x = gsub("if\\(", "IF\\(", x)
 
