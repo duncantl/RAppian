@@ -1,5 +1,5 @@
     # in the ExportedTest/ directory
-invisible(lapply(file.path("../../RAppian/yacc", c("removeComments.R", "transformToR.R")), source))    
+invisible(lapply(file.path("../../RAppian/R", c("removeComments.R", "transformToR.R")), source))    
 if(!exists("test.code"))
     test.code = mkCodeInfo()
 
