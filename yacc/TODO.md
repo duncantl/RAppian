@@ -14,7 +14,8 @@
       + Line 59 of the SAIL code.
 	  + Fixed in fixStringConcat() which uses a lookbehind and ahead to 
    + 1 (109) \\+ in a regular expression in the SAIL code causes problems in R's reading of the string.   
-   + 1 (133) has a trailing , at the end of the SAIL code.
+   + √ 1 (133) has a trailing , at the end of the SAIL code.
+       + remove trailing material at start of StoR
 
 # Issue 
 

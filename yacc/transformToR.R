@@ -33,6 +33,9 @@ if(FALSE) {
 StoR =
 function(x, parse = FALSE)
 {
+    # clean any trailing , and nonsense.
+    x = gsub(",[[:space:]]+$", "", x)
+    
     x = removeComments(x)
     x = combineStringLiterals(x)
     x = mkList(x)
