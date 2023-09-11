@@ -14,7 +14,11 @@ function(x, parse = FALSE)
     x = fixAdjStrings(x)
     
     x = removeComments(x)
-    x = combineStringLiterals(x)
+
+    # Do we need this given fixAdjStrings above?
+    # Appears we don't 
+    #    x = combineStringLiterals(x)
+    
     x = mkList(x)
 
     x = gsub("^= *", "", x)
@@ -30,26 +34,33 @@ function(x, parse = FALSE)
 
     #  put ticks 
     #    x = gsub('([a-z]+)!([^:(),["[:space:] ]+)', "`\\1!\\2`", x)
-    x = gsub('([a-z]+)!([a-zA-Z0-9]+)', "`\\1!\\2`", x)    
+    x = gsub('([a-z]+)!([a-zA-Z0-9]+)', "`\\1!\\2`", x)
+
+    # change  'argName: '   to 'argName =' 
     x = gsub(": ", " = ", x)
+
+    # R treats repeat() and if() specially so can't use those reserved words
+    # so capitalize them.
+    # (could do in one regex if the set of names grows.)
     x = gsub("if\\(", "IF\\(", x)
+    x = gsub("repeat\\(", "Repeat(", x)
 
+    # replace  ).name  such as ).data to )$name
     x = gsub("\\)\\.", ")$", x)
-
-    x = gsub("repeat\\(", "Repeat(", x)    
 
     # Fix _ https://docs.appian.com/suite/help/22.2/Expressions.html#advanced-evaluation
 
+    # The _ in SAIL that is a partially evaluated call.
     x = gsub("= _([,)])", "= `_`\\1", x)
     x = gsub("\\(_([,)])", "(`_`\\1", x)    
-   
+    
     if(parse) {
         tryCatch(parse(text = x),
                  error = function(e) {
-                     tryCatch(parse(text = fixStringConcat(x)),
-                         error = function(e) {
-                           parse(text = collapseLines(fixStringConcat(x)))
-                         })
+#                     tryCatch(parse(text = fixStringConcat(x)),
+#                         error = function(e) {
+                           parse(text = collapseLines(x)) # fixStringConcat(x)))
+#                         })
                      })
     }
     
@@ -73,7 +84,20 @@ function(x)
 }
 
 
+if(FALSE) {
+    
+combineStringLiterals =
+    # Looks like we don't need this.
+    # combineStringLiterals(' value: "[""" & ri!homeDepartmentName & """]"')
+function(x)
+{
+    gsub('"([^"]*)""([^"]*)"', '"\\1\\2"', x)
+}
+
 fixStringConcat =
+    #
+    # Probably don't need this. fixAdjStrings is better.
+    #
 function(x)
 {
     #    gsub('""', '', x)
@@ -82,6 +106,8 @@ function(x)
     #   foo(a, b, "", 1)
     gsub('(?<!, )""(?>![,)])', '', x, perl = TRUE)
 }
+}
+
 
 
 escapeUUIDs =
@@ -103,22 +129,25 @@ function(x)
 }
 
 
-combineStringLiterals =
-    # combineStringLiterals(' value: "[""" & ri!homeDepartmentName & """]"')
-function(x)
-{
-    gsub('"([^"]*)""([^"]*)"', '"\\1\\2"', x)
-}
 
 mkList =
+    #
+    # Rather than having { expr, expr} in SAIL
+    # we need  call( expr, expr) in R. So we'll use list( )
+    #
+    # √ should this be SBrace( rather than list(
+    #
 function(x)
 {
 #    gsub("\\{(.*?)\\}", "list(\\1)", x, perl = TRUE)
-   x = gsub("\\{", "list(", x, perl = TRUE)
+   x = gsub("\\{", "SBrace(", x, perl = TRUE)
    x = gsub("\\}", ")", x, perl = TRUE)        
 }
 
 changeOperators =
+    #
+    # Change <> to R's != and = to == for comparisons.
+    #
 function(x)    
 {
 #    x = gsub("\\<\\>", "!=", x)
@@ -131,7 +160,14 @@ function(x)
 }
 
 
-dp = 
+dp =
+    #
+    # Show the code by displaying it line by line with line numbers
+    # useful for debugging R parsing messages that give the line number.
+    #
+    # Start with the SAIL code. Can transform to R code via StoR (no parsing)
+    # and then show the result.
+    #
 function(x, i = seq_len(length(y)), transform = TRUE)
 {
     if(transform)
@@ -144,4 +180,3 @@ function(x, i = seq_len(length(y)), transform = TRUE)
 
     cat(paste(i, y[i]), sep = "\n")
 }
-
