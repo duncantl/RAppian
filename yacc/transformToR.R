@@ -58,11 +58,23 @@ function(x, parse = FALSE)
     x = gsub("= _([,)])", "= `_`\\1", x)
     x = gsub("\\(_([,)])", "(`_`\\1", x)    
    
-    if(parse)
-        parse(text = x)
+    if(parse) {
+        tryCatch(parse(text = x),
+                 error = function(e) {
+                     parse(text = fixStringConcat(x))
+                     })
+    }
+    
     else
         x
 }
+
+fixStringConcat =
+function(x)
+{
+    gsub('""', '', x)
+}
+
 
 escapeUUIDs =
 function(x)
