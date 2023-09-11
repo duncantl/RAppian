@@ -9,8 +9,11 @@ if(FALSE) {
     test.code = mkCodeInfo()
     input = test.code$code
     v = lapply(input, function(x) try(StoR(x, TRUE)))
+    err0 = err
     err = sapply(v, inherits, 'try-error')
     table(err)
+    which(!err0 & err)
+      # going backwards
 
     msg = sapply(v[err], function(x) attr(x, "condition")$message)
 
@@ -37,6 +40,8 @@ function(x, parse = FALSE)
     x = gsub("if\\(", "IF\\(", x)
 
     x = gsub("\\)\\.", ")$", x)
+
+    x = gsub("repeat\\(", "Repeat(", x)    
 
     # when this is done is important.
     # Can end up with !===
