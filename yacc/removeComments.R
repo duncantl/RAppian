@@ -1,7 +1,7 @@
 removeComments =
 function(x)
 {
-   gsub("/\\*.*?\\*/", "", x, perl = TRUE)
+   gsub("/\\*.*?\\*/", "", x, perl = FALSE)
 }
 
 if(FALSE) {
