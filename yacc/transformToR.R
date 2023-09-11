@@ -23,7 +23,6 @@ if(FALSE) {
     # Now 4 with Dear that we couldn't parse.
     #
     
-    msg = sapply(v[err], function(x) attr(x, "condition")$message)
 
     length(unique(gsub("^\\<text\\>:[0-9]+:[0-9]+: ", "", msg)))
 
