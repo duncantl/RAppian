@@ -5,15 +5,14 @@
       + fix adjacent "" ""
 	  + fix & starting new  lines
 	  
-+ Back to having 5 (was 7)
-   + 109 136 217 264 380
++ √ Back to having 5 (was 7)
+   + √ 109 136 217 264 380
       + (was 107 109 133 136 217 264 380)
-   + 217 264  we haven't fixed.
+   + √ 217 264  we haven't fixed.
       + 217 264 have a  `name: = call` in the SAIL code and the = is a problem in the R code
-   + 109 haven't fixed
+   + √ 109 
         + X  \\+ in a regular expression in the SAIL code causes problems in R's reading of the string.      
-   + 136 380 - new
-   + 136 & 180 new 
+   + √ 136 & 180 new 
      + problem is   SAIL code of the `x!abc.[#"...` - note the . and [  
 ```
 local!eligibility.[#"urn:appian:record-field:v1:91dd3ca1-89b3-42d9-b91d-ef023ed52594/5781beb8-4912-417e-82ba-a28f20d296fd"]

@@ -55,6 +55,13 @@ function(x, parse = FALSE)
     # The _ in SAIL that is a partially evaluated call.
     x = gsub("= _([,)])", "= `_`\\1", x)
     x = gsub("\\(_([,)])", "(`_`\\1", x)    
+
+
+    # to handle : = call
+    x = gsub(" = == ", " == ", x)
+
+    # to handle \x in strings
+    x = gsub("\\\\", "\\\\\\\\", x)    
     
     if(parse) {
         tryCatch(parse(text = x),
