@@ -108,8 +108,18 @@ function(x)
 {
 #    x = gsub("\\<\\>", "!=", x)
     x = gsub("<>", "!=", x, fixed = TRUE)
-    x = gsub("(?<!\\!)=", "==", x, perl = TRUE)    
+    # Was 
+    # x = gsub("(?<!\\!)=", "==", x, perl = TRUE)
+    # to account for != but have to also deal with
+    # >= <=
+    x = gsub("(?<![><!])=", "==", x, perl = TRUE)    
 }
 
 
+dp = 
+function(x, i = seq_len(length(y)))
+{
+    y = strsplit(StoR(x), "\\n")[[1]]
+    cat(paste(i, y[i]), sep = "\n")
+}
 
