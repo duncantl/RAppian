@@ -24,3 +24,54 @@ We can compare
 
 
 In the future, we might add some tests that we can do here to identify potential issues with what we develop.
+
+
+
+# Parsing SAIL Code
+
+How can we programmatically analyze and extract information from SAIL code?
+
+## Why?
+Because we want to analyze the code to
++ identify
+  + functions being called 
+  + expression rules being inboked
+  + interfaces being re-used
+  + record types being referenced
+  + constants being used
+  + rule input values
+  + layout functions and parameters in use.
++ find commented out code
++ ...
+
+
+## How to "parse" SAIL Code
+
+### Regular Expressions
+
+We can use the "low-brow" apprach of regular expressions to capture a lot of information.
+See 
++ `findCalls()`
++ `getDomains()`
++ `getUUIDs()`
++ `mkUUIDMap()`
+
+
+### Transforming to a known syntax
+
+One approach to parsing SAIL code is to transform it to a pseudo R syntax and parse that and
+then process the resulting language objects.
+This is what we have done via the function `StoR()` (SAIL to R.)
+
+This uses regular expressions to actually transform SAIL code 
+into a form that is compatible with R syntax. Then we can use R's `parse()`
+function and the meta-programming tools in CodeAnalysis, CodeDepends, codetools.
+
+For the current state of the Appian application I am working with, this parses
+all SAIL code in the application.
+
+## Parser
+
+The "correct" approach is to have a proper SAIL parser.
+We can use lex/yacc, ANTLR, or a hand-written parser to do this.
+
