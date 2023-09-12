@@ -99,9 +99,16 @@ function(doc)
     if(is.character(doc))
         doc = xmlParse(doc)
 
-    unname(getNodeSet(doc, "/*/recordType/@x:uuid", AppianTypesNS))
-}
+#    ty = xmlName(xmlRoot(doc))
+#    xp = switch(ty,
+#                "applicationHaul" = "/*/recordType/@x:uuid",
+#                "applicationHaul" = "/*/recordType/@x:uuid",                
 
+# unname(getNodeSet(doc, "/*/recordType/@x:uuid", AppianTypesNS))
+    
+    xp = "/*/*[2]/uuid | /*/*[2]/@x:uuid | /processModelHaul/x:process_model_port/x:pm/x:meta/x:uuid"
+    unname(xpathSApply(doc, xp, xmlValue, namespaces = AppianTypesNS))
+}
 
 
 recordTypeInfo =
