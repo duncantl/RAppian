@@ -1,5 +1,19 @@
 mkSummary = mkAppInfo =
-function(dir, showOthers = TRUE)
+    #
+    # A data.frame with columns
+    # name
+    # type
+    # uuid
+    # file
+    # recordType - a list with a data.frame for elements corresponding to type == recordType
+    #    This is computed via recTypes for each recordType file.
+    #
+    #
+    #
+    # Maybe faster to parse each document and then
+    # call getName, getDocType, etc. on the preparsed documents.
+    #
+function(dir = ".", showOthers = TRUE, recTypes = recordType)
 {
     xf = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$")
     af = list.files(dir, recursive = TRUE, full = TRUE)
@@ -9,8 +23,21 @@ function(dir, showOthers = TRUE)
 
     info = data.frame(name = sapply(xf, getName),
                       type = sapply(xf, getDocType),
+#                     uuid = sapply(xf, getUUID),
+                      uuid = gsub("\\.xml$", "", basename(xf)),
                       file = xf)
 
+    # duplicate name values so can't use as rownames()
+    #    rownames(info) = info$name
+    
+    if(is.function(recTypes)) {
+        tmp = vector("list", nrow(info))
+        w = info$type == "recordType"
+        tmp[w] = lapply(info$file[w], recordType)
+        info$recordType = tmp
+    }
+    
+    
     class(info) = c("AppianAppInfo", class(info))
     info
 }
@@ -25,10 +52,14 @@ function(dir = ".", xf = list.files(dir, recursive = TRUE, full = TRUE, pattern 
     names(code) = xf
 
     code = code[sapply(code, length) > 0]
-    code2 = data.frame(name = sapply(names(code), getName),
+    names = sapply(names(code), getName)
+    code2 = data.frame(name = names,
                        type = sapply(names(code), getDocType),
+                       # or use sapply(names(code), getUUID)
+                       uuid = gsub("\\.xml$", "", basename(names(code))),
                        file = names(code),
                        code = as.character(code))
+    
     class(code2) = c("AppianCodeInfo", class(code2))
 
     code2
