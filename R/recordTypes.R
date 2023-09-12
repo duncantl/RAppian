@@ -151,4 +151,20 @@ function(doc, info = recordTypeInfo(doc), name = getName(doc))
     c(paste0("+ ", name),
       sprintf("   +  %s (%s) ", info$fieldName, info$sourceFieldType))
 }
-    
+
+
+recordTypeList =
+    #
+    # Get a list of the record types for this application
+    # Each element is a data.frame with the fieldName, type, isRecordID, isCustomField, UUID
+    #
+    # This is hopefully enugh to resolve #urn:appian:record-field and #urn:appian:record-type
+    # references.
+    #
+    # Not enough for #urn:appian:record-relationship. For that, we'll need to
+    # use other functions above.
+    #
+function(dir = ".", files = list.files(dir, full.names = TRUE, pattern = "\\.xml"))
+{
+  structure( lapply(files, recordType), names = sapply(files, getName))
+}
