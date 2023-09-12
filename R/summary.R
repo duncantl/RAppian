@@ -13,7 +13,7 @@ mkSummary = mkAppInfo =
     # Maybe faster to parse each document and then
     # call getName, getDocType, etc. on the preparsed documents.
     #
-function(dir = ".", showOthers = TRUE, recTypes = recordType)
+function(dir = ".", showOthers = FALSE, recTypes = recordType)
 {
     xf = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$")
     af = list.files(dir, recursive = TRUE, full = TRUE)
@@ -27,6 +27,8 @@ function(dir = ".", showOthers = TRUE, recTypes = recordType)
                       uuid = gsub("\\.xml$", "", basename(xf)),
                       file = xf)
 
+    info$qname = paste(info$type, info$name, sep = "!")
+    
     # duplicate name values so can't use as rownames()
     #    rownames(info) = info$name
     
@@ -37,8 +39,8 @@ function(dir = ".", showOthers = TRUE, recTypes = recordType)
         info$recordType = tmp
     }
     
-    
     class(info) = c("AppianAppInfo", class(info))
+    attr(info, "directory") = dir
     info
 }
 
