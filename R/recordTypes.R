@@ -82,13 +82,14 @@ function(doc)
 mkRecordRelationshipCfg =
 function(x)    
 {
-    rel = fromJSON(xmlValue(x[["relationshipData"]]))
+    rel = RJSONIO::fromJSON(xmlValue(x[["relationshipData"]]))
     target = xmlValue(x[["targetRecordTypeUuid"]])
     type = xmlValue(x[["relationshipType"]])
     data.frame(sourceField = rel["sourceRecordTypeFieldUuid"],
                targetField = rel["targetRecordTypeFieldUuid"],
                targetRecordType = target,
-               type = type
+               type = type,
+               uuid = xmlValue(x[["uuid"]])
                )
     
 }
