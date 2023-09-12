@@ -64,6 +64,9 @@ resolveURN =
 function(x, map, col = "qname")
 {
     tmp = gsub("^#urn:.*:v1:", "", x)
+
+    #    if(any(ww <- grepl("record-relationship", x)))    browser()
+    
     multipart = grepl("/", tmp)
 
     a = tmp
@@ -72,18 +75,38 @@ function(x, map, col = "qname")
     ans = mapUUID(a, map$uuid, map[[col]])
 
     b = gsub("[^/]+/", "", tmp[multipart])
-#    browser()
 
+    isrel = grepl("record-relationship", x[multipart])
     m = match(a[multipart], map$uuid)
-    fn = mapply(function(f, type) {
-        type$fieldName[ match(f, type$uuid) ]
-    },  b, map$recordType[m])
 
+
+    fn = character(length(b))
+    if(any(!isrel)) {
+        fn[!isrel] = mapply(function(fieldu, type) {
+            type$fieldName[ match(fieldu, type$uuid) ]
+        },  b[!isrel], map$recordType[m][!isrel])
+    }
+    
+
+    if(any(isrel)) {
+        rrs = lapply(structure(map$file[unique(m[isrel])], names = unique(a[multipart][isrel])),
+                     recordTypeRelationships)
+        
+        p = a[multipart[isrel]]
+        fn[isrel] = mapply(function(fieldu, rr) {
+            i = match(fieldu, rr$uuid)
+            j = which(rr$targetRecordType[i] == map$uuid)
+
+            trt = map$recordType[[ j ]]
+            k = match(rr$targetField[i], trt$uuid)
+            trt$fieldName[k]
+        }, b[isrel],  rrs[p]) # , p)
+    }
+    
+    
     ans[multipart] = paste(ans[multipart], fn, sep = ".")
     
     ans
-#    els = strsplit(tmp, "/")
-#    sapply(els, resolveURNEls, map, col)
 }
 
 resolveURNEls =
