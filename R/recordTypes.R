@@ -11,6 +11,9 @@ if(FALSE) {
 
 
 recordType =
+    # Use recordTypeInfo()
+    #
+    #
     # Started and realized was duplicating recordTypeInfo
     # But what is the difference between <a:fieldCfg> and <field> in the XML?
     # It appears every record type XML file has <field> elements, but 
