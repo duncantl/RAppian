@@ -31,15 +31,19 @@ function(dir = ".", showOthers = FALSE, recTypes = recordType)
     
     # duplicate name values so can't use as rownames()
     #    rownames(info) = info$name
+    rownames(info) = info$uuid
     
     if(is.function(recTypes)) {
         tmp = vector("list", nrow(info))
         w = info$type == "recordType"
-        tmp[w] = lapply(info$file[w], recordType)
+        tmp[w] = lapply(info$file[w], recordTypeInfo)
         info$recordType = tmp
     }
     
     class(info) = c("AppianAppInfo", class(info))
+
+    # This allows us to identify the location of the application files.
+    # Originally intended to be use to find files, but  the values in the file column have the full path.
     attr(info, "directory") = dir
     info
 }
