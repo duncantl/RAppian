@@ -27,20 +27,20 @@ function(dir = ".", ff = list.files(dir, recursive = TRUE, full.names = TRUE))
               names = gsub("\\.xml", "", basename(ff)))
 }
 
+
+
 mapName =
-function(x, map, recTypes = recordTypeList())
+function(x, map = mkSummary(...), ..., col = "qname")
 {
     w = grepl('^#urn:', x)
     if(any(w)) 
-        x[w] = resolveURN(x[w], map)
+        x[w] = resolveURN(x[w], map, col = col)
  
     w = grepl('^#', x)
     if(any(w)) {
         uuid = gsub('(^"|"$)', '', substring(x[w], 2))
-        m = match(uuid, names(map))
-        
-        # check for NAs
-        x[ w ] = map[m]
+
+        x[w] = mapUUID(uuid, map$uuid, map[[col]])
     }
 
     w = grepl("^SYSTEM_SYSRULES_", x)
@@ -50,18 +50,47 @@ function(x, map, recTypes = recordTypeList())
     x
 }
 
+mapUUID =
+function(uuid, uuids, out)
+{
+    m = match(uuid, map$uuid)
+        
+    # check for NAs
+    out[m]
+}
+
+
 resolveURN =
-function(x, map)
+function(x, map, col = "qname")
 {
     tmp = gsub("^#urn:.*:v1:", "", x)
-    els = strsplit(tmp, "/")
-    sapply(els, resolveURNEls, map)
+    multipart = grepl("/", tmp)
+
+    a = tmp
+    a[multipart] = gsub("/.*", "", a[multipart])
+
+    ans = mapUUID(a, map$uuid, map[[col]])
+
+    b = gsub("[^/]+/", "", tmp[multipart])
+#    browser()
+
+    m = match(a[multipart], map$uuid)
+    fn = mapply(function(f, type) {
+        type$fieldName[ match(f, type$uuid) ]
+    },  b, map$recordType[m])
+
+    ans[multipart] = paste(ans[multipart], fn, sep = ".")
+    
+    ans
+#    els = strsplit(tmp, "/")
+#    sapply(els, resolveURNEls, map, col)
 }
 
 resolveURNEls =
-function(x, map)
+function(x, map, col = "qname")
 {
-    obj1 = mapName(x[1], map)
+    # obj1 = mapName(x[1], map, col = col)
+    mapUUID(x, map$uuid, map[[col]])
     
 }
 
