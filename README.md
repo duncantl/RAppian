@@ -65,7 +65,8 @@ This is what we have done via the function `StoR()` (SAIL to R.)
 
 This uses regular expressions to actually transform SAIL code 
 into a form that is compatible with R syntax. Then we can use R's `parse()`
-function and the meta-programming tools in CodeAnalysis, CodeDepends, codetools.
+function and the meta-programming tools in [CodeAnalysis](https://github.com/duncantl/CodeAnalysis), 
+[CodeDepends](https://github.com/duncantl/CodeDepends), and R's own codetools package.
 
 For the current state of the Appian application I am working with, this parses
 all SAIL code in the application.
@@ -74,4 +75,5 @@ all SAIL code in the application.
 
 The "correct" approach is to have a proper SAIL parser.
 We can use lex/yacc, ANTLR, or a hand-written parser to do this.
+It would be nice to find the SAIL specification.
 
