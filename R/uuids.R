@@ -92,7 +92,8 @@ function(x, map, col = "qname")
         rrs = lapply(structure(map$file[unique(m[isrel])], names = unique(a[multipart][isrel])),
                      recordTypeRelationships)
         
-        p = a[multipart[isrel]]
+        p = a[multipart][isrel]
+
         fn[isrel] = mapply(function(fieldu, rr) {
             i = match(fieldu, rr$uuid)
             j = which(rr$targetRecordType[i] == map$uuid)
