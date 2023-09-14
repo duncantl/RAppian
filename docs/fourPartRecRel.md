@@ -115,8 +115,10 @@ It is the field named `programCode` in `Student Details` which has a UUID of
 
 
 The sequence is 
-`Task Log.requestId` to `EFRM Request Details.requestId` to `EFRM Request Details.requestId` to
-`EFRM Student Details.requestId` to `EFRM Student Details.programCode`.
++ `Task Log.requestId` to 
++ `EFRM Request Details.requestId` to 
++ `EFRM Student Details.requestId` to
++ `EFRM Student Details.programCode`.
 
 
 
