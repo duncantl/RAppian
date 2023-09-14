@@ -36,12 +36,27 @@ rf = rr[ rr$uuid == e[2] , ]
 35ef582f-262d-4961-8995-df4bafd6d66d
 ```
 
+We resolve the source field in a `Task Log` with 
+```
+a[rr$sourceField[rr$uuid == e[2]] == a$uuid,]
+```
+```
+  fieldName sourceFieldType isRecordId isCustomField                                 uuid
+3 requestId         INTEGER      FALSE         FALSE 4554903e-3f12-4e36-8dd0-2be23d36d082
+```
+
+So we are connecting `Task Log.requestId` with the target field in the target record type.
+
+
 The targetRecordType corresponds to `EFRM Request Details`
 ```
-file = paste0("recordType/", rf$targetRecordType, ".xml")
+file = uuid2File(rf$targetRecordType)
 getName(file)
 b = recordTypeInfo(file)
 brr = recordTypeRelationships(file)
+```
+We get the target field via
+```
 f1 = b[b$uuid == rf$targetField, ]
 ```
 ```
@@ -49,10 +64,11 @@ f1 = b[b$uuid == rf$targetField, ]
 1 requestId         INTEGER       TRUE         FALSE b3b96eb8-996b-44bb-b614-34e3dc4badf7
 ```
 
+So we are relating `Task Log.requestId` to `EFRM Request Details.requestId`.
+
 
 The third element of the urn does not correspond to a field in `Request Details` (b, the record
-type).
-Again, we look at the record-relationships, i.e., `brr` and 
+type).  Again, we look at the record-relationships, i.e., `brr` and 
 match 
 ```
 j = which(e[3] == brr$uuid)
@@ -69,9 +85,19 @@ f874526a-c78e-4cb5-ac77-23bda1053b1c ONE_TO_MANY
 c72e883a-7d20-40c1-9286-87cf6cc69c72
 ```
 
-We get the record type - either from the file or from `map`
+The source field is
 ```
-file3 = paste0("recordType/", brr[j, "targetRecordType"], ".xml")
+b[brr$sourceField[j] == b$uuid, ]
+```
+```
+  fieldName sourceFieldType isRecordId isCustomField                                 uuid
+1 requestId         INTEGER       TRUE         FALSE b3b96eb8-996b-44bb-b614-34e3dc4badf7
+```
+
+
+We get the target record type - either from the file or from `map`
+```
+file3 = uuid2File(brr[j, "targetRecordType"])
 getName(file3)
 c = recordTypeInfo(file3)
 k = which(brr[j, "targetField"] == c$uuid)
@@ -84,8 +110,13 @@ We don't seem to need the record-type relationships here.
 
 
 So what is the 4th element of the urn?
-It is the field named programCode in `Student Details` which has a UUID of 
+It is the field named `programCode` in `Student Details` which has a UUID of 
 `f874526a-c78e-4cb5-ac77-23bda1053b1c`.
+
+
+The sequence is 
+`Task Log.requestId` to `EFRM Request Details.requestId` to `EFRM Request Details.requestId` to
+`EFRM Student Details.requestId` to `EFRM Student Details.programCode`.
 
 
 
@@ -94,7 +125,7 @@ It is the field named programCode in `Student Details` which has a UUID of
 
 Consider the URN 
 ```
-"#urn:appian:record-field:v1:f46db558-8af9-47a4-88a7-c759a0b3445f/35ef582f-262d-4961-8995-df4bafd6d66d/c72e883a-7d20-40c1-9286-87cf6cc69c72/7cb18828-e22b-4e6c-9a98-2315d1d4a397" 
+u = "#urn:appian:record-field:v1:f46db558-8af9-47a4-88a7-c759a0b3445f/35ef582f-262d-4961-8995-df4bafd6d66d/c72e883a-7d20-40c1-9286-87cf6cc69c72/7cb18828-e22b-4e6c-9a98-2315d1d4a397" 
 ```
 which comes from EFRM_GRID_TasksForLoggedInUser.
 We find this in the `map`
@@ -115,45 +146,62 @@ map[!is.na(map$name) & map$name == "EFRM_GRID_TasksForLoggedInUser", ]
 
 
 ```
-e = strsplit(gsub(".*:", "", asyms[9066]), "/")[[1]]
-file1 = sprintf("recordType/%s.xml", e[1])
+e = strsplit(gsub(".*:", "", u), "/")[[1]]
+file1 = uuid2File(e[1])
 getName(file1)
 rr1 = recordTypeRelationships(file1)
 ```
 "EFRM Task Log"
 
 
-
+```
 f = rr1[rr1$uuid == e[2],]
-
+```
+```
                          sourceField                          targetField
 4554903e-3f12-4e36-8dd0-2be23d36d082 b3b96eb8-996b-44bb-b614-34e3dc4badf7
                     targetRecordType        type
 5ad7f584-ce54-41f6-a287-5fcf34d87702 MANY_TO_ONE
                                 uuid
 35ef582f-262d-4961-8995-df4bafd6d66d
+```
 
+The sourceField corresponds to 
+```
+a = recordTypeInfo(file1)
+a[a$uuid == f$sourceField, ]
+```
+```
+  fieldName sourceFieldType isRecordId isCustomField                                 uuid
+3 requestId         INTEGER      FALSE         FALSE 4554903e-3f12-4e36-8dd0-2be23d36d082
+```
 
-
+We resolve the target record type and field with
+```
 w = f$targetRecordType == map$uuid
 b = map$recordType[w][[1]]
 map$name[w]
 b$fieldName[b$uuid == f$targetField]
-
+```
 This tells us the record type is `EFRM Request Details` and the field name is `requestId`.
 
-To resolve e[3], we get the record-type relations corresponding to b.
 
+
+To resolve `e[3]`, we get the record-type relations corresponding to `b`.
+```
 brr = recordTypeRelationships(map$file[w])
 f2 = brr[ e[3] == brr$uuid, ]
+```
++ the source field corresponds to requedId in `b` to `EFRM Request Details`
++ f2$targetRecordType corresponds to `EFRM Student Details` and 
++ the targetField matches field 2 in `EFRM Student Details` and corresponds to `requestId`.
 
-f2$targetRecordType corresponds to `EFRM Student Details` and 
-the targetField matches field 2 in `EFRM Student Details` and corresponds to requestId.
+
 
 We now match e[4] to another field in `EFRM Student Details` to get `lastName`.
 
 So the URN 
-+ EFRM Task Log
++ EFRM Task Log.requestId
 + EFRM Request Details.requestId
 + EFRM Student Details.requestId
 + EFRM Student Details.lastName
