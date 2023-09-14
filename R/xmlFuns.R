@@ -39,6 +39,7 @@ function(doc)
 
     r = xmlRoot(doc)
     xp = switch(xmlName(r),
+                "siteHaul" = "/siteHaul/site/@name",
                 "processModelHaul" = "//x:process_model_port//x:meta//x:name//x:value",
                 "groupHaul" = "/groupHaul/group/name",
                 "groupTypeHaul" = "/groupTypeHaul/groupType/name",                
