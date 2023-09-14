@@ -75,7 +75,9 @@ function(doc)
     if(is.character(doc))
         doc = xmlParse(doc)
 
-    do.call(rbind, xpathApply(doc, "//x:recordRelationshipCfg", mkRecordRelationshipCfg, namespaces = AppianTypesNS))
+    ans = do.call(rbind, xpathApply(doc, "//x:recordRelationshipCfg", mkRecordRelationshipCfg, namespaces = AppianTypesNS))
+    rownames(ans) = NULL
+    ans
 }
 
 mkRecordRelationshipCfg =
