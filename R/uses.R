@@ -13,6 +13,14 @@ if(FALSE) {
 
 
 uses =
+    # This doesn't seem to handle #urn directly but captures
+    # the UUID within the urn.
+    #
+    # Also, can use StoR(, TRUE) and then get the symbols from the code
+    # to see what the SAIL code calls.
+    # This is only focuses on the SAIL code, not the UUIDs in other parts of he
+    # XML, but that includes the history, versions, permissions/roles, etc.
+    #
 function(file, txt = paste(readLines(file), collapse = "\n"),
           toplevel = toplevelUUIDs())
 {
@@ -24,7 +32,7 @@ function(file, txt = paste(readLines(file), collapse = "\n"),
 }
 
 toplevelUUIDs =
-function(dir = ".", af = list.files(dir, recursive = TRUE, pattern = "\\.xml$"))
+function(dir = ".", af = xmlFiles(dir))
 {
     gsub("\\.xml$", "", basename(af))
 }
