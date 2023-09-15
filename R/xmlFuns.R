@@ -53,7 +53,7 @@ function(doc)
 }
 
 
-getDocType =
+getDocType = getType =
 function(doc)
 {
     if(is.character(doc))
