@@ -105,6 +105,8 @@ So the 3-part relationship  appears to connecting
 `Event Log` to the `note` field in `Notes` by matching `noteId` in `Event Log` to 
 the `noteId` in `Notes` and the corresponding `note` field in that "row"/tuple.
 
-
++ EFRM Event Log.noteId
++ EFRM Notes.noteId
++ EFRM Notes.note
 
 

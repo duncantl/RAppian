@@ -36,7 +36,7 @@ rf = rr[ rr$uuid == e[2] , ]
 35ef582f-262d-4961-8995-df4bafd6d66d
 ```
 
-We resolve the source field in a `Task Log` with 
+We resolve the source field in `Task Log` with 
 ```
 a[rr$sourceField[rr$uuid == e[2]] == a$uuid,]
 ```
