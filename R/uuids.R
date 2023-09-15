@@ -84,7 +84,7 @@ resolveURN =
     # The record-type and function are not multipart.
     #
     # Now taking a long time - 12 seconds for 1623 urns:
-    # Got this down to 2.3 seconds by only processing the unique URNs
+    # Got this down to .026 seconds by only processing the unique URNs
     # and then returning corresponding values.
     #
     #  urns = grep("urn:", asyms, value = TRUE)
@@ -92,8 +92,9 @@ resolveURN =
     #  system.time(resolveURN(gurns$"record-field", map))
     #
     # Still doing more work than needed
-    # + reading XML files for recordTypeInfo which we have in map
-    # + 
+    # + √ reading XML files for recordTypeInfo which we have in map
+    # + √ could read the recordTypeRelationships once and put in map/mkSummary() result and use from there.
+    # + √ could get all elements in all URNs and resolve them all once and then use across all (unique) urns.
     #
 function(x, map, col = "qname", paths = TRUE)
 {
@@ -151,8 +152,8 @@ function(x, map, col = "qname")
         return(rep(NA, length(els)))
     
     rt = map$recordType[[ which(w) ]]
-    rr = recordTypeRelationships(file)
-    nm = getName(file)
+    rr = map$recordRelationships [[ which(w) ]] # recordTypeRelationships(file)
+    nm = map$name[ w ] # getName(file)
 
     while(idx <= length(els)) {
         # get the record-type and the record relationships from the UUID file.
@@ -171,9 +172,10 @@ function(x, map, col = "qname")
             # rt = recordTypeInfo(file)
             rt = map$recordType[[ which(w) ]]
             fn2 = rt$fieldName[rel$targetField == rt$uuid]
-            ans = c(ans, paste(getName(file), fn2, sep = "."))
-            rr = recordTypeRelationships(file)
-            nm = getName(file)
+            nm = map$name[w] # getName(file)            
+            ans = c(ans, paste(nm, fn2, sep = "."))
+            rr = map$recordRelationships[[ which(w) ]]  # recordTypeRelationships(file)
+
         } else {
             w = rt$uuid == els[idx]
             ans = c(ans, paste(nm, rt$fieldName[w], sep = "."))
