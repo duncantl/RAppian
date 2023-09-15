@@ -17,7 +17,7 @@ mkSummary = mkAppInfo =
     # Maybe faster to parse each document and then
     # call getName, getDocType, etc. on the preparsed documents.
     #
-function(dir = ".", showOthers = FALSE, recTypes = recordType)
+function(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = recordTypeRelationships)
 {
     xf = xmlFiles()
     af = list.files(dir, recursive = TRUE, full = TRUE)
@@ -36,13 +36,21 @@ function(dir = ".", showOthers = FALSE, recTypes = recordType)
     # duplicate name values so can't use as rownames()
     #    rownames(info) = info$name
     rownames(info) = info$uuid
-    
+
+
     if(is.function(recTypes)) {
         tmp = vector("list", nrow(info))
         w = info$type == "recordType"
-        tmp[w] = lapply(info$file[w], recordTypeInfo)
+        tmp[w] = lapply(info$file[w], recTypes)
         info$recordType = tmp
     }
+
+    if(is.function(recRels)) {
+        tmp = vector("list", nrow(info))
+        w = info$type == "recordType"
+        tmp[w] = lapply(info$file[w], recRels)
+        info$recordRelationships = tmp
+    }    
     
     class(info) = c("AppianAppInfo", class(info))
 
