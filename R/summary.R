@@ -1,3 +1,7 @@
+xmlFiles =
+function(dir = ".")    
+     list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$")
+
 mkSummary = mkAppInfo =
     #
     # A data.frame with columns
@@ -15,7 +19,7 @@ mkSummary = mkAppInfo =
     #
 function(dir = ".", showOthers = FALSE, recTypes = recordType)
 {
-    xf = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$")
+    xf = xmlFiles()
     af = list.files(dir, recursive = TRUE, full = TRUE)
 
     if(showOthers) 
@@ -49,7 +53,7 @@ function(dir = ".", showOthers = FALSE, recTypes = recordType)
 }
 
 mkCodeInfo =
-function(dir = ".", xf = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$"))    
+function(dir = ".", xf = xmlFiles(dir))
 {
     if(all(grepl("^\\./", xf)))
         xf = substring(xf, 3)
