@@ -4,8 +4,10 @@ library(CodeAnalysis)
 
 dir = "."
 code = mkCodeInfo(dir)
-rcode = lapply(code$code, StoR, TRUE)
+rcode = lapply(code$code, function(x) try(StoR(x, TRUE)))
 names(rcode) = code$name
+err = sapply(rcode, inherits, 'try-error')
+
 
 map = mkSummary()
 #umap = mkUUIDMap(dir)
@@ -15,7 +17,6 @@ funs = lapply(rcode, function(x) sapply(findCallsTo(x), function(x) as.character
 
 funs2 = lapply(funs, mapName, map)
 showCounts(dsort(table(unlist(funs2))))
-
 
 # Get all the symbols in all of the functions and then resolve the
 # UUIDs, urns, etc.
@@ -36,3 +37,12 @@ asyms = unlist(rsyms)
 masyms = structure(mapName(unique(asyms), map), names = unique(asyms))
 tt = table(masyms[asyms])
 showCounts(dsort(tt))
+
+
+
+
+# Develop this.
+# Find folders.
+xml = xmlFiles()
+folders = sapply(xml, getFolder)
+names(folders) = xml
