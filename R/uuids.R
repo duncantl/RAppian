@@ -73,86 +73,84 @@ function(uuid, uuids, out)
 
 
 resolveURN =
+    # The urn:appian:<type>:v1 we see are 
+    #  record-field (1623)
+    #  record-type  (145)
+    #  record-relationship (9)
+    #  function  (5)
+    #
+    
+    # The record-field and record-relationships are multi-part (contain a /)
+    # The record-type and function are not multipart.
+    #
+    # Now taking a long time - 12 seconds for 1623 urns:
+    # Got this down to 2.3 seconds by only processing the unique URNs
+    # and then returning corresponding values.
+    #
+    #  urns = grep("urn:", asyms, value = TRUE)
+    #  gurns = split(urns, gsub("^#+urn:appian:([^:]+):v1:.*", "\\1", urns))
+    #  system.time(resolveURN(gurns$"record-field", map))
+    #
+    # Still doing more work than needed
+    # + reading XML files for recordTypeInfo which we have in map
+    # + 
+    #
 function(x, map, col = "qname", paths = TRUE)
 {
+    type = urnType(x)
+    
     tmp = gsub("^#urn:.*:v1:", "", x)
-
-    #    if(any(ww <- grepl("record-relationship", x)))    browser()
 
     # Has 2 or more parts?
     multipart = grepl("/", tmp)
-
-    a = tmp
-    # remove all but the first part.
-    a[multipart] = gsub("/.*", "", a[multipart])
+    ans = character(length(tmp))
 
     # resolve the first/only part
-    ans = mapUUID(a, map$uuid, map[[col]])
+    # XXX don't do this for the multipart[!isrel] as we do resolve
+    # the first element there, but not a big deal for now.
+    ans[!multipart] = mapUUID(tmp[!multipart], map$uuid, map[[col]])
 
-    if(!any(multipart))
-        return(ans)
-    
-    # Should this be ^[^/] ??
-    b = gsub("[^/]+/", "", tmp[multipart])
+    if(any(multipart)) {
+        murn = resolveMultiURN(tmp[multipart], map)
 
-    isrel = grepl("record-relationship", x[multipart])
-    m = match(a[multipart], map$uuid)
-browser()
-    fn = character(sum(multipart)) 
-    if(any(!isrel)) {
-        if(FALSE) {        
-            # use ans[multipart][!isrel] as the resolved value for the first part.
-            els = strsplit(tmp[multipart][!isrel], "/")
-        
-            fn[!isrel] = mapply(function(fieldu, type) {
-                type$fieldName[ match(fieldu, type$uuid) ]
-            },  b[!isrel], map$recordType[m][!isrel])
-        }
-
-        murn = lapply(tmp[multipart], resolveMultiURN, map)
-
-        fn[!isrel] = if(paths)
-                         sapply(murn, function(x) x[length(x)])
-                     else
-                         sapply(murn, paste, collapse = " -> ")
+        ans[multipart] = if(paths)
+                             sapply(murn, function(x) x[length(x)])
+                         else
+                             sapply(murn, paste, collapse = " -> ")
     }
-    
 
-    # process the #urn...:record-relationship:... values.
-    if(any(isrel)) {
-        rrs = lapply(structure(map$file[unique(m[isrel])], names = unique(a[multipart][isrel])),
-                     recordTypeRelationships)
-        
-        p = a[multipart][isrel]
+    w = type == "function"
+    ans[ w ] = gsub(":", "!", tmp[w])
 
-        fn[isrel] = mapply(function(fieldu, rr) {
-            i = match(fieldu, rr$uuid)
-            j = which(rr$targetRecordType[i] == map$uuid)
-
-            trt = map$recordType[[ j ]]
-            k = match(rr$targetField[i], trt$uuid)
-            trt$fieldName[k]
-        }, b[isrel],  rrs[p]) # , p)
-    }
-    
-    
-    ans[multipart] = paste(ans[multipart], fn, sep = ".")
-    
     ans
 }
 
 
 resolveMultiURN =
+    #
+    # handle record-relationships and sequence of 2, 3 and 4 UUIDs identifying the connections
+    # across record types/tables.
+    #
 function(x, map, col = "qname")
 {
+    if(length(x) > 1) {
+        ux = unique(x)
+        tmp = lapply(ux, resolveMultiURN, map, col)
+        return(structure(tmp[ match(x, ux) ], names = x))
+    }
+    
     tmp = gsub("^#urn:.*:v1:", "", x)
     els = strsplit(tmp, "/")[[1]]
     ans = mapUUID(els[1], map$uuid, map$name) # map[[col]])
 
     i = 1L
     idx = 2L
-    file = map$file[ els[i] == map$uuid ]
-    rt = recordTypeInfo(file)
+    w =  els[i] == map$uuid 
+    file = map$file[w]
+    if(length(file) == 0)
+        return(rep(NA, length(els)))
+    
+    rt = map$recordType[[ which(w) ]]
     rr = recordTypeRelationships(file)
     nm = getName(file)
 
@@ -164,14 +162,18 @@ function(x, map, col = "qname")
             # append the source field name onto the record type on the previous element of ans.
             if(!grepl(".", ans[length(ans)], fixed = TRUE))
                 ans[length(ans)] = paste(ans[length(ans)], rt$fieldName[rt$uuid == rel$sourceField], sep = ".")
-            file2 = map$file[ map$uuid == rel$targetRecordType]
-            rt2 = recordTypeInfo(file2)
-            fn2 = rt2$fieldName[rel$targetField == rt2$uuid]
-            ans = c(ans, paste(getName(file2), fn2, sep = "."))
-            rt = rt2
-            rr = recordTypeRelationships(file2)
-            nm = getName(file2)
-            file = file2
+
+            w = map$uuid == rel$targetRecordType
+            file = map$file[ w ]
+            if(length(file) == 0)
+                return(c(ans, rep(NA, length(els) - length(ans) - 1)))
+            
+            # rt = recordTypeInfo(file)
+            rt = map$recordType[[ which(w) ]]
+            fn2 = rt$fieldName[rel$targetField == rt$uuid]
+            ans = c(ans, paste(getName(file), fn2, sep = "."))
+            rr = recordTypeRelationships(file)
+            nm = getName(file)
         } else {
             w = rt$uuid == els[idx]
             ans = c(ans, paste(nm, rt$fieldName[w], sep = "."))
