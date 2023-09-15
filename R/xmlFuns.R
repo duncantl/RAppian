@@ -2,6 +2,7 @@ library(XML)
 
 getRuleCode = getInterfaceCode = getCode =
 getDefinition =
+# Get the SAIL code from an Appian object        
 function(doc)
 {
     if(is.character(doc))
@@ -12,6 +13,9 @@ function(doc)
 
 
 getConstantInfo =
+    #
+    # get a data.frame providing details of a constant object.
+    #
 function(doc)
 {
     if(is.character(doc))
@@ -32,6 +36,9 @@ function(doc)
 AppianTypesNS = c(x = "http://www.appian.com/ae/types/2009")
 
 getName =
+    #
+    # get name of an Appian object
+    #
 function(doc)
 {
     if(is.character(doc))
@@ -54,6 +61,9 @@ function(doc)
 
 
 getDocType = getType =
+    #
+    # get type of an Appian object
+    #
 function(doc)
 {
     if(is.character(doc))
@@ -67,6 +77,9 @@ function(doc)
 
 
 procModelNodes =
+    #
+    # get the nodes of an Appian process model
+    #
 function(doc)
 {
     if(is.character(doc))
@@ -76,3 +89,24 @@ function(doc)
 }
 
 
+
+
+getFolder =
+    # look for the parentUuid element of the XML as the folder.
+function(doc)
+{
+    if(is.character(doc)) 
+        doc = xmlParse(doc)
+
+    xpathSApply(doc, "//parentUuid", xmlValue)
+}
+
+
+orNA =
+function(x, val = NA)
+{
+    if(length(x) == 0)
+        val
+    else
+        x
+}
