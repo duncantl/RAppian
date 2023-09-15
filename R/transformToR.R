@@ -29,8 +29,9 @@ function(x, parse = FALSE)
     # Can end up with !===
     x = changeOperators(x)
 
+    x = gsub("(![a-zA-Z0-9]+)\\.(?= )", '\\1 & "." ', x, perl = TRUE)        
 
-    x = gsub("(![a-zA-Z0-9]+)\\.", "\\1$", x)    
+    x = gsub("(![a-zA-Z0-9]+)\\.(?=[^ ])", "\\1$", x, perl = TRUE)    
 
     x = escapeUUIDs(x)
 
