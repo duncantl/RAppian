@@ -50,7 +50,7 @@ function(doc)
                 "processModelHaul" = "//x:process_model_port//x:meta//x:name//x:value",
                 "groupHaul" = "/groupHaul/group/name",
                 "groupTypeHaul" = "/groupTypeHaul/groupType/name",                
-           "//interface/name | //rule/name | //outboundIntegration/name | /contentHaul/*[2]/name | //recordType/@name")
+           "//interface/name | //rule/name | //outboundIntegration/name | /contentHaul/*[2]/name | //recordType/@name | /*/*/name")
 
     ans = xpathSApply(doc, xp, xmlValue, namespaces = AppianTypesNS)
     if(length(ans))
