@@ -137,7 +137,7 @@ function(x)
     # at the very start of the transformation (StoR)
     x = gsub('#"urn:appian:function:v1:a:isusermemberofgroup\\?okey==([^"]+)"', "\\1", x)    
 
-    x = gsub('(#"urn:appian:function:v1:a:update")', "`#\\1`", x)
+    x = gsub('#"(urn:appian:function:v1:a:update)"', "`#\\1`", x)
     x = gsub('#"([-0-9a-f_]+)"', "`#\\1`", x)    
 }
 

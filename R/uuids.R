@@ -73,7 +73,7 @@ function(uuid, uuids, out)
 
 
 resolveURN =
-function(x, map, col = "qname")
+function(x, map, col = "qname", paths = TRUE)
 {
     tmp = gsub("^#urn:.*:v1:", "", x)
 
@@ -93,19 +93,28 @@ function(x, map, col = "qname")
         return(ans)
     
     # Should this be ^[^/] ??
-#    b = gsub("[^/]+/", "", tmp[multipart])
+    b = gsub("[^/]+/", "", tmp[multipart])
 
     isrel = grepl("record-relationship", x[multipart])
     m = match(a[multipart], map$uuid)
-
+browser()
     fn = character(sum(multipart)) 
     if(any(!isrel)) {
-        # use ans[multipart][!isrel] as the resolved value for the first part.
-        els = strsplit(tmp[multipart][!isrel], "/")
+        if(FALSE) {        
+            # use ans[multipart][!isrel] as the resolved value for the first part.
+            els = strsplit(tmp[multipart][!isrel], "/")
         
-        fn[!isrel] = mapply(function(fieldu, type) {
-            type$fieldName[ match(fieldu, type$uuid) ]
-        },  b[!isrel], map$recordType[m][!isrel])
+            fn[!isrel] = mapply(function(fieldu, type) {
+                type$fieldName[ match(fieldu, type$uuid) ]
+            },  b[!isrel], map$recordType[m][!isrel])
+        }
+
+        murn = lapply(tmp[multipart], resolveMultiURN, map)
+
+        fn[!isrel] = if(paths)
+                         sapply(murn, function(x) x[length(x)])
+                     else
+                         sapply(murn, paste, collapse = " -> ")
     }
     
 
