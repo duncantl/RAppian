@@ -11,6 +11,13 @@ if(FALSE) {
     us = lapply(af, uses, toplevel = top)
 }
 
+if(FALSE) {
+    u = uses(txt = getCode(map$file[map$name == "EFRM_FORM_qeApplication"]))
+    m = match(u, map$uuid )
+    map[m, c("name", "type", "qname")]
+    
+}
+
 
 uses =
     # This doesn't seem to handle #urn directly but captures
