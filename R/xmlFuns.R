@@ -3,12 +3,16 @@ library(XML)
 getRuleCode = getInterfaceCode = getCode =
 getDefinition =
 # Get the SAIL code from an Appian object        
-function(doc)
+function(doc, noCode = NA)
 {
     if(is.character(doc))
         doc = xmlParse(doc)
 
-    xpathSApply(doc, "//definition", xmlValue)
+    ans = xpathSApply(doc, "//definition", xmlValue)
+    if(length(ans) == 0)
+        noCode
+    else
+        ans
 }
 
 
