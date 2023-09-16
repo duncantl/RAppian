@@ -98,7 +98,32 @@ function(doc)
     if(is.character(doc)) 
         doc = xmlParse(doc)
 
-    xpathSApply(doc, "//parentUuid", xmlValue)
+    ans = xpathSApply(doc, "//parentUuid", xmlValue)
+    if(length(ans) == 0)
+        NA
+    else
+        ans
+}
+
+
+getFolders =
+function(files = xmlFiles())
+{
+    fld = sapply(files, getFolder)
+    names(fld) = files
+
+    # map the unique folder UUIDs to a name
+    u = unique(fld)
+    names(u) = u
+
+    w = !is.na(u) & isUUID(u)
+    u[w] = sapply( u[w], function(x) getName(uuid2File(x)))
+
+    # Now use these names as the values for fld, keeping the original xml file name
+    # as the names of the vector.
+    ans = fld
+    ans[!is.na(fld)] = u[ fld[!is.na(fld) ] ]
+    ans
 }
 
 
