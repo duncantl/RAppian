@@ -6,6 +6,10 @@ uuidRX2 = '#"(_a-)?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(
 # No # or "'s
 uuidRX3 = '(_a-)?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(_[0-9]+)?'
 
+isUUID =
+function(x)
+    grepl(uuidRX3, x)
+
 getUUIDs =
 function(x, clean = TRUE)    
 {
@@ -114,7 +118,7 @@ function(x, map, col = "qname", paths = TRUE)
     if(any(multipart)) {
         murn = resolveMultiURN(tmp[multipart], map)
 
-        ans[multipart] = if(paths)
+        ans[multipart] = if(!paths)
                              sapply(murn, function(x) x[length(x)])
                          else
                              sapply(murn, paste, collapse = " -> ")
