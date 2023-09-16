@@ -111,3 +111,13 @@ function(...)
     # largest to smallest
     ans[ order(ans[[1]], decreasing = TRUE), ]
 }
+
+
+
+getConstants =
+function(map)
+{
+   do.call(rbind, lapply( map$file[map$type == "constant"], getConstantInfo))
+}
+
+    
