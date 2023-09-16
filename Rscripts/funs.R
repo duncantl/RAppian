@@ -1,6 +1,7 @@
-library(RAppian)
-
 library(CodeAnalysis)
+library(RAppian)
+library(RJSONIO)
+invisible(lapply(list.files("~/OGS/EForms/RAppian/R", full = TRUE, pattern = "\\.R$"), source))
 
 dir = "."
 code = mkCodeInfo(dir)
@@ -16,7 +17,8 @@ map = mkSummary()
 funs = lapply(rcode, function(x) sapply(findCallsTo(x), function(x) as.character(x[[1]])))
 
 funs2 = lapply(funs, mapName, map)
-showCounts(dsort(table(unlist(funs2))))
+tt = dsort(table(unlist(funs2)))
+showCounts(tt)
 
 # Get all the symbols in all of the functions and then resolve the
 # UUIDs, urns, etc.
@@ -41,8 +43,29 @@ showCounts(dsort(tt))
 
 
 
-# Develop this.
 # Find folders.
+folders = getFolders()
+table(folders)
+table(dirname(names(folders)[is.na(folders)]))
 xml = xmlFiles()
 folders = sapply(xml, getFolder)
 names(folders) = xml
+
+
+
+# Comments in the SAIL code
+# Looking for large blocks commented out.
+com = findComments(code$code)
+table(sapply(com, length))
+table(nchar(unlist(com)))
+
+sapply(com, function(x) any(nchar(x) > 100))
+# Or look for sail code in the comment
+
+
+
+#
+db = readDBDump(dir = "..")
+db = db[grep("^EFRM", names(db))]
+names(db) = gsub("^EFRM_", "", names(db))
+sapply(db, nrow)
