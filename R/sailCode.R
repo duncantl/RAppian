@@ -17,5 +17,11 @@ function(...)
 }
 
 
+findComments =
+function(code)
+{
+   # https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment
+    rx = "/\\*[^*]*\\*+(?:[^/*][^*]*\\*+)*/"
 
-
+    regmatches(code, gregexpr(rx, code)) # [[1]]
+}
