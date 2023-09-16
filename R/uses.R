@@ -44,3 +44,17 @@ function(dir = ".", af = xmlFiles(dir))
     gsub("\\.xml$", "", basename(af))
 }
 
+directUses =
+function(w, map)
+{
+    i = grep(w, map$name)
+    map[map$type != "constant" & map$name %in% map$uses2[[i]], ]
+}
+
+
+getCodeUses =
+function(map, code = sapply(map$file, getCode))
+{
+    tmp = lapply(code, function(x) uses(txt = x, toplevel = map$uuid))
+    lapply(tmp, function(x) map$name[ match(x, map$uuid) ])
+}
