@@ -41,6 +41,14 @@ tt = table(masyms[asyms])
 showCounts(dsort(tt))
 
 
+# Constants
+k = getConstants()
+dsort(table(k$type))
+
+k$value[k$type == "string"]
+
+k$value[k$type == "Text?list"]
+
 
 
 # Find folders.
@@ -68,4 +76,28 @@ sapply(com, function(x) any(nchar(x) > 100))
 db = readDBDump(dir = "..")
 db = db[grep("^EFRM", names(db))]
 names(db) = gsub("^EFRM_", "", names(db))
-sapply(db, nrow)
+t(sapply(db, dim))
+
+
+
+
+######
+if(FALSE) {
+top = toplevelUUIDs()
+u = lapply(xml, uses, toplevel = top)
+names(u) = sapply(xml, getName)
+}
+
+map$uses = lapply(map$file, uses, toplevel = map$uuid)
+
+map$uses2 = lapply(map$uses, function(x) unique(map$name[ match(x, map$uuid) ]))
+
+i = which(map$type == "application")
+map$uses[[i]] = map$uses2[[i]] = character()
+
+
+library(igraph)
+m = cbind( rep(map$name, sapply(map$uses2, length)), unlist(map$uses2))
+g = igraph::graph_from_edgelist(m)
+plot(g, vertex.label.cex = 0, edge.arrow.mode = 0)
+
