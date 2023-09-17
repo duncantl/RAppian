@@ -169,3 +169,18 @@ function(x)
                 
 
 
+getDescription =
+function(doc)
+{
+    if(is.character(doc))
+        doc = xmlParse(doc)
+
+    ans = xpathSApply(doc, "//description", xmlValue)
+    if(length(ans) == 0)
+        NA
+    else
+        ans
+}
+
+
+
