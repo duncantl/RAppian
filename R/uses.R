@@ -69,8 +69,6 @@ function(map, code = sapply(map$file, getCode))
 }
 
 
-
-
 #################
 
 rewriteCode =
@@ -80,6 +78,10 @@ function(code, map)
     u = ruses(code)
     vals = mapName(u, map, "name", paths = FALSE)
     out = deparse(code, backtick = TRUE, nlines = -1L) # , collapse = "\n")
+    # deparse() decides to remove the `` around SYSTEM_SYSRULES that we had put there in StoR().
+    # So we have to put them back as we will change that to a!funcName and need to put that in ` `.
+    out = gsub("(SYSTEM_SYSRULES_[^(]+)\\(", "`\\1`(", out)
+
     for(i in seq(along.with = u)) 
        out = gsub(u[i], vals[i], out)
 
@@ -104,9 +106,9 @@ function(code)
 {
     code = mkCode(code)
 
-    u =  grep("^#", unique(c(CodeAnalysis:::all_symbols(code),
-                             unlist(lapply(findCallsTo(code), names)))),
-              value = TRUE)
-
+    syms = unique(c(CodeAnalysis:::all_symbols(code),
+                    unlist(lapply(findCallsTo(code), names))))
+    u =  grep("^(#|SYSTEM_SYSRULES_)", syms, value = TRUE)
+    
     u
 }
