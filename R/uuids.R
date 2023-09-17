@@ -37,7 +37,7 @@ mapName =
     #
     # convert a uuid in various forms to a qualified name (e.g., a!foo)
     #
-function(x, map = mkSummary(...), ..., col = "qname")
+function(x, map = mkSummary(...), ..., col = "qname", paths = TRUE)
 {
     hasQ = grepl("\\?", x)
     ques = gsub(".*\\?", "", x[hasQ])
@@ -46,7 +46,7 @@ function(x, map = mkSummary(...), ..., col = "qname")
     
     w = grepl('^#urn:', x)
     if(any(w)) 
-        x[w] = resolveURN(x[w], map, col = col)
+        x[w] = resolveURN(x[w], map, col = col, paths = paths)
  
     w = grepl('^#', x)
     if(any(w)) {
