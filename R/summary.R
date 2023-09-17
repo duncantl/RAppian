@@ -39,6 +39,8 @@ function(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = rec
                       uuid = gsub("\\.xml$", "", basename(xf)),
                       file = xf)
 
+    info$description = sapply(xf, getDescription)
+    
     info$qname = paste(info$type, info$name, sep = "!")
     
     # duplicate name values so can't use as rownames()
