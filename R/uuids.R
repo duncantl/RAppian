@@ -39,6 +39,11 @@ mapName =
     #
 function(x, map = mkSummary(...), ..., col = "qname")
 {
+    hasQ = grepl("\\?", x)
+    ques = gsub(".*\\?", "", x[hasQ])
+
+    x = gsub("\\?.*", "", x)
+    
     w = grepl('^#urn:', x)
     if(any(w)) 
         x[w] = resolveURN(x[w], map, col = col)
@@ -53,7 +58,9 @@ function(x, map = mkSummary(...), ..., col = "qname")
     w = grepl("^SYSTEM_SYSRULES_", x)
     if(any(w))
        x[w] = gsub("^SYSTEM_SYSRULES_(.*)(_v1)?", "a!\\1", x[w])
-    
+
+    if(any(hasQ))
+        x[hasQ] = paste(x[hasQ], ques, sep = "?")
     x
 }
 
@@ -68,11 +75,20 @@ function(uuid, uuids, out)
             out = uuids[[ out ]]
         uuids = uuids$uuid
     }
+
+    hasQ = grep("\\?", uuid)
+    suffix = gsub(".*\\?", "?", uuid[hasQ])
+    
+    uuid = gsub("\\?.*", "", uuid)
     
     m = match(uuid, uuids)
         
     # check for NAs
-    out[m]
+    ans = out[m]
+    if(any(hasQ))
+        ans[hasQ] = paste0(out[m][hasQ], suffix)
+
+    ans
 }
 
 
