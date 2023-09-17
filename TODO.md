@@ -9,7 +9,12 @@
 
 + which expression rules use which record types.
    + see uses.R
-   
+
++ get the details from nodes in a process model
+
++ login() and be able to 
+   + download the exported databases
+   + dowload the export Application
 
 # Done
 
