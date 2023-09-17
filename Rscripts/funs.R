@@ -88,10 +88,16 @@ u = lapply(xml, uses, toplevel = top)
 names(u) = sapply(xml, getName)
 }
 
+# look at the code for each object and see what other objects in the application
+# that each of these SAIL code expressions uses.
+map$code = sapply(map$file, getCode)
+map$codeUses = getCodeUses(map, map$code)
+
+
+
+# This is uses from the entire XML file, not just the code.
 map$uses = lapply(map$file, uses, toplevel = map$uuid)
-
 map$uses2 = lapply(map$uses, function(x) unique(map$name[ match(x, map$uuid) ]))
-
 i = which(map$type == "application")
 map$uses[[i]] = map$uses2[[i]] = character()
 
