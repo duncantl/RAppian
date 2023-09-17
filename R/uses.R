@@ -29,9 +29,10 @@ uses =
     # XML, but that includes the history, versions, permissions/roles, etc.
     #
 function(file, txt = paste(readLines(file), collapse = "\n"),
-          toplevel = toplevelUUIDs())
+         toplevel = toplevelUUIDs(),
+         rx = uuidRX3)
 {
-    uuids = regmatches(txt, gregexpr(uuidRX3, txt))[[1]]
+    uuids = regmatches(txt, gregexpr(rx, txt))[[1]]
     if(length(toplevel))
         intersect(uuids, toplevel)
     else
@@ -44,7 +45,12 @@ function(dir = ".", af = xmlFiles(dir))
     gsub("\\.xml$", "", basename(af))
 }
 
+
+
 directUses =
+    #
+    # ignore constants as these are symbolic names that we want to keep for now
+    #
 function(w, map)
 {
     i = grep(w, map$name)
@@ -53,8 +59,54 @@ function(w, map)
 
 
 getCodeUses =
+    #
+    # just the sail code in an XML file, not the entire XML file.
+    #
 function(map, code = sapply(map$file, getCode))
 {
     tmp = lapply(code, function(x) uses(txt = x, toplevel = map$uuid))
     lapply(tmp, function(x) map$name[ match(x, map$uuid) ])
+}
+
+
+
+
+#################
+
+rewriteCode =
+function(code, map)
+{
+    code = mkCode(code)
+    u = ruses(code)
+    vals = mapName(u, map, "name", paths = FALSE)
+    out = deparse(code, backtick = TRUE, nlines = -1L) # , collapse = "\n")
+    for(i in seq(along.with = u)) 
+       out = gsub(u[i], vals[i], out)
+
+    parse(text = out)[[1]]
+}
+
+mkCode =
+function(code)
+{
+    if(is.character(code))
+        code = StoR(code, TRUE)[[1]]
+   
+    if(is.expression(code))
+        code = code[[1]]
+
+    code
+}
+
+
+ruses =
+function(code)    
+{
+    code = mkCode(code)
+
+    u =  grep("^#", unique(c(CodeAnalysis:::all_symbols(code),
+                             unlist(lapply(findCallsTo(code), names)))),
+              value = TRUE)
+
+    u
 }
