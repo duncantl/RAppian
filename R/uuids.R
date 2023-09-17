@@ -133,6 +133,9 @@ function(x, map, col = "qname", paths = TRUE)
 
     if(any(multipart)) {
         murn = resolveMultiURN(tmp[multipart], map)
+        #XXX clean this up.
+        if(sum(multipart) == 1 && is.character(murn))
+            murn = list(murn)
 
         ans[multipart] = if(!paths)
                              sapply(murn, function(x) x[length(x)])
