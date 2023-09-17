@@ -14,11 +14,23 @@ function(doc)
 }
 
 plotProcModel =
-function(doc, pm = procModelPos(doc))
+function(doc, pm = procModelPos(doc), cex = .6)
 {
-    plot(1, xlim = c(0, max(pm$x)), ylim = c(0, max(pm$y)), type = "n")
-    text(pm$x, max(pm$y) - pm$y, pm$label, cex = .6)
+    plot(1, xlim = c(0, max(pm$x)), ylim = c(0, max(pm$y)), type = "n", axes = FALSE, xlab = "", ylab = "")
+    box()
+    text(pm$x, max(pm$y) - pm$y, pm$label, cex = cex)
 }
+
+iconType =c("Write Record" = "155", "Interface" = "21",
+            "End Node" = "50", "End Event" = "51",
+            "AND" = "52",
+            "XOR" = "58", 
+            "Script Task" = "68",
+            "Subprocess" = "60", #XX reconcile these two
+            "Subprocess" = "998", #XXX
+            "Send E-Mail" = "84",
+            "Generate Word Document" = "152",
+            "Delete Word Document" = "763")
 
 procModelNodes =
 function(doc)
@@ -31,8 +43,10 @@ function(doc)
                  function(q) xpathSApply(doc, q, xmlValue, trim = TRUE, namespaces = AppianTypesNS))
 
     ans = structure(as.data.frame(tmp), names = names(vars))
-    ans[c("x", "y")] =    lapply(ans[c("x", "y")] , as.integer)
+    ans[c("x", "y")] = lapply(ans[c("x", "y")] , as.integer)
     ans$uuid = xpathSApply(doc, "//x:nodes/x:node", xmlGetAttr, "uuid", namespaces = AppianTypesNS)
+    icon = xpathSApply(doc, "//x:nodes/x:node/x:icon", xmlGetAttr, "id", namespaces = AppianTypesNS)
+    ans$icon = names(iconType)[ match(icon, iconType) ]
     ans
 }
 
