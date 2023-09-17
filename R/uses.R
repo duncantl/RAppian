@@ -19,9 +19,9 @@ if(FALSE) {
 }
 
 
-ruses =
+uses = ruses =
     #
-    # Different from uses(), this function gets argument names which are important
+    # Different from uses0() below, this function gets argument names which are important
     # since in SAIL we have  #urn... : value and we map this to `#urn..` =
     # so we need the argument names.
     #
@@ -34,7 +34,8 @@ function(code)
     grep("^(#|SYSTEM_SYSRULES_)", syms, value = TRUE)
 }
 
-uses =
+#uses =
+uses0 =
     # This doesn't seem to handle #urn directly but captures
     # the UUID within the urn.
     #
