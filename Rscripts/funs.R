@@ -4,14 +4,15 @@ library(RJSONIO)
 invisible(lapply(list.files("~/OGS/EForms/RAppian/R", full = TRUE, pattern = "\\.R$"), source))
 
 dir = "."
+#umap = mkUUIDMap(dir)
+map = mkSummary()
 code = mkCodeInfo(dir)
 rcode = lapply(code$code, function(x) try(StoR(x, TRUE)))
 names(rcode) = code$name
-err = sapply(rcode, inherits, 'try-error')
+rcode2 = lapply(rcode, function(x) try(rewriteCode(x, map)))
+err = sapply(rcode2, inherits, 'try-error')
 
 
-map = mkSummary()
-#umap = mkUUIDMap(dir)
 
 # Assumes names, not calls, but should be good for SAIL. Or did I see one expression in there?
 funs = lapply(rcode, function(x) sapply(findCallsTo(x), function(x) as.character(x[[1]])))
