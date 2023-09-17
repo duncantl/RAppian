@@ -80,6 +80,7 @@ function(doc)
 }
 
 
+if(FALSE) {
 procModelNodes =
     #
     # get the nodes of an Appian process model
@@ -91,7 +92,7 @@ function(doc)
 
     getNodeSet(doc, "//x:process_model_port//x:nodes/x:node", AppianTypesNS)
 }
-
+}
 
 
 
@@ -139,3 +140,32 @@ function(x, val = NA)
     else
         x
 }
+
+
+
+ruleInputs =
+function(doc, map = NULL)
+{
+    if(is.character(doc))
+        doc = xmlParse(doc)
+
+    ans = do.call(rbind, xpathApply(doc, "//interface//namedTypedValue", mkRIDesc))
+    if(!is.null(map)) {
+        w = isUUID(ans$type)
+        ans$type[w] = mapUUID(ans$type[w], map, "name")
+    }
+    
+
+    ans
+}
+
+mkRIDesc =
+function(x)
+{
+    data.frame(name = xmlValue(x[["name"]]),
+               type = xmlValue(x[["type"]][["name"]]))
+}
+
+                
+
+
