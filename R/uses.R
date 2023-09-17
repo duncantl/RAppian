@@ -19,6 +19,21 @@ if(FALSE) {
 }
 
 
+ruses =
+    #
+    # Different from uses(), this function gets argument names which are important
+    # since in SAIL we have  #urn... : value and we map this to `#urn..` =
+    # so we need the argument names.
+    #
+function(code)    
+{
+    code = mkCode(code)
+
+    syms = unique(c(CodeAnalysis:::all_symbols(code),
+                    unlist(lapply(findCallsTo(code), names))))
+    grep("^(#|SYSTEM_SYSRULES_)", syms, value = TRUE)
+}
+
 uses =
     # This doesn't seem to handle #urn directly but captures
     # the UUID within the urn.
@@ -69,56 +84,6 @@ function(map, code = sapply(map$file, getCode))
 }
 
 
-#################
-
-rewriteCode =
-function(code, map)
-{
-    code = mkCode(code)
-    u = ruses(code)
-
-    vals = mapName(u, map, "name", paths = FALSE)
-    w = !is.na(vals)
-    if(any(w)) {
-        warning("couldn't map ", paste(unique(u[!w]), collapse = ", "))
-        u = u[w]
-        vals = vals[w]
-    }
-    
-    
-    if(length(u)) {
-        out = deparse(code, backtick = TRUE, nlines = -1L) # , collapse = "\n")
-        # deparse() decides to remove the `` around SYSTEM_SYSRULES that we had put there in StoR().
-        # So we have to put them back as we will change that to a!funcName and need to put that in ` `.
-        out = gsub("(SYSTEM_SYSRULES_[^(]+)\\(", "`\\1`(", out)
-        
-        for(i in seq(along.with = u)) 
-            out = gsub(u[i], vals[i], out)
-
-        parse(text = out)[[1]]
-    } else
-        code
-}
-
-mkCode =
-function(code)
-{
-    if(is.character(code))
-        code = StoR(code, TRUE)[[1]]
-   
-    if(is.expression(code))
-        code = code[[1]]
-
-    code
-}
 
 
-ruses =
-function(code)    
-{
-    code = mkCode(code)
 
-    syms = unique(c(CodeAnalysis:::all_symbols(code),
-                    unlist(lapply(findCallsTo(code), names))))
-    grep("^(#|SYSTEM_SYSRULES_)", syms, value = TRUE)
-}

@@ -11,7 +11,45 @@
 #      + walkCode() from
 #      + rstatic
 #
-# 
+#
+
+
+rewriteCode =
+function(code, map, warn = FALSE)
+{
+    code = mkCode(code)
+
+    if(length(code) == 0)
+        return(code)
+    
+    u = ruses(code)
+    vals = mapName(u, map, "name", paths = FALSE)
+    
+    w = !is.na(vals)
+
+    if(any(!w)) {
+        if(warn)
+            warning("couldn't map ", paste(unique(u[!w]), collapse = ", "))
+        u = u[w]
+        vals = vals[w]
+    }
+    
+    
+    if(length(u)) {
+        out = deparse(code, backtick = TRUE, nlines = -1L) # , collapse = "\n")
+        # deparse() decides to remove the `` around SYSTEM_SYSRULES that we had put there in StoR().
+        # So we have to put them back as we will change that to a!funcName and need to put that in ` `.
+        out = gsub("(SYSTEM_SYSRULES_[^(]+)\\(", "`\\1`(", out)
+        
+        for(i in seq(along.with = u)) 
+            out = gsub(u[i], vals[i], out)
+
+        parse(text = out)[[1]]
+    } else
+        code
+}
+
+
 
 if(FALSE) {
     #  map$code[map$name == "EFRM_constructApplicationDocument"]

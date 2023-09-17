@@ -25,3 +25,16 @@ function(code)
 
     regmatches(code, gregexpr(rx, code)) # [[1]]
 }
+
+
+mkCode =
+function(code)
+{
+    if(is.character(code))
+        code = StoR(code, TRUE)[[1]]
+   
+    if(is.expression(code) && length(code) > 0)
+        code = code[[1]]
+
+    code
+}
