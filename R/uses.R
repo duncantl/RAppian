@@ -89,5 +89,48 @@ function(map, code = sapply(map$file, getCode))
 
 
 
+# Local call graph
+lgraph =
+    #
+    # lgraph("EFRM_getNextAssigneeByProgramCodeAndRoleCodes", rcode2)
+    # 
+function(id, rcode)    
+{
+    localFuns = function(x) {
+        funs = getGlobals(x)$functions
+        funs = gsub(".*!", "", funs)
+        funs[ funs %in% names(rcode)]
+    }
+
+    todo = id
+    ans = list()
+    while(length(todo)) {
+        # cat("length(todo)", length(todo), "\n")
+        id = todo[1]
+        ans[[id]] = localFuns(rcode[[id]])
+        todo = todo[-1]
+        todo = setdiff(c(todo, ans[[id]]), names(ans))
+    }
+
+    structure(ans, class = "CallInfo")
+}
+
+toGraph =
+    #  g = toGraph(lgraph("EFRM_getNextAssigneeByProgramCodeAndRoleCodes", rcode2))
+    #  plot(g)
+    #
+    #
+    # g = toGraph(lgraph("EFRM_getCurrentAndNextTaskLogForQeAppAdvisorCoordinator", rcode2), function(x) gsub("^EFRM_", "", x))
+function(x, filter = NULL)
+{
+    if(is.function(filter)) {
+        names(x) = filter(names(x))
+        x = lapply(x, filter)
+    }
+        
+   igraph::graph_from_edgelist(cbind(rep(names(x), sapply(x, length)), unlist(x)))
+}
+
+
 
 
