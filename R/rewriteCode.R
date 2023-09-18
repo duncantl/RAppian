@@ -23,6 +23,10 @@ function(code, map, warn = FALSE)
         return(code)
     
     u = ruses(code)
+    # Should this focus only on items starting with #
+    # Currently can return : [ studentDetails pv!requestDetails
+    u = u[grep("^#", u)]
+    
     vals = mapName(u, map, "name", paths = FALSE)
     
     w = !is.na(vals)
@@ -42,7 +46,7 @@ function(code, map, warn = FALSE)
         out = gsub("(SYSTEM_SYSRULES_[^(]+)\\(", "`\\1`(", out)
         
         for(i in seq(along.with = u)) 
-            out = gsub(u[i], vals[i], out)
+            out = gsub(u[i], vals[i], out, fixed = TRUE)
 
         parse(text = out)[[1]]
     } else
