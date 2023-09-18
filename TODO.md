@@ -1,5 +1,18 @@
 # To-Do List for RAppian
 
++ get interfaceInformation from a process model XML file
+   + probably only one node has it - the start one.
+   + see EFRM_FORM_qeGradStudiesReview
+   + name, uuid and {ruleInput}
+       + each rule input has a name, type and value.
+	      + value comes from corresponding pv!... ?
+		  
++ proc model:  custom outputs in ac - output-exprs - el
+   + identifies the variable being assigned
+   + the expression to get the value.
+   + see processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml as example (ExportedV1_2/)
+      and RoutingAssigning.md
+
 + diff() method for comparing two applications, e.g., dev versus test, or two different snapshots.
    + what objects are present in one and not the other
    + by object type.
