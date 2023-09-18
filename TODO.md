@@ -1,6 +1,6 @@
 # To-Do List for RAppian
 
-+ get interfaceInformation from a process model XML file
++ proc mode: get interfaceInformation from a process model XML file
    + probably only one node has it - the start one.
    + see EFRM_FORM_qeGradStudiesReview
    + name, uuid and {ruleInput}
@@ -13,6 +13,8 @@
    + see processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml as example (ExportedV1_2/)
       and RoutingAssigning.md
 
++ given a SAIL code object, show only the call graph for it and its callees.
+
 + diff() method for comparing two applications, e.g., dev versus test, or two different snapshots.
    + what objects are present in one and not the other
    + by object type.
@@ -23,7 +25,8 @@
 + which expression rules use which record types.
    + see uses.R
 
-+ get the details from nodes in a process model
++ [partial] get the details from nodes in a process model
+    + procModelNodes()
 
 + login() and be able to 
    + download the exported databases
