@@ -1,6 +1,6 @@
 # To-Do List for RAppian
 
-+ proc mode: get interfaceInformation from a process model XML file
++ proc model: get interfaceInformation from a process model XML file
    + in a node and at the top-level too.
    + probably only one node at most has it - the start one.
       + No - 6 have 2, 18 have 1 and 
@@ -12,17 +12,20 @@
 	      + value comes from corresponding pv!... ?
 		  
 + proc model:  custom outputs in ac - output-exprs - el
+   + node-level
    + identifies the variable being assigned
    + the expression to get the value.
    + see processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml as example (ExportedV1_2/)
       and RoutingAssigning.md
 
-+ given a SAIL code object, show only the call graph for it and its callees.
-   + start with lgraph
 
 + diff() method for comparing two applications, e.g., dev versus test, or two different snapshots.
    + what objects are present in one and not the other
    + by object type.
+   
++ [start√] given a SAIL code object, show only the call graph for it and its callees.
+   + start with lgraph
+   + `plot(toGraph(lgraph("EFRM_getNextAssigneeByProgramCodeAndRoleCodes", rcode2)))`
 
 + call graph of which object uses other objects
    + see uses.R
