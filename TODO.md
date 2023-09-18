@@ -1,7 +1,11 @@
 # To-Do List for RAppian
 
 + proc mode: get interfaceInformation from a process model XML file
-   + probably only one node has it - the start one.
+   + in a node and at the top-level too.
+   + probably only one node at most has it - the start one.
+      + No - 6 have 2, 18 have 1 and 
+	  + The ones with 2 are all initiation processes 
+	      +  all have a confirmation screen.
    + see EFRM_FORM_qeGradStudiesReview
    + name, uuid and {ruleInput}
        + each rule input has a name, type and value.
@@ -14,6 +18,7 @@
       and RoutingAssigning.md
 
 + given a SAIL code object, show only the call graph for it and its callees.
+   + start with lgraph
 
 + diff() method for comparing two applications, e.g., dev versus test, or two different snapshots.
    + what objects are present in one and not the other
