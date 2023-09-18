@@ -32,12 +32,13 @@ iconType =c("Write Record" = "155", "Interface" = "21",
             "Generate Word Document" = "152",
             "Delete Word Document" = "763")
 
-procModelNodes =
+procModelNodes0 =
 function(doc)
 {
     if(is.character(doc))
         doc = xmlParse(doc)
-    
+
+    # ¿Why doing this variable by variable and not node by node?
     vars = c(x = "x", y = "y", label = "fname//x:value", lane = "lane")
     tmp = lapply(paste0("//x:nodes/x:node/x:", vars),
                  function(q) xpathSApply(doc, q, xmlValue, trim = TRUE, namespaces = AppianTypesNS))
@@ -45,9 +46,46 @@ function(doc)
     ans = structure(as.data.frame(tmp), names = names(vars))
     ans[c("x", "y")] = lapply(ans[c("x", "y")] , as.integer)
     ans$uuid = xpathSApply(doc, "//x:nodes/x:node", xmlGetAttr, "uuid", namespaces = AppianTypesNS)
+    
     icon = xpathSApply(doc, "//x:nodes/x:node/x:icon", xmlGetAttr, "id", namespaces = AppianTypesNS)
     ans$icon = names(iconType)[ match(icon, iconType) ]
+    names(ans)[names(ans) == "icon"] = "nodeType"
+
     ans
+}
+
+
+procModelNodes =
+function(doc)
+{
+    if(is.character(doc))
+        doc = xmlParse(doc)
+
+    ans = do.call(rbind, xpathApply(doc, "//x:nodes/x:node", mkProcModelNode, namespaces = AppianTypesNS))
+    ans[c("x", "y")] = lapply(ans[c("x", "y")] , as.integer)
+    ans$icon = names(iconType)[ match(ans$icon, iconType) ]
+
+    ln = lanes(doc)
+    ans$lane = factor( names(ln)[ as.integer(ans$lane) + 1L ], names(ln))
+    
+    ans
+}
+
+
+mkProcModelNode =
+function(x)
+{
+    data.frame(label = xmlValue(x[["fname"]][["string-map"]][["pair"]][["value"]]),
+               guiId = xmlValue(x[["guiId"]]),               
+               icon = xmlGetAttr(x[["icon"]], "id"),               
+               lane = xmlValue(x[["lane"]]),
+               uuid = xmlGetAttr(x, "uuid"),
+               x = xmlValue(x[["x"]]),
+               y = xmlValue(x[["y"]]),
+               hasCustomOutputs = length(getNodeSet(x, ".//x:ac/x:output-exprs/x:el", AppianTypesNS)) > 0,
+               hasInterface = length(getNodeSet(x, ".//x:interfaceInformation", AppianTypesNS)) > 0               
+               #               userInteraction = xmlValue()
+               )
 }
 
 
@@ -91,3 +129,5 @@ function(doc, map = NULL)
     names(ans) = sapply(ans, function(x) xmlValue(x[["laneLabel"]]))
     ans
 }
+
+
