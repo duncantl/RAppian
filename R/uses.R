@@ -25,13 +25,16 @@ uses = ruses =
     # since in SAIL we have  #urn... : value and we map this to `#urn..` =
     # so we need the argument names.
     #
-function(code)    
+function(code, uuids = FALSE)    
 {
     code = mkCode(code)
 
-    syms = unique(c(CodeAnalysis:::all_symbols(code),
-                    unlist(lapply(findCallsTo(code), names))))
-    grep("^(#|SYSTEM_SYSRULES_)", syms, value = TRUE)
+    syms = setdiff(unique(c(CodeAnalysis:::all_symbols(code),
+                            unlist(lapply(findCallsTo(code), names)))), "")
+    if(uuids)
+        grep("^(#|SYSTEM_SYSRULES_)", syms, value = TRUE)
+    else
+        syms
 }
 
 #uses =
