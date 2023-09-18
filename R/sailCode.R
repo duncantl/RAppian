@@ -38,3 +38,34 @@ function(code)
 
     code
 }
+
+
+localVarNames = varNames =
+function(x)
+{
+    x = mkCode(x)
+    if(!is.call(x) || ! (is.name(x[[1]]) && as.character(x[[1]]) == "a!localVariables"))
+        stop("localVarNames expects a call to a!localVariables")
+
+    x =  x[ - c(1, length(x) )]
+    vars = names(x)
+    w = vars == ""
+    if(any(w))
+       vars[w] = sapply(x[w], as.character)
+
+    gsub("^local!", "", vars)    
+}
+
+    
+
+getCalls =
+function(x, map = NULL)
+{
+    x = mkCode(x)
+
+    funs = unique(getGlobals(x)$functions)
+    if(!is.null(map)) 
+        funs = funs[ funs %in% map$qname ]
+
+    funs
+}
