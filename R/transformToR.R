@@ -181,7 +181,7 @@ dp =
     # Start with the SAIL code. Can transform to R code via StoR (no parsing)
     # and then show the result.
     #
-function(x, i = seq_len(length(y)), transform = TRUE)
+function(x, transform = TRUE, i = seq_len(length(y)))
 {
     if(transform)
         x = StoR(x)
