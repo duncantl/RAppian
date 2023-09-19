@@ -79,7 +79,9 @@ function(w, map)
 
 getCodeUses =
     #
+    # See ruses() instead.
     # just the sail code in an XML file, not the entire XML file.
+    #
     #
 function(map, code = sapply(map$file, getCode))
 {
