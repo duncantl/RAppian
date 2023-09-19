@@ -17,7 +17,18 @@
    + the expression to get the value.
    + see processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml as example (ExportedV1_2/)
       and RoutingAssigning.md
+```
+z = customOutputs("processModel/0002ea7f-720f-8000-fc2f-7f0000014e7a.xml")
+k = StoR(z$"Construct Data"[[1]]["code"], TRUE)[[1]]
+rewriteCode(k, map)
+```
 
++ Compute the flow of data through a process model
+   + inputs from an interface
+   + transfer of data to another interface
+   + and back to the process
+   + outputs from a node
+   + custom outputs
 
 + diff() method for comparing two applications, e.g., dev versus test, or two different snapshots.
    + what objects are present in one and not the other
@@ -26,6 +37,17 @@
 + [start√] given a SAIL code object, show only the call graph for it and its callees.
    + start with lgraph
    + `plot(toGraph(lgraph("EFRM_getNextAssigneeByProgramCodeAndRoleCodes", rcode2)))`
+
++ √ Show call graph for 2 or more functions.
+```
+plot(toGraph(lgraph(c("EFRM_INT_getPersonInfoByLoginId", "EFRM_SEC_graduateFormsForLandingPage", "EFRM_getAllUserGroupAndRoleCodes"), rcode2)))
+g = toGraph(lgraph(c("EFRM_INT_getPersonInfoByLoginId", "EFRM_SEC_graduateFormsForLandingPage", "EFRM_getAllUserGroupAndRoleCodes", "EFRM_FORM_qeApplication", "EFRM_FRM_landingPage"), rcode2))
+plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5)
+w = V(g)$name == "EFRM_INT_getPersonInfoByLoginId"
+plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5, vertex.color = c("red", "green")[ 1L + ])
+plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5, vertex.color = c("red", "green")[ 1L + w], vertex.shape = c("none", "circle")[ 1L + w])
+```
+    + 
 
 + call graph of which object uses other objects
    + see uses.R
