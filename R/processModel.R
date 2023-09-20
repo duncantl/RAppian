@@ -93,9 +93,14 @@ doACPs =
 function(acps, map)    
 {
     if(length(acps) == 0)
+#       return(structure(list(),
+#                        names = c("label", "guiId", "icon", "uuid", "lane",
+#                                  "x", "y", "hasCustomOutputs", "hasInterface", "numCustomOutputs"),
+#                        class = "data.frame"))
         return(NULL)
-    
-    ans = as.data.frame(do.call(rbind, lapply(acps, mkAcp)))
+
+    tmp = lapply(acps, mkAcp, map)
+    ans = as.data.frame(do.call(rbind, tmp))
     
     if(length(map)) 
         ans$type = fixType(ans$type, map)
@@ -213,22 +218,23 @@ function(x)
 }
 
 mkCustomParam = mkAcp =
-function(x)    
+function(x, map = NULL)    
 {
-    data.frame(name = xmlGetAttr(x, "name"),
-               type = xmlGetAttr(x[["value"]], "type"),
-               code = xmlValue(x[["expr"]]),
-               required = xmlValue(x[["required"]]),
-               editable = xmlValue(x[["editable"]]),
-               assignToPV = xmlValue(x[["assign-to-pv"]]),
-               inputToActivityClass = xmlValue(x[["input-to-activity-class"]]),               
-               hiddenFromDesigner = xmlValue(x[["hidden-from-designer"]]),               
-               generated = xmlValue(x[["generated"]]),
-               enumeration = xmlValue(x[["enumeration"]]),               
-               customDisplayReference = xmlValue(x[["customDisplayReference"]])
-               )
-               
-               
+   tmp = data.frame(name = xmlGetAttr(x, "name"),
+                    type = xmlGetAttr(x[["value"]], "type"),
+                    code = xmlValue(x[["expr"]]),
+                    required = xmlValue(x[["required"]]),
+                    editable = xmlValue(x[["editable"]]),
+                    assignToPV = xmlValue(x[["assign-to-pv"]]),
+                    inputToActivityClass = xmlValue(x[["input-to-activity-class"]]),               
+                    hiddenFromDesigner = xmlValue(x[["hidden-from-designer"]]),               
+                    generated = xmlValue(x[["generated"]]),
+                    enumeration = xmlValue(x[["enumeration"]]),               
+                    customDisplayReference = xmlValue(x[["customDisplayReference"]])
+                    )
+
+   tmp$value = list(getAppValue(x[["value"]], map))
+   tmp
 }
 
 
@@ -316,3 +322,25 @@ function(x, map)
     x[w] = mapUUID(gsub("^n1:", "", x), map, "name")
     x
 }
+
+
+getAppValue =
+    #
+    # If tye == "a:Bean?list", then this is a a list of acp objects
+    #
+function(x, map = NULL, type = xmlGetAttr(x, "type"))
+{
+    hasContent = xmlSize(x)
+    switch(type,
+           "a:Processodel" = xmlGetAttr(x, "id", NA),
+           "xsd:string" = xmlValue(x),
+           "xsd:int" = as.integer(xmlValue(x)),
+           "xsd:boolean" = xmlValue(x) == "true",
+           "a:Bean?list" = if(xmlSize(x[["acps"]]) > 0)
+                               doACPs(xmlChildren(x[["acps"]]), map)
+                           else
+                               NA,
+           NA
+           )
+}
+
