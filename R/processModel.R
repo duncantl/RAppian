@@ -77,7 +77,7 @@ function(doc)
 mkProcModelNode =
 function(x)
 {
-    data.frame(label = getPMNodeName(x),
+    data.frame(label = getPMNodeName(x[[1]][["fname"]]),
                guiId = xmlValue(x[["guiId"]]),               
                icon = xmlGetAttr(x[["icon"]], "id"),               
                lane = xmlValue(x[["lane"]]),
@@ -93,13 +93,16 @@ function(x)
 
 getPMNodeName =
     # Can also use for "desc"
-function(x, el = "fname")
+function(x, el = character()) # "fname")
 {
-    xmlValue(x[[el]][["string-map"]][["pair"]][["value"]])
+    if(length(el))
+        x = x[[el]]
+    
+    xmlValue(x[["string-map"]][["pair"]][["value"]])
 }
 
 
-processVars =
+procVars = processVars =
 function(doc, map = NULL)
 {
     if(is.character(doc))
