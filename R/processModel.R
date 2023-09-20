@@ -198,7 +198,9 @@ customInputs =
 function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 {
     acps = getNodeSet(doc, "//x:node//x:acp[./x:input-to-activity-class = 'true']", AppianTypesNS)
-    sapply(acps, xmlGetAttr, "name")
+    names(acps) = sapply(acps, xmlGetAttr, "name")
+    #XXX finish
+    acps
 }
 
 customOutputs =
