@@ -74,13 +74,12 @@ plot(g, margin = rep(0.1, 4), vertex.shape = "none", vertex.label.cex = 0, edge.
 
 
 # Constants
-k = getConstants()
+k = getConstants(map)
 dsort(table(k$type))
 
 k$value[k$type == "string"]
 
 k$value[k$type == "Text?list"]
-
 
 
 # Find folders.
@@ -123,6 +122,8 @@ names(u) = sapply(xml, getName)
 # look at the code for each object and see what other objects in the application
 # that each of these SAIL code expressions uses.
 map$code = sapply(map$file, getCode)
+#XXX!!!!  not clear if we want this still.
+# Should we use ruses() and rcode2?
 map$codeUses = getCodeUses(map, map$code)
 
 
@@ -142,3 +143,65 @@ plot(g, vertex.label.cex = 0, edge.arrow.mode = 0)
 }
 
 
+
+
+#####
+ff = list.files("processModel", full = TRUE)
+pms = structure(lapply(ff, procModelNodes), names = unname(sapply(ff, getName)))
+
+# duplicated names
+sapply(pms, function(x) sum(duplicated(x$label)))
+
+# Number of nodes
+sapply(pms, nrow)
+
+# node types
+showCounts(dsort(table(do.call(rbind, pms)$icon)))
+
+#                       count
+#Write Record             179
+#Script Task              141
+#XOR                      120
+#Subprocess                66
+#End Event                 46
+#End Node                  32
+#AND                       16
+#Generate Word Document     7
+#Interface                  7
+#Delete Word Document       5
+#Send E-Mail                1
+
+
+
+# identify sub-processes
+
+sub = unique(file.path("processModel", unlist(lapply(pms, function(x) x$uuid[x$icon == "Subprocess"]))))
+
+
+
+# process variables that are
+# required but undefined
+#   need to see how each process model is called
+# 
+# Is dynamic name
+
+pname = sapply(ff, procName)
+#literal = grepl('^=?"[^"]+"$', pname)
+#pcode = lapply(gsub("^=", "", pname[!literal]), function(x) try(rewriteCode(StoR(x, TRUE), map), silent = TRUE))
+
+pcode = lapply(gsub("^=", "", pname), function(x) try(rewriteCode(StoR(x, TRUE), map), silent = TRUE))
+names(pcode) = names(pname)
+err = sapply(pcode, inherits, 'try-error')
+pname[err]
+data.frame(name = pname[err], file = names(pname)[err], row.names = NULL)
+
+
+#                                      name                                                  file
+#1 ="EFRM Initiate & Submit QE Application" processModel/0002ea7f-720f-8000-fc2f-7f0000014e7a.xml
+#2                       EFRM Reassign Task processModel/0002eaa4-7848-8000-005f-7f0000014e7a.xml
+#3    EFRM Phd Exam Report Upload to Banner processModel/0008eabb-8b17-8000-0471-7f0000014e7a.xml
+#4             ="EFRM ATC Upload to Banner" processModel/0009eab0-2a03-8000-027b-7f0000014e7a.xml
+
+
+
+customParams("processModel/0002eab7-e965-8000-03e1-7f0000014e7a.xml")
