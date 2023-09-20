@@ -184,3 +184,12 @@ function(doc)
 
 
 
+
+mkDoc =
+function(doc)    
+{
+    if(is.character(doc))
+        doc = xmlParse(doc)
+
+    doc
+}
