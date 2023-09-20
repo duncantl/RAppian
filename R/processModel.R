@@ -159,7 +159,7 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
         ans = as.data.frame(do.call(rbind, unlist(ans, recursive = FALSE)))
         ans[1:2] = lapply(ans[1:2], unlist)
         ans$type = as.integer(ans$type)
-        ans$elName = rep(ids, sapply(tmp, length))
+        ans$name = rep(ids, sapply(tmp, length))
 
         if(toR) {
             ans$code = lapply(ans$code, function(x) StoR(x, TRUE)[[1]])
