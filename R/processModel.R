@@ -144,21 +144,31 @@ function(doc, map = NULL)
 }
 
 customParams =
+    # customParams("processModel/0002eab7-e965-8000-03e1-7f0000014e7a.xml")
 function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 {
     doc = mkDoc(doc)
     
     acps = getNodeSet(doc, "//x:node//x:custom-params//x:acp", AppianTypesNS)
+    if(length(acps) == 0)
+        return(NULL)
+    
     ans = do.call(rbind, lapply(acps, mkCustomParam))
 
     lvars = c("required", "editable", "inputToActivityClass", "hiddenFromDesigner", "generated")
     ans[lvars] = lapply(ans[lvars], toLogical)
+
+    if(length(map)) {
+        w = grepl("^n1:", ans$type)
+        ans$type[w] = mapUUID(gsub("^n1:", "", ans$type[w]), map, "name")
+    }
+    
     
     if(toR) {
         ans$code = lapply(ans$code, StoR, TRUE) # function(x) StoR(x, TRUE)[[1]])
 
         if(rewrite)
-            ans$code = lapply(ans$code, rewrite, map)
+            ans$code = lapply(ans$code, rewriteCode, map)
     }
 
     ans
@@ -197,6 +207,8 @@ function(x)
 customInputs =
 function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 {
+    doc = mkDoc(doc)
+    
     acps = getNodeSet(doc, "//x:node//x:acp[./x:input-to-activity-class = 'true']", AppianTypesNS)
     names(acps) = sapply(acps, xmlGetAttr, "name")
     #XXX finish
