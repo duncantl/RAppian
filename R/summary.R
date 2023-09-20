@@ -125,7 +125,7 @@ function(...)
 
 
 getConstants =
-function(map)
+function(map = mkSummary(dir), dir = ".")
 {
    do.call(rbind, lapply( map$file[map$type == "constant"], getConstantInfo))
 }
