@@ -193,3 +193,16 @@ function(x, map = NULL)
     list(code = code, type = xmlGetAttr(x, "typeFlag"))
 }
 
+
+
+procName = processName =
+    #
+    # This is the dynamic process name, not the name of the of the process model given by the author for the Appian object.
+    #
+function(doc)
+{
+    doc = mkDoc(doc)
+
+    x = getNodeSet(doc, "//x:meta//x:process-name", AppianTypesNS)
+    getPMNodeName(x[[1]]) # , "process-name")
+}
