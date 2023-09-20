@@ -77,7 +77,7 @@ function(doc)
 mkProcModelNode =
 function(x)
 {
-    data.frame(label = getPMNodeName(x[[1]][["fname"]]),
+    data.frame(label = getPMNodeName(x[["fname"]]),
                guiId = xmlValue(x[["guiId"]]),               
                icon = xmlGetAttr(x[["icon"]], "id"),               
                lane = xmlValue(x[["lane"]]),
@@ -143,6 +143,63 @@ function(doc, map = NULL)
     ans
 }
 
+customParams =
+function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
+{
+    doc = mkDoc(doc)
+    
+    acps = getNodeSet(doc, "//x:node//x:custom-params//x:acp", AppianTypesNS)
+    ans = do.call(rbind, lapply(acps, mkCustomParam))
+
+    lvars = c("required", "editable", "inputToActivityClass", "hiddenFromDesigner", "generated")
+    ans[lvars] = lapply(ans[lvars], toLogical)
+    
+    if(toR) {
+        ans$code = lapply(ans$code, StoR, TRUE) # function(x) StoR(x, TRUE)[[1]])
+
+        if(rewrite)
+            ans$code = lapply(ans$code, rewrite, map)
+    }
+
+    ans
+}
+toLogical =
+function(x)    
+{
+    if(all(x %in% c("0", "1")))
+        x == 1
+    else if(all(x %in% c("true", "false")))
+        x == "true"
+        
+}
+
+mkCustomParam =
+function(x)    
+{
+    data.frame(name = xmlGetAttr(x, "name"),
+               type = xmlGetAttr(x[["value"]], "type"),
+               code = xmlValue(x[["expr"]]),
+               required = xmlValue(x[["required"]]),
+               editable = xmlValue(x[["editable"]]),
+               assignToPV = xmlValue(x[["assign-to-pv"]]),
+               inputToActivityClass = xmlValue(x[["input-to-activity-class"]]),               
+               hiddenFromDesigner = xmlValue(x[["hidden-from-designer"]]),               
+               generated = xmlValue(x[["generated"]]),
+               enumeration = xmlValue(x[["enumeration"]]),               
+               customDisplayReference = xmlValue(x[["customDisplayReference"]])
+               )
+               
+               
+}
+
+
+
+customInputs =
+function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
+{
+    acps = getNodeSet(doc, "//x:node//x:acp[./x:input-to-activity-class = 'true']", AppianTypesNS)
+    sapply(acps, xmlGetAttr, "name")
+}
 
 customOutputs =
 function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
@@ -160,9 +217,10 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
         ans[1:2] = lapply(ans[1:2], unlist)
         ans$type = as.integer(ans$type)
         ans$name = rep(ids, sapply(tmp, length))
+        ans$uuid = rep(sapply(nn, xmlGetAttr, "uuid"), sapply(tmp, length))        
 
         if(toR) {
-            ans$code = lapply(ans$code, function(x) StoR(x, TRUE)[[1]])
+            ans$code = lapply(ans$code, StoR, TRUE) # function(x) StoR(x, TRUE)[[1]])
             ans$target = sapply(ans$code, function(x) if(length(x) > 1 && is.name(x[[2]])) as.character(x[[2]]) else NA)
         }
         
