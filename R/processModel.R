@@ -145,7 +145,7 @@ function(doc, map = NULL)
 
 
 customOutputs =
-function(doc, map = NULL, asDF = TRUE)
+function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 {
     if(is.character(doc))
         doc = xmlParse(doc)
@@ -153,13 +153,22 @@ function(doc, map = NULL, asDF = TRUE)
     nn = getNodeSet(doc, "//x:node[.//x:output-exprs/x:el]", AppianTypesNS)
     ans = lapply(nn, getNodeCustomOutputs, map = map)
 
-    ids = sapply(nn, getPMNodeName)
+    ids = sapply(nn, getPMNodeName, "fname")
     if(asDF) {
         tmp = ans
         ans = as.data.frame(do.call(rbind, unlist(ans, recursive = FALSE)))
         ans[1:2] = lapply(ans[1:2], unlist)
         ans$type = as.integer(ans$type)
         ans$elName = rep(ids, sapply(tmp, length))
+
+        if(toR) {
+            ans$code = lapply(ans$code, function(x) StoR(x, TRUE)[[1]])
+            ans$target = sapply(ans$code, function(x) if(length(x) > 1 && is.name(x[[2]])) as.character(x[[2]]) else NA)
+        }
+        
+        if(rewrite && !is.null(map))
+            ans$code = lapply(ans$code, rewriteCode, map)
+
     } else
         names(ans) = ids
     
