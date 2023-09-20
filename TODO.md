@@ -1,5 +1,19 @@
 # To-Do List for RAppian
 
++ find all SAIL code in all places in different XML files
+   + definition
+   + custom outputs and inputs in process models
+   + See Rscripts/findSAILCode.R 
+
++ find the interfaces that are reused.
+   + look for all references in the XML files, not just the code
+   + or look at the XML-specific structure for different types, e.g.,
+      + interface in process model
+	  + use in SAIL code layouts
+      + expression rules code.
+   + with rcode2 being the rewritten code for every object in map
+   + See AppSummary.md
+
 + proc model: get interfaceInformation from a process model XML file
    + in a node and at the top-level too.
    + probably only one node at most has it - the start one.
@@ -10,7 +24,15 @@
    + name, uuid and {ruleInput}
        + each rule input has a name, type and value.
 	      + value comes from corresponding pv!... ?
-		  
+
++ sub-process information
+   + for a node in a process model.
+
++ [check] proc model: custom inputs and custom variables
+
++ [check] record type filters
+   + see recTypeFilters()
+
 + proc model:  custom outputs in ac - output-exprs - el
    + node-level
    + identifies the variable being assigned
