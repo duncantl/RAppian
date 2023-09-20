@@ -11,7 +11,7 @@ if(FALSE) {
 
 recordType =
     # Use recordTypeInfo()
-    #
+    # Moved a lot of this code to recTypeFilters()
     #
     # Started and realized was duplicating recordTypeInfo
     # But what is the difference between <a:fieldCfg> and <field> in the XML?
@@ -27,9 +27,11 @@ recordType =
     # field is in sourceConfiguration
 function(doc)
 {
-    if(is.character(doc))
-        doc = xmlParse(doc)
+    doc = mkDoc(doc)
 
+    # fieldCfg seems to be about filters.
+    # See Request Details  (e.g. ExportedV1_3/recordType/5ad7f584-ce54-41f6-a287-5fcf34d87702.xml)
+    # 
     ans = xpathApply(doc, "//x:fieldCfg", mkFieldCfg, namespaces = AppianTypesNS)
 
     if(length(ans) == 0) {
@@ -57,7 +59,8 @@ function(x)
 {
     ans = data.frame(Name = xmlGetAttr(x, "name"),
                      uuid = xmlGetAttr(x, "uuid"))    
-    v = c("description", "sourceRef", "isFacet", "facetType", "isExclusiveFacet", "facetLabelExpr")
+    v = c("description", "sourceRef", "isFacet", "facetType", "isExclusiveFacet",
+          "facetLabelExpr", "allowMultipleSelections", "isSortable", "isSearchable")
     ans[v] = lapply(x[v], xmlValue)
  
     w = names(x) == "relatedRecordFieldUuid"
@@ -169,4 +172,30 @@ recordTypeList =
 function(dir = ".", files = list.files(dir, full.names = TRUE, pattern = "\\.xml"))
 {
   structure( lapply(files, recordType), names = sapply(files, getName))
+}
+
+
+
+recTypeFilters =
+function(doc)
+{
+    doc = mkDoc(doc)
+
+    # fieldCfg seems to be about filters.
+    # See Request Details  (e.g. ExportedV1_3/recordType/5ad7f584-ce54-41f6-a287-5fcf34d87702.xml)
+    # 
+    ans = xpathApply(doc, "//x:fieldCfg", mkFieldCfg, namespaces = AppianTypesNS)
+
+    ans = do.call(rbind, ans)
+    w = grep("^(is|allow)", names(ans))
+    ans[w] = lapply(ans[w], function(x) x == "true")
+
+    # Add the constant to each row to identify the record type, uuid and name.
+    r = xmlRoot(doc)
+    rt = r[["recordType"]]
+    ans$record.uuid = xmlGetAttr( rt, "uuid")
+    ans$record.name = xmlGetAttr( rt, "name")
+    ans$record.description = xmlValue(rt[["description"]])
+    
+    ans
 }
