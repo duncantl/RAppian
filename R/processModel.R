@@ -57,19 +57,49 @@ function(doc)
 }
 }
 
-procModelNodes =
-function(doc)
+procModelNodes = procNodes =
+function(doc, map = NULL)
 {
     if(is.character(doc))
         doc = xmlParse(doc)
 
-    ans = do.call(rbind, xpathApply(doc, "//x:nodes/x:node", mkProcModelNode, namespaces = AppianTypesNS))
+    nodes = getNodeSet(doc, "//x:nodes/x:node", namespaces = AppianTypesNS)
+    
+    ans = do.call(rbind, lapply(nodes, mkProcModelNode)) 
     ans[c("x", "y")] = lapply(ans[c("x", "y")] , as.integer)
     ans$icon = names(iconType)[ match(ans$icon, iconType) ]
 
     ln = lanes(doc)
     ans$lane = factor( names(ln)[ as.integer(ans$lane) + 1L ], names(ln))
+
+    # Activity class parameters for each node.
+    ans$ACPs = lapply(nodes, function(node) doACPs(getNodeSet(node, ".//x:ac/x:acps/x:acp", namespaces = AppianTypesNS), map))
+    ans$numACPs = sapply(ans$ACPs, NROW) 
+
+    # connections to other nodes
+    cons = lapply(nodes, function(x) getNodeSet(x, ".//x:connections/x:connection", AppianTypesNS))
+    ans$connections = lapply(cons, function(x) do.call(rbind, lapply(x, function(x) data.frame(to = xmlValue(x[["to"]]),
+                                                                                        label = xmlValue(x[["flowLabel"]])))))
+    ans$numConnections = sapply(ans$connections, NROW)
     
+    ans
+}
+
+doACPs =
+    #
+    # process a collection of acp nodes.
+    # Have other code that does this call this function.
+    #
+function(acps, map)    
+{
+    if(length(acps) == 0)
+        return(NULL)
+    
+    ans = as.data.frame(do.call(rbind, lapply(acps, mkAcp)))
+    
+    if(length(map)) 
+        ans$type = fixType(ans$type, map)
+
     ans
 }
 
@@ -77,18 +107,21 @@ function(doc)
 mkProcModelNode =
 function(x)
 {
+    # Add the ACPs for each node in procNodes() to simplify
+    # dealing with a list in the larger data.frame.
+    
     data.frame(label = getPMNodeName(x[["fname"]]),
                guiId = xmlValue(x[["guiId"]]),               
                icon = xmlGetAttr(x[["icon"]], "id"),               
-               lane = xmlValue(x[["lane"]]),
                uuid = xmlGetAttr(x, "uuid"),
+               lane = xmlValue(x[["lane"]]),
                x = xmlValue(x[["x"]]),
                y = xmlValue(x[["y"]]),
                hasCustomOutputs = length(getNodeSet(x, ".//x:ac/x:output-exprs/x:el", AppianTypesNS)) > 0,
                hasInterface = length(getNodeSet(x, ".//x:interfaceInformation", AppianTypesNS)) > 0,
                numCustomOutputs = length(getNodeSet(x, ".//x:output-exprs/x:el", AppianTypesNS))
                #               userInteraction = xmlValue()
-               )
+              )
 }
 
 getPMNodeName =
@@ -103,6 +136,7 @@ function(x, el = character()) # "fname")
 
 
 procVars = processVars =
+   #  "processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml"
 function(doc, map = NULL)
 {
     if(is.character(doc))
@@ -125,9 +159,9 @@ mkProcessVar =
 function(x)
 {
     data.frame(name = xmlGetAttr(x, "name"),
+               type = xmlGetAttr(x[["value"]], "type"),               
                required = xmlValue(x[["required"]]),
                hidden = xmlValue(x[["hidden"]]),
-               type = xmlGetAttr(x[["value"]], "type"),
                parameter = xmlValue(x[["parameter"]]))
 }
 
@@ -148,21 +182,16 @@ customParams =
 function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 {
     doc = mkDoc(doc)
-    
+
+    # consolidate with doACPs
     acps = getNodeSet(doc, "//x:node//x:custom-params//x:acp", AppianTypesNS)
     if(length(acps) == 0)
         return(NULL)
-    
-    ans = do.call(rbind, lapply(acps, mkCustomParam))
+
+    ans = doACPs(acps, map)
 
     lvars = c("required", "editable", "inputToActivityClass", "hiddenFromDesigner", "generated")
     ans[lvars] = lapply(ans[lvars], toLogical)
-
-    if(length(map)) {
-        w = grepl("^n1:", ans$type)
-        ans$type[w] = mapUUID(gsub("^n1:", "", ans$type[w]), map, "name")
-    }
-    
     
     if(toR) {
         ans$code = lapply(ans$code, StoR, TRUE) # function(x) StoR(x, TRUE)[[1]])
@@ -183,7 +212,7 @@ function(x)
         
 }
 
-mkCustomParam =
+mkCustomParam = mkAcp =
 function(x)    
 {
     data.frame(name = xmlGetAttr(x, "name"),
@@ -203,16 +232,17 @@ function(x)
 }
 
 
-
 customInputs =
+    # customInputs("processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml", map)
 function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 {
     doc = mkDoc(doc)
     
     acps = getNodeSet(doc, "//x:node//x:acp[./x:input-to-activity-class = 'true']", AppianTypesNS)
-    names(acps) = sapply(acps, xmlGetAttr, "name")
-    #XXX finish
-    acps
+    if(length(acps) == 0)
+        return(NULL)
+
+    doACPs(acps, map)
 }
 
 customOutputs =
@@ -266,7 +296,6 @@ function(x, map = NULL)
 }
 
 
-
 procName = processName =
     #
     # This is the dynamic process name, not the name of the of the process model given by the author for the Appian object.
@@ -277,4 +306,13 @@ function(doc)
 
     x = getNodeSet(doc, "//x:meta//x:process-name", AppianTypesNS)
     getPMNodeName(x[[1]]) # , "process-name")
+}
+
+
+fixType =
+function(x, map)    
+{
+    w = grepl("^n1:", x)
+    x[w] = mapUUID(gsub("^n1:", "", x), map, "name")
+    x
 }
