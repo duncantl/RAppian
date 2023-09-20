@@ -68,13 +68,17 @@ function(x, parse = FALSE)
     x = gsub("\\\\", "\\\\\\\\", x)    
     
     if(parse) {
-        tryCatch(parse(text = x),
+       ans =  tryCatch(parse(text = x),
                  error = function(e) {
 #                     tryCatch(parse(text = fixStringConcat(x)),
 #                         error = function(e) {
                            parse(text = collapseLines(x)) # fixStringConcat(x)))
 #                         })
-                     })
+                 })
+       if(length(ans) > 0)
+           ans[[1]]
+       else
+           ans
     }
     
     else
