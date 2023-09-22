@@ -1,15 +1,21 @@
 # To-Do List for RAppian
 
++ understand Schema/XML documents
+  + Rscripts/allXMLElements.R
+
 + find all SAIL code in all places in different XML files
+   + See Rscripts/findSAILCode.R 
    + definition
    + custom outputs and inputs in process models
-   + See Rscripts/findSAILCode.R 
+   + in recordType: views, filters
 
 + find the interfaces that are reused.
+   + see funs.R
    + look for all references in the XML files, not just the code
    + or look at the XML-specific structure for different types, e.g.,
-      + interface in process model
-	  + use in SAIL code layouts
+      + interfaceInformation in process model
+	      + see interfaceInfo() in processModel.R
+	  + used in SAIL code layouts
       + expression rules code.
    + with rcode2 being the rewritten code for every object in map
    + See AppSummary.md
@@ -27,6 +33,19 @@
 
 + sub-process information
    + for a node in a process model.
+```
+o = procNodes("processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml")
+o$ACPs[[19]]$value[2]
+which(o$ACPs[[19]]$value[2] == map$uuid)
+map$name[ o$ACPs[[19]]$value[2] == map$uuid ]
+```
+
++ sub process 
+    + the inMap ACP for the sub-process above has a secondary large set of acps. 
+	+ This has type Bean?list
+	+ This is the value of the <a:value> object.
+	+ Now being processed via doACPs and converted to a data.frame and
+	  the column in the top-level data.frame becomes a list.
 
 + [check] proc model: custom inputs and custom variables
 
@@ -51,6 +70,7 @@ rewriteCode(k, map)
    + and back to the process
    + outputs from a node
    + custom outputs
+   + e.g. in QE determine where we get the requestId
 
 + diff() method for comparing two applications, e.g., dev versus test, or two different snapshots.
    + what objects are present in one and not the other
