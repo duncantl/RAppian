@@ -15,7 +15,6 @@ err = sapply(rcode2, inherits, 'try-error')
 stopifnot(!any(err))
 
 
-
 # Assumes names, not calls, but should be good for SAIL. Or did I see one expression in there?
 funs = lapply(rcode2, function(x) sapply(findCallsTo(x), function(x) as.character(x[[1]])))
 
@@ -114,9 +113,9 @@ t(sapply(db, dim))
 
 ######
 if(FALSE) {
-top = toplevelUUIDs()
-u = lapply(xml, uses, toplevel = top)
-names(u) = sapply(xml, getName)
+    top = toplevelUUIDs()
+    u = lapply(xml, uses, toplevel = top)
+    names(u) = sapply(xml, getName)
 }
 
 # look at the code for each object and see what other objects in the application
@@ -130,16 +129,16 @@ map$codeUses = getCodeUses(map, map$code)
 
 if(FALSE) {
 # This is uses from the entire XML file, not just the code.
-map$uses = lapply(map$file, uses, toplevel = map$uuid)
-map$uses2 = lapply(map$uses, function(x) unique(map$name[ match(x, map$uuid) ]))
-i = which(map$type == "application")
-map$uses[[i]] = map$uses2[[i]] = character()
+    map$uses = lapply(map$file, uses, toplevel = map$uuid)
+    map$uses2 = lapply(map$uses, function(x) unique(map$name[ match(x, map$uuid) ]))
+    i = which(map$type == "application")
+    map$uses[[i]] = map$uses2[[i]] = character()
 
 
-library(igraph)
-m = cbind( rep(map$name, sapply(map$uses2, length)), unlist(map$uses2))
-g = igraph::graph_from_edgelist(m)
-plot(g, vertex.label.cex = 0, edge.arrow.mode = 0)
+    library(igraph)
+    m = cbind( rep(map$name, sapply(map$uses2, length)), unlist(map$uses2))
+    g = igraph::graph_from_edgelist(m)
+    plot(g, vertex.label.cex = 0, edge.arrow.mode = 0)
 }
 
 
@@ -202,6 +201,18 @@ data.frame(name = pname[err], file = names(pname)[err], row.names = NULL)
 #3    EFRM Phd Exam Report Upload to Banner processModel/0008eabb-8b17-8000-0471-7f0000014e7a.xml
 #4             ="EFRM ATC Upload to Banner" processModel/0009eab0-2a03-8000-027b-7f0000014e7a.xml
 
-
-
 customParams("processModel/0002eab7-e965-8000-03e1-7f0000014e7a.xml")
+
+
+# interfaceInformation objects in process models
+int = lapply(ff , interfaceInfo)
+names(int) = sapply(ff, getName)
+w = sapply(int, length) > 0 
+table( w )
+# 8 don't have interfaceInformatio
+# 24 do.
+
+table(sapply(int, length))
+# 6 have 2
+
+table(unlist(lapply(int[w], function(x) sapply(x, `[[`, "name"))))
