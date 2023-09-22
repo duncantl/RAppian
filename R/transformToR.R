@@ -75,10 +75,11 @@ function(x, parse = FALSE)
                            parse(text = collapseLines(x)) # fixStringConcat(x)))
 #                         })
                  })
-       if(length(ans) > 0)
-           ans[[1]]
-       else
-           ans
+
+      if(is.expression(ans) && length(ans) == 1)
+          ans[[1]]
+      else
+          ans
     }
     
     else

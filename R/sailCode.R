@@ -31,9 +31,9 @@ mkCode =
 function(code)
 {
     if(is.character(code))
-        code = StoR(code, TRUE)[[1]]
+        code = StoR(code, TRUE) # [[1]]
    
-    if(is.expression(code) && length(code) > 0)
+    if(is.expression(code) && length(code) == 1)
         code = code[[1]]
 
     code
