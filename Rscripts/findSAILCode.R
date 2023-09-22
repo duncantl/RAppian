@@ -2,6 +2,7 @@
 
 
 # The following is not quite right as miss `#urn` or `#_a......(`
+# Now seems to get them
 xpath = "//*[contains(./text(), '!') or contains(./text(), 'SYSTEM_SYSRULES_') or
           contains(./text(), '#\"urn') or contains(./text(), '#\"_') ]"
 
