@@ -344,3 +344,32 @@ function(x, map = NULL, type = xmlGetAttr(x, "type"))
            )
 }
 
+
+
+interfaceInfo =
+function(doc)
+{
+    doc = mkDoc(doc)
+    xpathApply(doc, "//x:interfaceInformation", mkInterfaceInfo, namespaces = AppianTypesNS)
+}
+
+mkInterfaceInfo =
+function(x)    
+{
+    if(xmlSize(x[["ruleInputs"]]) > 0)
+        ri = do.call(rbind, xmlApply(x[["ruleInputs"]], mkInterfaceInfoRI))
+    else
+        ri = data.frame()
+
+    list(name = xmlValue(x[["name"]]),
+         uuid = xmlValue(x[["uuid"]]),
+         ruleInputs = ri)
+}
+
+mkInterfaceInfoRI =
+function(x)    
+{
+    data.frame(name = xmlValue(x[["name"]]),
+               type = xmlValue(x[["typeQName"]]),
+               value = xmlValue(x[["value"]]))
+}
