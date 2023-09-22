@@ -8,6 +8,8 @@
    + definition
    + custom outputs and inputs in process models
    + in recordType: views, filters
+   + site: visibilityExpr
+   + recordType: nameExpr
 
 + find the interfaces that are reused.
    + see funs.R

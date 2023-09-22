@@ -1,0 +1,39 @@
+#
+# Examine all the XML documents and all their nodes and attributes to find
+# the UUIDs of the objects in the Appian application.
+
+
+if(FALSE) {
+    xml = xmlFiles()
+    docs = lapply(xml, xmlParse)
+    names(docs) = sapply(docs, getName)
+
+    u = map$uuid [map$type == "interface"]
+    z2 = findNodesContainingUUID(u, docs)
+    table(unlist(lapply(z2, function(x) sapply(x, function(x) sapply(x, xmlName)))))
+# definition expression     uiExpr   uiObject       uuid 
+#        239         30          3          3        262
+
+    
+    z3 = findNodesContainingUUID(map$uuid, docs)
+    names(z3) = map$uuid
+    
+    table(sapply(unlist(z3), xmlName))
+
+    # For each object type, find the elements in which the associated UUID
+    # occur.
+    tapply(z3, map$type, function(x) table(sapply(unlist(x), xmlName)))
+}
+
+findNodesContainingUUID =
+function(u, docs)
+{
+    z = lapply(u, function(uuid) lapply(docs, function(d) getNodeSet(d, sprintf("//text()[contains(., '%s')]/.. | //@*[contains(., '%s')]/..", uuid, uuid))))
+
+    nms = sapply(docs, getName)
+    z = lapply(z, function(x){ names(x) = nms; x})
+
+    z2 = lapply(z, function(x) x [ sapply(x, length) > 0])
+}
+
+
