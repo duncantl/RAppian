@@ -68,11 +68,11 @@ function(x, parse = FALSE)
     x = gsub("\\\\", "\\\\\\\\", x)    
     
     if(parse) {
-       ans =  tryCatch(parse(text = x),
+       ans =  tryCatch(parse(text = x, keep.source = FALSE),
                  error = function(e) {
 #                     tryCatch(parse(text = fixStringConcat(x)),
 #                         error = function(e) {
-                           parse(text = collapseLines(x)) # fixStringConcat(x)))
+                           parse(text = collapseLines(x), keep.source = FALSE) # fixStringConcat(x)))
 #                         })
                  })
 
