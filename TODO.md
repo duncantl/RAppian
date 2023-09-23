@@ -82,16 +82,6 @@ rewriteCode(k, map)
    + start with lgraph
    + `plot(toGraph(lgraph("EFRM_getNextAssigneeByProgramCodeAndRoleCodes", rcode2)))`
 
-+ √ Show call graph for 2 or more functions.
-```
-plot(toGraph(lgraph(c("EFRM_INT_getPersonInfoByLoginId", "EFRM_SEC_graduateFormsForLandingPage", "EFRM_getAllUserGroupAndRoleCodes"), rcode2)))
-g = toGraph(lgraph(c("EFRM_INT_getPersonInfoByLoginId", "EFRM_SEC_graduateFormsForLandingPage", "EFRM_getAllUserGroupAndRoleCodes", "EFRM_FORM_qeApplication", "EFRM_FRM_landingPage"), rcode2))
-plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5)
-w = V(g)$name == "EFRM_INT_getPersonInfoByLoginId"
-plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5, vertex.color = c("red", "green")[ 1L + ])
-plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5, vertex.color = c("red", "green")[ 1L + w], vertex.shape = c("none", "circle")[ 1L + w])
-```
-    + 
 
 + call graph of which object uses other objects
    + see uses.R
@@ -106,7 +96,20 @@ plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5, vertex
    + download the exported databases
    + dowload the export Application
 
+
+
+
 # Done
+
++ √ Show call graph for 2 or more functions.
+```
+plot(toGraph(lgraph(c("EFRM_INT_getPersonInfoByLoginId", "EFRM_SEC_graduateFormsForLandingPage", "EFRM_getAllUserGroupAndRoleCodes"), rcode2)))
+g = toGraph(lgraph(c("EFRM_INT_getPersonInfoByLoginId", "EFRM_SEC_graduateFormsForLandingPage", "EFRM_getAllUserGroupAndRoleCodes", "EFRM_FORM_qeApplication", "EFRM_FRM_landingPage"), rcode2))
+plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5)
+w = V(g)$name == "EFRM_INT_getPersonInfoByLoginId"
+plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5, vertex.color = c("red", "green")[ 1L + ])
+plot(g, layout = layout.drl, edge.arrow.size = .5, vertex.label.cex = .5, vertex.color = c("red", "green")[ 1L + w], vertex.shape = c("none", "circle")[ 1L + w])
+```
 
 + √ find commented-out code
 
