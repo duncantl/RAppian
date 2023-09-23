@@ -319,7 +319,7 @@ fixType =
 function(x, map)    
 {
     w = grepl("^n1:", x)
-    x[w] = mapUUID(gsub("^n1:", "", x), map, "name")
+    x[w] = mapUUID(gsub("^n1:", "", x[w]), map, "name")
     x
 }
 
@@ -347,14 +347,16 @@ function(x, map = NULL, type = xmlGetAttr(x, "type"))
 
 
 interfaceInfo =
-function(doc)
+function(doc, map = NULL)
 {
     doc = mkDoc(doc)
-    xpathApply(doc, "//x:interfaceInformation", mkInterfaceInfo, namespaces = AppianTypesNS)
+    ans = xpathApply(doc, "//x:interfaceInformation", mkInterfaceInfo, namespaces = AppianTypesNS)
+    names(ans) = sapply(ans, `[[`, "name")
+    ans
 }
 
 mkInterfaceInfo =
-function(x)    
+function(x, map = NULL)    
 {
     if(xmlSize(x[["ruleInputs"]]) > 0)
         ri = do.call(rbind, xmlApply(x[["ruleInputs"]], mkInterfaceInfoRI))
