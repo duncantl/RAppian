@@ -69,3 +69,16 @@ function(x, map = NULL)
 
     funs
 }
+
+
+saveTo =
+function(x)
+{
+    ans = findCallsTo(x, "a!save", parse = FALSE)
+    if(length(ans))
+        split(lapply(ans, function(x) x[[3]]), sapply(ans, function(x) as.character(x[[2]])))
+    else
+        list()
+}
+
+
