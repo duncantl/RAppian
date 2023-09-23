@@ -1,5 +1,11 @@
 # To-Do List for RAppian
 
++ for an expression or interface or any SAIL code,   determine for rule inputs
+  which are 
+   + inputs-only, 
+   + outputs only, 
+   + input-outputs
+
 + understand Schema/XML documents
   + Rscripts/allXMLElements.R
 
