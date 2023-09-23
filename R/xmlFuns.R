@@ -45,6 +45,9 @@ getName =
     #
 function(doc)
 {
+    if(is.name(doc))
+        return(gsub("^[^!]*!", "", as.character(doc)))
+    
     if(is.character(doc))
         doc = xmlParse(doc)
 
