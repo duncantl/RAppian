@@ -64,6 +64,7 @@ library(igraph)
 calls2 = lapply(calls, function(x) { x = gsub("^(rule|interface|recordType)!", "", x); gsub("^EFRM_([A-Z]+_)?", "", unique(x[ x %in% map$name ])) })
 m = cbind( rep(names(calls2), sapply(calls2, length)), unlist(calls2))
 g = igraph::graph_from_edgelist(m)
+# BAD PLOT
 plot(g, margin = rep(0.1, 4), vertex.shape = "none", vertex.label.cex = 0, edge.arrow.mode = 0, layout = layout.drl)
 #plot(g, vertex.label.cex = 0, edge.arrow.mode = 0)
 
@@ -82,6 +83,7 @@ k$value[k$type == "Text?list"]
 
 
 # Find folders.
+#XXX fails in Sep 22 version - Exported_4
 folders = getFolders()
 table(folders)
 table(dirname(names(folders)[is.na(folders)]))
@@ -123,7 +125,8 @@ if(FALSE) {
 map$code = sapply(map$file, getCode)
 #XXX!!!!  not clear if we want this still.
 # Should we use ruses() and rcode2?
-map$codeUses = getCodeUses(map, map$code)
+# Fails So don't use
+# map$codeUses = getCodeUses(map, map$code)
 
 
 
@@ -156,7 +159,6 @@ sapply(pms, nrow)
 
 # node types
 showCounts(dsort(table(do.call(rbind, pms)$icon)))
-
 #                       count
 #Write Record             179
 #Script Task              141
@@ -216,3 +218,10 @@ table(sapply(int, length))
 # 6 have 2
 
 table(unlist(lapply(int[w], function(x) sapply(x, `[[`, "name"))))
+
+
+
+#####
+
+v = saveTo(rcode2$EFRM_FORM_qeApplication)
+
