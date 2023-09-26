@@ -77,3 +77,9 @@ The "correct" approach is to have a proper SAIL parser.
 We can use lex/yacc, ANTLR, or a hand-written parser to do this.
 It would be nice to find the SAIL specification.
 
+
+
+
+# Other Links
+
++ [Analysis of Appian objects](https://github.com/JFDI-Consulting/JFDIAppianSAILComplexityAnalyser)
