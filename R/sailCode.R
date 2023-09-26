@@ -41,7 +41,7 @@ function(code)
 
 
 localVarNames = varNames =
-function(x)
+function(x, removeDomain = TRUE)
 {
     x = mkCode(x)
     if(!is.call(x) || ! (is.name(x[[1]]) && as.character(x[[1]]) == "a!localVariables"))
@@ -53,7 +53,10 @@ function(x)
     if(any(w))
        vars[w] = sapply(x[w], as.character)
 
-    gsub("^local!", "", vars)    
+    if(removeDomain)
+        gsub("^local!", "", vars)
+    else
+        vars
 }
 
     
