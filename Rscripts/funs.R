@@ -7,6 +7,7 @@ dir = "."
 #umap = mkUUIDMap(dir)
 map = mkSummary()
 map$code = sapply(map$file, getCode)
+map$LOC = sapply(strsplit(map$code, "\n"), length)
 code = mkCodeInfo(dir)
 rcode = lapply(code$code, function(x) try(StoR(x, TRUE)))
 names(rcode) = code$name
@@ -224,4 +225,56 @@ table(unlist(lapply(int[w], function(x) sapply(x, `[[`, "name"))))
 #####
 
 v = saveTo(rcode2$EFRM_FORM_qeApplication)
+
+
+
+######
+# Find literal values that perhaps should be constants.
+# Did this somewhere else also.
+#
+
+# Don't worry about logical values - true/false should show up in the SAIL code.
+
+# Also, many string literals can be arguments to layout functions such as
+# "COLLAPSED", ...
+# But others are duplicates, e.g.,  "Upload Resume for External"
+
+# Probably want to exclude character literal if 2nd argument to index().
+#
+#  "mm/dd/yyyy" in 46 different locations.  Should  be a constant.
+#  "Please enter Student Email to retrieve student details."
+#  "Please enter Student ID to retrieve student details."
+#  "Please submit in one of the allowed format -"
+#      + note error  - should be format*s* so we do have to correct this in 7 places because not a constant.
+#  "Not all students will be enrolled in a Designated Emphasis. If the information displayed here is incorrect, contact your Graduate Program Coordinator."
+#   "Designated Emphasis Application"
+# "Yes", "No" in {} of choice labels in about 74 places.
+
+literals = lapply(rcode2, function(x) find_nodes(to_ast(x), function(x) inherits(x, c("Numeric", "Integer", "Character"))))
+z = unlist(literals, recursive = FALSE)
+lit.class = sapply(z, function(x) class(x)[1])
+table(lit.class)
+
+#lit.vals = sapply(z, function(x) x$value)
+lit.vals = tapply(z, lit.class, function(x) sapply(x, function(x) x$value))
+sapply(lit.vals, function(x) length(unique(x)))
+
+tt = showCounts(dsort(table(lit.vals$Character)))
+head(tt, 50)
+
+
+# Do this and remove the literals in calls to index()
+
+chars = lapply(rcode2, function(x) find_nodes(to_ast(x), inherits, "Character"))
+chars = unlist(chars, recursive = FALSE)
+w = !sapply(chars, function(e)
+                    (inherits(e$parent, "ArgumentList") && is_symbol(e$parent$parent$fn, "index")))
+
+lit.chars = sapply(chars[w], function(x) x$value)
+
+ok = grepl("(^[A-Z]+$)|^#|^AND$", lit.chars) | lit.chars == ""
+
+tt.char = showCounts(dsort(table(lit.chars[!ok])))
+head(tt.char[tt.char[,1] > 5, , drop = FALSE], 30)
+
 
