@@ -19,7 +19,7 @@ function(name, map = mkSummary())
     co = customOutputs(ff)
     structure(list(nodes = procModelNodes(ff),
                    processVars = procVars(ff),
-                   interfaceInfo = interfaceInfo(ff.atc, map),
+                   interfaceInfo = interfaceInfo(ff, map),
                    customOutputs = co,
                    outputVarFuns = outputInfo(co),
                    file = ff
@@ -46,11 +46,27 @@ function(co)
 {
     data.frame(nodeName = co$name,
                outVar = sapply(co$code, mkOutVar, map),
-               fun = sapply(co$code, function(x) if(is.call(x[[3]]))
-                                                     as.character(x[[3]][[1]])
-                                                 else
-                                                     as.character(x[[3]])))
+               fun = sapply(co$code, mkOutFun, map))
 }
+
+mkOutFun =
+function(x, map)
+{
+   ans = if(is.call(x[[3]]))
+             as.character(x[[3]][[1]])
+         else
+             as.character(x[[3]])
+   if(grepl("^#", ans))
+       mapName(ans, map)
+   else {
+       if(ans == "[") {
+           ans = mapFieldAccessor(x[[3]])
+       }
+       ans
+   }
+   
+}
+
 
 mkOutVar =
 function(x, map)
@@ -67,11 +83,18 @@ function(x, map)
         stop("still not sure what to do with", deparse(k))
 
     if(as.character(k) == "[") 
-        return(paste(as.character(e[[2]]),
-                     gsub(".*\\.", "", resolveURN(as.character(e[[3]]), map, "name", paths = FALSE)),
-                     sep = "."))
+        return(mapFieldAccessor(e))
 
 
     return("???")
-    
 }
+
+mapFieldAccessor =
+function(e)
+{
+    paste(as.character(e[[2]]),
+          gsub(".*\\.", "", resolveURN(as.character(e[[3]]), map, "name", paths = FALSE)),
+          sep = ".")
+}
+
+       
