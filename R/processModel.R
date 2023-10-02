@@ -261,14 +261,16 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
     ans = lapply(nn, getNodeCustomOutputs, map = map)
 
     ids = sapply(nn, getPMNodeName, "fname")
+
     if(asDF) {
         tmp = ans
         ans = as.data.frame(do.call(rbind, unlist(ans, recursive = FALSE)))
         ans[1:2] = lapply(ans[1:2], unlist)
         ans$type = as.integer(ans$type)
+        # node name
         ans$name = rep(ids, sapply(tmp, length))
-        ans$uuid = rep(sapply(nn, xmlGetAttr, "uuid"), sapply(tmp, length))        
-
+        ans$uuid = rep(sapply(nn, xmlGetAttr, "uuid"), sapply(tmp, length))
+        
         if(toR) {
             ans$code = lapply(ans$code, StoR, TRUE) # function(x) StoR(x, TRUE)[[1]])
             ans$target = sapply(ans$code, function(x) if(length(x) > 1 && is.name(x[[2]])) as.character(x[[2]]) else NA)
@@ -350,22 +352,34 @@ interfaceInfo =
 function(doc, map = NULL)
 {
     doc = mkDoc(doc)
-    ans = xpathApply(doc, "//x:interfaceInformation", mkInterfaceInfo, namespaces = AppianTypesNS)
+    ans = xpathApply(doc, "//x:interfaceInformation", mkInterfaceInfo, map = map, namespaces = AppianTypesNS)
     names(ans) = sapply(ans, `[[`, "name")
     ans
 }
 
 mkInterfaceInfo =
-function(x, map = NULL)    
+function(x, map = NULL, code = TRUE)    
 {
     if(xmlSize(x[["ruleInputs"]]) > 0)
         ri = do.call(rbind, xmlApply(x[["ruleInputs"]], mkInterfaceInfoRI))
     else
         ri = data.frame()
 
-    list(name = xmlValue(x[["name"]]),
-         uuid = xmlValue(x[["uuid"]]),
-         ruleInputs = ri)
+    ans = list(name = xmlValue(x[["name"]]),
+               uuid = xmlValue(x[["uuid"]]),
+               ruleInputs = ri)
+    if(code)  {
+        # can also get it by mapping the uuid to a uuid2File()
+        # and
+        tmp = if("code" %in% names(map))
+                  map$code [[ which(map$uuid == ans$uuid ) ]]
+              else
+                  rewriteCode(StoR(getCode(uuid2File(ans$uuid)), TRUE), map)
+        
+        ans$code = tmp
+    }
+    
+    ans
 }
 
 mkInterfaceInfoRI =
