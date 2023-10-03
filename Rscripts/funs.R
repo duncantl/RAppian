@@ -278,3 +278,35 @@ tt.char = showCounts(dsort(table(lit.chars[!ok])))
 head(tt.char[tt.char[,1] > 5, , drop = FALSE], 30)
 
 
+
+###
+isnum = sapply(z, inherits, "Numeric")
+num = z[ isnum ]
+num.vals = sapply(num, function(x) x$value)
+w = num.vals == 30
+
+
+
+
+#########
+# Reuse and calls/includes
+
+# Interfaces first
+w = map$type == "interface"
+ind = usedBy(rcode2[w])
+
+nuses = colSums(ind)
+table(nuses)
+nn = data.frame(interface = names(nuses), numUses = nuses, row.names = NULL)
+
+nn$description = lapply(names(nuses), function(x) getDescription(mapFile(x, map)))
+nn.ri = lapply(names(nuses), function(x) ruleInputs(mapFile(x, map)))
+nn$numRuleInputs = sapply(nn.ri, function(x) if(length(x) == 0) 0L else nrow(x))
+
+tmp = nn[order(nn$numUses, decreasing = TRUE), ]
+tmp[tmp$numUses > 1, c("interface", "numUses", "numRuleInputs")]
+
+
+ind.ru = usedBy(rcode2[ map$type == "rule"], "rule")
+# VT_checkNullOrEmpty
+which.max(colSums(ind.ru))
