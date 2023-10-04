@@ -45,6 +45,9 @@ getName =
     #
 function(doc)
 {
+    if(is.na(doc))
+        return(NA)
+    
     if(is.name(doc))
         return(gsub("^[^!]*!", "", as.character(doc)))
     
@@ -107,10 +110,13 @@ function(doc)
         doc = xmlParse(doc)
 
     ans = xpathSApply(doc, "//parentUuid", xmlValue)
-    if(length(ans) == 0)
-        NA
-    else
-        ans
+    if(length(ans) == 0) {
+        ans = switch(xmlName(xmlRoot(doc)),
+                     "processModelHaul" = xpathSApply(doc, "//folderUuid", xmlValue),
+                     NA)
+    }
+    
+    ans
 }
 
 
@@ -125,7 +131,7 @@ function(files = xmlFiles())
     names(u) = u
 
     w = !is.na(u) & isUUID(u)
-    u[w] = sapply( u[w], function(x) getName(uuid2File(x)))
+    u[w] = sapply( u[w], function(x) getName(uuid2File(x, missing = NA)))
 
     # Now use these names as the values for fld, keeping the original xml file name
     # as the names of the vector.
@@ -184,6 +190,8 @@ function(doc)
     else
         ans
 }
+
+
 
 
 

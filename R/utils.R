@@ -1,5 +1,5 @@
 uuid2File =
-function(x, dir = ".")
+function(x, dir = ".", missing = TRUE)
 {
     if(file.exists(x))
         return(x)
@@ -17,8 +17,13 @@ function(x, dir = ".")
     ffs = list.files(dir, pattern = "\\.xml$", full = TRUE, recursive = TRUE)
     i = grep(paste0("^", x), basename(ffs))
 #    i = pmatch(x, basename(ffs))
-    if(length(i) == 0)
-        stop("couldn't match ", x, " to a file")
+    if(length(i) == 0) {
+        if(isTRUE(missing))
+            stop("couldn't match ", x, " to a file")
+        else
+            return(missing)
+    }
+    
 
     ffs[i]
 }
