@@ -263,6 +263,9 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
     ids = sapply(nn, getPMNodeName, "fname")
 
     if(asDF) {
+        if(length(ans) == 0)
+            return(NULL)
+        
         tmp = ans
         ans = as.data.frame(do.call(rbind, unlist(ans, recursive = FALSE)))
         ans[1:2] = lapply(ans[1:2], unlist)
@@ -272,7 +275,7 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
         ans$uuid = rep(sapply(nn, xmlGetAttr, "uuid"), sapply(tmp, length))
         
         if(toR) {
-            ans$code = lapply(ans$code, StoR, TRUE) # function(x) StoR(x, TRUE)[[1]])
+            ans$code = lapply(ans$code, function(x) tryCatch(StoR(x, TRUE), error = function(e) NA)) # function(x) StoR(x, TRUE)[[1]])
             ans$target = sapply(ans$code, function(x) if(length(x) > 1 && is.name(x[[2]])) as.character(x[[2]]) else NA)
         }
         

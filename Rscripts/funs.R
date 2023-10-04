@@ -310,3 +310,19 @@ tmp[tmp$numUses > 1, c("interface", "numUses", "numRuleInputs")]
 ind.ru = usedBy(rcode2[ map$type == "rule"], "rule")
 # VT_checkNullOrEmpty
 which.max(colSums(ind.ru))
+
+
+# incidence matrix for all code objects
+
+ind.all = usedBy(rcode2, fun = mkUsesFun2(names(rcode2)))
+nuses.all = colSums(ind.all)
+
+tmp = data.frame(name = names(rcode2), numUses = nuses.all, type = map$type)
+
+table(tmp$type[tmp$numUses > 1])
+
+tmp.inf = tmp[ tmp$type == "interface" & tmp$numUses > 1,]
+tmp.inf[order(tmp.inf$numUses, decreasing = TRUE),  c("name", "numUses")]
+
+
+rownames(ind.all)[ ind.all[, "EFRM_GRID_COMMON_ActionHistory"] > 0]

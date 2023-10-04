@@ -15,12 +15,14 @@
 
 
 rewriteCode =
-function(code, map, warn = FALSE)
+function(code, map, warn = FALSE, parse = TRUE)
 {
-    code = mkCode(code)
+    if(parse)
+        code = mkCode(code)
 
-    if(length(code) == 0)
+    if(length(code) == 0 || is.atomic(code))
         return(code)
+
     
     u = ruses(code)
     # Should this focus only on items starting with #
