@@ -1,5 +1,8 @@
 # start with rcode2 and map and ind.all from funs.R
 
+# Doesn't take into account uses of
+#  record types as types of rule inputs
+
 # Have code from rule and interface
 
 # √ site
@@ -42,4 +45,7 @@ for(i in idx) {
     ind.all[i, names(tt)] = ind.all[i, names(tt)] + tt
 }
 
+nu = colSums(ind.all)
+use = data.frame(name = map$name, type = map$type, numUsesOf = nu, usesNum = rowSums(ind.all))
 
+use = use[order(use$numUsesOf, decreasing = TRUE), ]
