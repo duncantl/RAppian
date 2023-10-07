@@ -184,7 +184,16 @@ function(doc)
     if(is.character(doc))
         doc = xmlParse(doc)
 
-    ans = xpathSApply(doc, "//description", xmlValue)
+    type = getType(doc)
+    xp = switch(type,
+                site = "/siteHaul/site/description",
+                interface = "/contentHaul/interface/description",
+                recordType = "/recordTypeHaul/recordType/x:description",
+                processModel = "//x:process_model_port/x:pm/x:meta/x:desc//x:value",
+                "//description")
+           
+
+    ans = xpathSApply(doc, xp, xmlValue, namespaces = AppianTypesNS)
     if(length(ans) == 0)
         NA
     else
