@@ -1,3 +1,6 @@
+# See summarizeFlow.R
+
+
 procModelPos =
 function(doc)
 {
@@ -248,7 +251,16 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
     if(length(acps) == 0)
         return(NULL)
 
-    doACPs(acps, map)
+    # doACPs returns a data.frame
+    ans = doACPs(acps, map)
+
+    if(toR) {
+        ans$code = lapply(ans$code, StoR, parse = TRUE)
+        if(rewrite)
+            ans$code = lapply(ans$code, rewriteCode, map)
+    }
+    
+    ans
 }
 
 customOutputs =
