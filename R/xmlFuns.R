@@ -86,21 +86,6 @@ function(doc)
 }
 
 
-if(FALSE) {
-procModelNodes =
-    #
-    # get the nodes of an Appian process model
-    #
-function(doc)
-{
-    if(is.character(doc))
-        doc = xmlParse(doc)
-
-    getNodeSet(doc, "//x:process_model_port//x:nodes/x:node", AppianTypesNS)
-}
-}
-
-
 
 getFolder =
     # look for the parentUuid element of the XML as the folder.
