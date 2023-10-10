@@ -54,7 +54,8 @@ procModelUses =
     # Looks in the customInputs code, customOutputs code and which interfaces
     # the process model uses.
     #
-    # Doesn't pick up integrations used in integration nodes.
+    # √ pick up integrations used in integration nodes.
+    #    These are in the acps for a node.
     #
 function(file, map, fun = mkUsesFun2(map$name))
 {
@@ -69,5 +70,14 @@ function(file, map, fun = mkUsesFun2(map$name))
     a = mergeCounts(a, b)
 
     iface = interfaceInfo(doc, map)
-    mergeCounts(a, table(names(iface)))
+    a = mergeCounts(a, table(names(iface)))
+
+    int = getNodeSet(doc, "//x:acps/x:acp/x:value[@xsi:type = 'a:OutboundIntegration']",
+                        c(AppianTypesNS, xsi = "http://www.w3.org/2001/XMLSchema-instance"))
+    if(length(int)) {
+        tmp = sapply(int, xmlGetAttr, "id")
+        a = mergeCounts(a, table(mapUUID(tmp, map, out = "name")))
+    }
+    
+    a
 }
