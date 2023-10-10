@@ -25,6 +25,10 @@ function(x, parse = FALSE)
 
     x = gsub("^= *", "", x)
 
+    # In some code, we may have a value: =ri!name. Remove the =
+    # Check this doesn't break a lot of other things.
+    x = gsub(": =ri!", ": ri!", x)    
+
     # when this is done is important.
     # Can end up with !===
     x = changeOperators(x)
