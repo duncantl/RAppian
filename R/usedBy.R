@@ -54,11 +54,14 @@ procModelUses =
     # Looks in the customInputs code, customOutputs code and which interfaces
     # the process model uses.
     #
+    # Doesn't pick up integrations used in integration nodes.
+    #
 function(file, map, fun = mkUsesFun2(map$name))
 {
     doc = xmlParse(file)
     q = customInputs(doc, map)
-    a = fun(lapply(q$code[q$code != ""], function(x) rewriteCode(StoR(x, TRUE), map, parse = FALSE)))
+    a = fun(q$code)
+#    a = fun(lapply(q$code[q$code != ""], function(x) rewriteCode(StoR(x, TRUE), map, parse = FALSE)))
 
     q = customOutputs(doc, map)
     b = fun(q$code[q$code != ""])
