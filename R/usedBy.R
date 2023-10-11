@@ -72,6 +72,7 @@ function(file, map, fun = mkUsesFun2(map$name))
     iface = interfaceInfo(doc, map)
     a = mergeCounts(a, table(names(iface)))
 
+    # Get integrations called.
     int = getNodeSet(doc, "//x:acps/x:acp/x:value[@xsi:type = 'a:OutboundIntegration']",
                         c(AppianTypesNS, xsi = "http://www.w3.org/2001/XMLSchema-instance"))
     if(length(int)) {
