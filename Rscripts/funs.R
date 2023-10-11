@@ -23,6 +23,11 @@ syms = lapply(rcode2, CodeAnalysis:::all_symbols)
 #funs2 = lapply(funs, mapName, map)
 
 tmp2 = mkCountDfs(map, syms)
+
+ff = list.files("processModel")
+tmp2[["Record Types in Process Models"]] = dsort(table(unlist(lapply(ff, getPMWriteTypes, map))))
+
+
 writexl::write_xlsx(tmp2, "EFormsUsageCounts.xlsx")
 
 # Get all the symbols in all of the functions and then resolve the
