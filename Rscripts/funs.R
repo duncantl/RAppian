@@ -18,10 +18,12 @@ stopifnot(!any(err))
 
 # Assumes names, not calls, but should be good for SAIL. Or did I see one expression in there?
 funs = lapply(rcode2, function(x) sapply(findCallsTo(x), function(x) as.character(x[[1]])))
+syms = lapply(rcode2, CodeAnalysis:::all_symbols)
 
 #funs2 = lapply(funs, mapName, map)
-tt = dsort(table(unlist(funs)))
-showCounts(tt)
+
+tmp2 = mkCountDfs(map, syms)
+writexl::write_xlsx(tmp2, "EFormsUsageCounts.xlsx")
 
 # Get all the symbols in all of the functions and then resolve the
 # UUIDs, urns, etc.
@@ -284,6 +286,7 @@ isnum = sapply(z, inherits, "Numeric")
 num = z[ isnum ]
 num.vals = sapply(num, function(x) x$value)
 w = num.vals == 30
+
 
 
 
