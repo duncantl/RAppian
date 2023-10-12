@@ -8,6 +8,7 @@
 # √ site
 # process model
 # outboundIntegration
+# record types and filters and views
 #
 # What else do we need from interface
 #   ruleInputs(, map)
@@ -44,6 +45,21 @@ for(i in idx) {
     tt = procModelUses(map$file[i], map, fun)
     ind.all[i, names(tt)] = ind.all[i, names(tt)] + tt
 }
+
+
+
+
+
+# record types -
+#  code in the views, filters, 
+ty = which(map$type == "recordType")
+for(i in ty) {
+    code = getRecordTypeCode(map$file[i], map)
+    tts = lapply(code, fun)
+    tt = Reduce(mergeCounts, tts)
+    ind.all[i, names(tt)] = ind.all[i, names(tt)] + tt
+}
+
 
 nu = colSums(ind.all)
 use = data.frame(name = map$name, type = map$type, numUsesOf = nu, usesNum = rowSums(ind.all))
