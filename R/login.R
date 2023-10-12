@@ -6,7 +6,6 @@ function(un , pw,
          u = "https://ucdavistest.appiancloud.com/suite/auth?appian_environment=tempo")
     # cookie = getInitialCookie(), token = getAppToken(cookie))
 {
-    
     args = list(un = un, pw = pw, `_spring_security_remember_me` = "on", "X-APPIAN-CSRF-TOKEN" = info["__appiancsrftoken"])
 
     con = getCurlHandle()
