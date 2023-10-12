@@ -257,7 +257,7 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
     if(toR) {
         ans$code = lapply(ans$code, StoR, parse = TRUE)
         if(rewrite)
-            ans$code = lapply(ans$code, rewriteCode, map)
+            ans$code = lapply(ans$code, rewriteCode, map, parse = FALSE)
     }
     
     ans
