@@ -25,7 +25,11 @@ syms = lapply(rcode2, CodeAnalysis:::all_symbols)
 tmp2 = mkCountDfs(map, syms)
 
 ff = list.files("processModel")
-tmp2[["Record Types in Process Models"]] = dsort(table(unlist(lapply(ff, getPMWriteTypes, map))))
+tmp2[["Record Types in Process Models"]] = table2df(dsort(table(unlist(lapply(ff, getPMWriteTypes, map)))))
+
+
+pm.uses = lapply(ff, procModelUses, map)
+a = Reduce(mergeCounts, pm.uses)
 
 
 writexl::write_xlsx(tmp2, "EFormsUsageCounts.xlsx")
