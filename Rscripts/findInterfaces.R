@@ -12,23 +12,25 @@ if(FALSE) {
     z2 = findNodesContainingUUID(u, docs)
     table(unlist(lapply(z2, function(x) sapply(x, function(x) sapply(x, xmlName)))))
 # definition expression     uiExpr   uiObject       uuid 
-#        239         30          3          3        262
+#        275         30          3          3        316     
 
-    
+
+    # This takes a long time - looping over all uuid values and all XML docs for that uuid.
     z3 = findNodesContainingUUID(map$uuid, docs)
     names(z3) = map$uuid
     
     table(sapply(unlist(z3), xmlName))
 
-    # For each object type, find the elements in which the associated UUID
-    # occur.
+    # For each object type, find the elements in which the associated UUID occur.
     tapply(z3, map$type, function(x) table(sapply(unlist(x), xmlName)))
 }
 
 findNodesContainingUUID =
 function(u, docs)
 {
-    z = lapply(u, function(uuid) lapply(docs, function(d) getNodeSet(d, sprintf("//text()[contains(., '%s')]/.. | //@*[contains(., '%s')]/..", uuid, uuid))))
+    z = lapply(u, function(uuid)
+                    lapply(docs, function(d)
+                        getNodeSet(d, sprintf("//text()[contains(., '%s')]/.. | //@*[contains(., '%s')]/..", uuid, uuid))))
 
     nms = sapply(docs, getName)
     z = lapply(z, function(x){ names(x) = nms; x})
