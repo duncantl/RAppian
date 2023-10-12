@@ -1,4 +1,6 @@
-mkTaskRoleUnitMap = function(x, map) {
+mkTaskRoleUnitMap =
+function(x, map)
+{
     tmp = as.list(x$taskMasterIds)[-1]
     taskIds = sapply(tmp, mapConsValue, map)
     role = mapConsValue(x$roleCode, map)
