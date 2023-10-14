@@ -59,6 +59,19 @@ procModelUses =
     #
 function(file, map, fun = mkUsesFun2(map$name))
 {
+    if(!file.exists(file)) {
+        # if file is not a file, consider it the name of a process model
+        # or a constant identifying a process model.        
+        w = map$name == file
+        if(!any(w))
+            stop("cannot identify process model")
+
+        if(map$type[w] == "constant")
+            file = uuid2File(getConstantInfo(map$file[w])$value)
+        else
+            stop("can match ", file, " to a process model")
+    }
+    
     doc = xmlParse(file)
     q = customInputs(doc, map)
     a = fun(q$code)
