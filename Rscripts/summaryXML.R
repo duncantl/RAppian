@@ -8,6 +8,7 @@ nm = sapply(con.files, function(x) names(xmlRoot(xmlParse(x))[2]))
 showCounts(dsort(table(nm)))
 
 # Look at the code in the rule and interface objects.
+# See allSAILCode.R and whereSAILCode.R for additional types and XML nodes that may contain SAIL code.
 hasCode = nm %in% c("rule", "interface")
 defs = sapply(con.files[hasCode], getDefinition)
 names(defs) = sapply(con.files[hasCode], getName)
@@ -16,8 +17,6 @@ names(defs) = sapply(con.files[hasCode], getName)
 showCounts(dsort(table(unlist(lapply(defs, getDomains)))))
 
 showCounts(dsort(table(unlist(lapply(defs, findCalls)))))
-
-
 
 
 ####
