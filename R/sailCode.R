@@ -75,13 +75,23 @@ function(x, map = NULL)
 
 
 saveTo =
-function(x)
+function(x, asArg = FALSE)
 {
     ans = findCallsTo(x, "a!save", parse = FALSE)
-    if(length(ans))
-        split(lapply(ans, function(x) x[[3]]), sapply(ans, function(x) as.character(x[[2]])))
-    else
-        list()
+    if(length(ans)) {
+        # ans = split(lapply(ans, function(x) x[[3]]), sapply(ans, function(x) as.character(x[[2]])))
+        ans = split(lapply(ans, function(x) x[[3]]), sapply(ans, function(x) deparse(x[[2]])))        
+    } else
+        ans = list()
+
+    if(asArg) {
+        k = findCallsTo(x)
+        w = sapply(k, function(x) "saveInto" %in% names(x) )
+        ans = c(ans, k[w])
+    }
+    
+    
+    ans
 }
 
 
