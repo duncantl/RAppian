@@ -40,3 +40,7 @@ export(
 export(mkAppInfo, mkSummary)
 export(mkCodeInfo)
 export(compareTypeCounts)
+
+
+export(uses,
+       toplevelUUIDs)
