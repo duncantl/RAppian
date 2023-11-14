@@ -19,12 +19,11 @@ stopifnot(!any(err))
 # Assumes names, not calls, but should be good for SAIL. Or did I see one expression in there?
 funs = lapply(rcode2, function(x) sapply(findCallsTo(x), function(x) as.character(x[[1]])))
 syms = lapply(rcode2, CodeAnalysis:::all_symbols)
-
 #funs2 = lapply(funs, mapName, map)
 
 tmp2 = mkCountDfs(map, syms)
 
-ff = list.files("processModel")
+ff = list.files("processModel", full.names = TRUE)
 tmp2[["Record Types in Process Models"]] = table2df(dsort(table(unlist(lapply(ff, getPMWriteTypes, map)))))
 
 
