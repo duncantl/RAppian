@@ -37,6 +37,16 @@ function(code, uuids = FALSE)
         syms
 }
 
+
+if(FALSE) {
+tmp = '#"urn:appian:[^:]+:v1:([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/?)+"'
+#tmp = '#"urn:appian:[^:]+:v1:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})*)"'
+
+RX2 = sprintf('(#"%s)"|(%s)', uuidRX3, tmp)
+#              '((_a-)?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(_[0-9]+)?)|(#"urn:appian:[^:]+:v1:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})*)"'
+}
+
+
 #uses =
 uses0 =
     # This doesn't seem to handle #urn directly but captures
@@ -77,18 +87,18 @@ function(w, map)
 }
 
 
+if(FALSE) {
 getCodeUses =
     #
     # See ruses() instead.
     # just the sail code in an XML file, not the entire XML file.
-    #
     #
 function(map, code = sapply(map$file, getCode))
 {
     tmp = lapply(code, function(x) uses(txt = x, toplevel = map$uuid))
     lapply(tmp, function(x) map$name[ match(x, map$uuid) ])
 }
-
+}
 
 
 # Local call graph
