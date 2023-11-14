@@ -1,3 +1,5 @@
+library(RAppian)
+
 dir = "."
 info = mkSummary(dir)
 
