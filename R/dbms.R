@@ -1,4 +1,5 @@
 readDBDump =
+    # file can be the actual JSON from dbDump()
 function(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix = TRUE, efrmOnly = TRUE)
 {
     j = RJSONIO::fromJSON(file)

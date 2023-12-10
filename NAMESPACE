@@ -42,5 +42,13 @@ export(mkCodeInfo)
 export(compareTypeCounts)
 
 
-export(uses,
+export(uses, ruses,
        toplevelUUIDs)
+
+export(rewriteCode, mkCountDfs, table2df, getPMWriteTypes, procModelUses, mergeCounts)
+
+export(mapName)
+
+
+export(readDBDump)
+export(dbDump)
