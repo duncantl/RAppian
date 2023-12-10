@@ -1,7 +1,7 @@
 library(CodeAnalysis)
 library(RAppian)
 library(RJSONIO)
-invisible(lapply(list.files("~/OGS/EForms/RAppian/R", full = TRUE, pattern = "\\.R$"), source))
+# invisible(lapply(list.files("~/OGS/EForms/RAppian/R", full = TRUE, pattern = "\\.R$"), source))
 
 dir = "."
 #umap = mkUUIDMap(dir)
@@ -18,7 +18,7 @@ stopifnot(!any(err))
 
 # Assumes names, not calls, but should be good for SAIL. Or did I see one expression in there?
 funs = lapply(rcode2, function(x) sapply(findCallsTo(x), function(x) as.character(x[[1]])))
-syms = lapply(rcode2, CodeAnalysis:::all_symbols)
+syms = lapply(rcode2, all_symbols)
 #funs2 = lapply(funs, mapName, map)
 
 tmp2 = mkCountDfs(map, syms)
