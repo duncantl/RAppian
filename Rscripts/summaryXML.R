@@ -1,9 +1,8 @@
-# library(RAppian)
+library(RAppian)
 library(XML)
-appDir = "~/OGS/EForms/RAppian/R"
-invisible(lapply(list.files(appDir, pattern = "\\.R$", full = TRUE), source))
-#source(file.path(appDir, "exploreCode.R"))
-#source(file.path(appDir, "xmlFuns.R"))
+#appDir = "~/OGS/EForms/RAppian/R"
+#invisible(lapply(list.files(appDir, pattern = "\\.R$", full = TRUE), source))
+# was just exploreCode.R and xmlFuns.R
 
 con.files = list.files("content", pattern = "\\.xml$", full.names = TRUE)
 # file.path("content", paste0(con.uuids, ".xml"))
