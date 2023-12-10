@@ -125,9 +125,9 @@ yaml_structure_or_data = "data")
 
 
 dbDump =
-function(con = mkDBCon(), params = DBParams,
+function(con = mkDBCon(...), params = DBParams,
          url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/export",
-         read = TRUE)
+         read = TRUE, ...)
 {
     json = postForm(url, .params = params, curl = con, style = "post")
     if(read)
@@ -137,12 +137,12 @@ function(con = mkDBCon(), params = DBParams,
 }
 
 mkDBCon =
-function(cookie = getCookie())
+function(cookie = getDBCookie(), ...)
 {
     getCurlHandle(cookie = cookie)
 }
 
-getCookie =
+getDBCookie =
 function()
 {
     ff = c("~/appiandev.cookie", "~/appian.cookie", "appian.cookie")

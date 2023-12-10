@@ -1,5 +1,6 @@
 import(XML)
 import(RJSONIO)
+import(RCurl)
 
 #exportPattern(".*")
 
