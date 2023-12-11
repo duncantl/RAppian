@@ -5,7 +5,7 @@ if(FALSE)
 
 
 StoR =
-function(x, parse = FALSE)
+function(x, parse = FALSE, procModel = FALSE)
 {
     # clean any trailing , and nonsense.
     x = gsub(",[[:space:]]*$", "", x)
@@ -27,9 +27,15 @@ function(x, parse = FALSE)
 
     # In some code, we may have a value: =ri!name. Remove the =
     # Check this doesn't break a lot of other things.
-    x = gsub(": =ri!", ": ri!", x)    
+    x = gsub(": =ri!", ": ri!", x)
+    x = gsub(':= #"', ': #"', x)
 
-    # when this is done is important.
+    if(procModel)
+        # This may be the format for a "is appended to" a variable
+        # rather than is stored.
+        x = gsub("&:", ":", x)
+
+    # the order/when in this transformation process this is done is important.
     # Can end up with !===
     x = changeOperators(x)
 

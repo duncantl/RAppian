@@ -210,6 +210,7 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 
     ans
 }
+
 toLogical =
 function(x)    
 {
@@ -287,7 +288,13 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
         ans$uuid = rep(sapply(nn, xmlGetAttr, "uuid"), sapply(tmp, length))
         
         if(toR) {
-            ans$code = lapply(ans$code, function(x) tryCatch(StoR(x, TRUE), error = function(e) NA)) # function(x) StoR(x, TRUE)[[1]])
+            ans$code = lapply(ans$code, function(x)
+                                           tryCatch(StoR(x, TRUE, procModel = TRUE),
+                                                    error = function(e) {
+                                                        warning("failed to convert SAIL code to R: ", e)
+                                                        NA
+                                                    })) # function(x) StoR(x, TRUE)[[1]])
+            
             ans$target = sapply(ans$code, function(x) if(length(x) > 1 && is.name(x[[2]])) as.character(x[[2]]) else NA)
         }
         
