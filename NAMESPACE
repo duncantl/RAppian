@@ -1,6 +1,7 @@
 import(XML)
 import(RJSONIO)
 import(RCurl)
+import(CodeAnalysis)
 
 #exportPattern(".*")
 
@@ -14,7 +15,9 @@ export(
     getConstantInfo,
     getCode)
 
-export(procModelNodes)
+export(procModelNodes,
+       procModelVars,
+       summarizeProcModel)
 
 
 

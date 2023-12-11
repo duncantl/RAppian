@@ -143,7 +143,7 @@ function(x, el = character()) # "fname")
 }
 
 
-procVars = processVars =
+procVars = procModelVars =
    #  "processModel/0002ea7f-5596-8000-fc23-7f0000014e7a.xml"
 function(doc, map = NULL)
 {

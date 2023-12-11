@@ -30,9 +30,19 @@ mapFile =
 function(name, map)    
 {
     w = map$name == name
-    if(!any(w))
-        stop("no element in map with name ", name)
+    if(!any(w)) {
+        if(grepl("/", name)) {
+            # check for processModel/<uuid>.xml and match the uuid.
+            u = gsub("\\.xml$", "", basename(name))
+            if(isUUID(u))
+                w = u == map$uuid
+        }
+
+        if(!any(w))
+            stop("no element in map with name ", name)
+    }
     
+
     ff = map$file[w]
     if(map$type[w] == "constant")
         ff = uuid2File(getConstantInfo(ff)$value)
