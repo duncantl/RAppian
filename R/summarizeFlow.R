@@ -2,7 +2,11 @@ if(FALSE) {
 
 aa = data.frame(nodeName = co$name,
                 outVar = sapply(co$code, function(x) as.character(x[[2]])),
-                fun = sapply(co$code, function(x) if(is.call(x[[3]])) as.character(x[[3]][[1]]) else as.character(x[[3]])))
+                fun = sapply(co$code, function(x)
+                                        if(is.call(x[[3]]))
+                                            as.character(x[[3]][[1]])
+                                        else
+                                            as.character(x[[3]])))
 
 }
 
@@ -29,13 +33,18 @@ function(name, map = mkSummary())
 mapFile =
 function(name, map)    
 {
+    if(file.exists(name))
+        return(name)
+    
     w = map$name == name
     if(!any(w)) {
         if(grepl("/", name)) {
             # check for processModel/<uuid>.xml and match the uuid.
+            # Shouldn't need this now since file.exists() at top.
+            # 
             u = gsub("\\.xml$", "", basename(name))
             if(isUUID(u))
-                w = u == map$uuid
+                w = (u == map$uuid)
         }
 
         if(!any(w))
