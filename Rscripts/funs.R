@@ -28,6 +28,7 @@ tmp2[["Record Types in Process Models"]] = table2df(dsort(table(unlist(lapply(ff
 
 
 pm.uses = lapply(ff, procModelUses, map)
+names(pm.uses) = sapply(ff, getName)
 a = Reduce(mergeCounts, pm.uses)
 
 
