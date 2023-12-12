@@ -1,4 +1,5 @@
 uuid2File =
+    # How related to mapFile() in summarizeFlow.R
 function(x, dir = ".", missing = TRUE)
 {
     if(file.exists(x))
