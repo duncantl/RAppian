@@ -1,5 +1,10 @@
 # To-Do List for RAppian
 
++ for summarizeProcModel/customOutputs, 
+   + handle when the assignment is to a field in a record type and not just NA in the target.
+   + convert the code to map the UUID expressions to regular names.
+
+
 + for an expression or interface or any SAIL code,   determine for rule inputs
   which are 
    + inputs-only, 
