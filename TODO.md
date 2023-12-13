@@ -4,6 +4,15 @@
    + handle when the assignment is to a field in a record type and not just NA in the target.
    + convert the code to map the UUID expressions to regular names.
 
++ for summarizeProcModel/customOutputs, if appends to, indicate this.  We remove the & but don't
+   keep that information.
+
++ For EFormsDec13
+```
+Warning message:
+In ans[multipart] <- if (!paths) sapply(murn, function(x) x[length(x)]) else sapply(murn,  :
+  number of items to replace is not a multiple of replacement length
+```
 
 + for an expression or interface or any SAIL code,   determine for rule inputs
   which are 
