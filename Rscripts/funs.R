@@ -1,20 +1,4 @@
-library(CodeAnalysis)
-library(RAppian)
-library(RJSONIO)
-# invisible(lapply(list.files("~/OGS/EForms/RAppian/R", full = TRUE, pattern = "\\.R$"), source))
-
-dir = "."
-#umap = mkUUIDMap(dir)
-map = mkSummary()
-map$code = sapply(map$file, getCode)
-map$LOC = sapply(strsplit(map$code, "\n"), length)
-code = mkCodeInfo(dir)
-rcode = lapply(code$code, function(x) try(StoR(x, TRUE)))
-names(rcode) = code$name
-rcode2 = lapply(rcode, function(x) try(rewriteCode(x, map)))
-err = sapply(rcode2, inherits, 'try-error')
-stopifnot(!any(err))
-
+source("basics.R")
 
 # Assumes names, not calls, but should be good for SAIL. Or did I see one expression in there?
 funs = lapply(rcode2, function(x) sapply(findCallsTo(x), function(x) as.character(x[[1]])))
