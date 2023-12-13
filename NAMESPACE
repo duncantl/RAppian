@@ -56,3 +56,8 @@ export(mapName)
 
 export(readDBDump)
 export(dbDump)
+
+
+export(mapConsValue)
+export(getDescription)
+
