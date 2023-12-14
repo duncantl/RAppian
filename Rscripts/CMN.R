@@ -1,7 +1,5 @@
-
-xml = list.files(pattern = "\\.xml$", recursive = TRUE, full = TRUE)
-xmlc = lapply(xml, readLines)
+source("InXML.R")
 
 i = grep("CMN", map$name)
-cmn = structure(lapply(map$uuid[i], function(u) sapply(xml[sapply(xmlc,function(x) any(grepl(u, x)))], getName)), names = map$name[i])
+cmn = structure(lapply(map$uuid[i], xmlRefsUUID, xmlc = xmlc), names = map$name[i])
 
