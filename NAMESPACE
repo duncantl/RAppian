@@ -59,5 +59,32 @@ export(dbDump)
 
 
 export(mapConsValue)
-export(getDescription)
+export(getDescription,
+       getConstants,
+       getFolders,
+       getFolder,
+       getDefinition,
+       findComments,
+       getRecordTypeCode, 
+       getType,
+       mapFile,
+       mapUUID,
+       uuid2File,
+       xmlFiles,
+       ruleInputs,
+       siteInfo,
+       usedBy,
+       saveTo,
+       mkUsesFun2 # ???
+       )
+
+
+  # better names to indicate for process model
+export(
+    customParams, 
+    interfaceInfo
+)
+
+
+
 

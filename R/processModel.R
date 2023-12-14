@@ -380,7 +380,7 @@ function(doc, map = NULL)
 }
 
 mkInterfaceInfo =
-function(x, map = NULL, code = TRUE)    
+function(x, map = NULL, code = TRUE, dir = Rlibstree::getCommonPrefix(map$file))    
 {
     if(xmlSize(x[["ruleInputs"]]) > 0)
         ri = do.call(rbind, xmlApply(x[["ruleInputs"]], mkInterfaceInfoRI))
@@ -396,7 +396,7 @@ function(x, map = NULL, code = TRUE)
         tmp = if("code" %in% names(map))
                   map$code [[ which(map$uuid == ans$uuid ) ]]
               else
-                  rewriteCode(StoR(getCode(uuid2File(ans$uuid)), TRUE), map)
+                  rewriteCode(StoR(getCode(uuid2File(ans$uuid, dir)), TRUE), map)
         
         ans$code = tmp
     }
