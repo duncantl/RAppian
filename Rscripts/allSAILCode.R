@@ -1,4 +1,7 @@
-# start with rcode2 and map and ind.all from funs.R
+# start with rcode2, map and ind.all from funs.R
+
+if(!exists("ind.all"))
+    stop("need ind.all from funs.R")
 
 # Doesn't take into account uses of
 #  record types as types of rule inputs

@@ -2,6 +2,7 @@
 # To do this, we currently search for text() nodes that contain the character  and get the name of the parent node.
 # We can refine this.
 
+library(XML)
 nodesContainingBang = lapply(map$file, function(x) xpathSApply(xmlParse(x), "//text()[contains(., '!')]", function(x) xmlName(xmlParent(x))))
 
 tmp = data.frame(xmlNode = unlist(nodesContainingBang),

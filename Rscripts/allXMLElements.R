@@ -1,4 +1,10 @@
-xml = xmlFiles()
+if(!exists("dir", globalenv(), inherits = FALSE))
+    stop("need to define dir")
+
+library(XML)
+library(RAppian)
+
+xml = xmlFiles(dir)
 docs = lapply(xml, xmlParse)
 names(docs) = xml
 nodeNames = lapply(docs, function(doc) xpathSApply(doc, "//*", xmlName))

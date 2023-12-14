@@ -1,5 +1,9 @@
 # Find all the nodes in all the XML files that appear to contain SAIL code.
 
+library(XML)
+
+if(!exists("map", globalenv(), inherits = FALSE))
+    source("basics.R")
 
 # The following is not quite right as miss `#urn` or `#_a......(`
 # Now seems to get them
@@ -27,7 +31,7 @@ nameByType = tapply(unlist(nodeNames), rep(map$type, sapply(nodeNames, length)),
 
 
 # Just for process models for now.
-ff = list.files("processModel", full = TRUE)
+ff = list.files(file.path(dir, "processModel"), full = TRUE)
 k = lapply(ff, function(x) getNodeSet(xmlParse(x), "//x:value[. != ''] | //x:recipients-exp[. != '']  | //x:expr[. != '']  | //x:expression[. != ''] | //x:el[. != '']  | //x:minutesExpr[. != ''] " , AppianTypesNS))
 
 table(sapply(k, length))

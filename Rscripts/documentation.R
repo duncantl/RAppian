@@ -1,4 +1,12 @@
-x = xmlFiles()
+if(!exists("dir", globalenv(), inherits = FALSE))
+    stop("need to define dir")
+
+library(RAppian)
+library(XML)
+
+x = xmlFiles(dir)
+if(length(x) == 0) stop("Need a directory")
+
 xdocs = lapply(x,  xmlParse)
 emp = as.data.frame(t(sapply(xdocs, function(x)
                               c(numEls = length(getNodeSet(x, "//namedTypedValue")),
@@ -14,6 +22,9 @@ with(emp2, plot(numEls, notEmpty, ylim = range(numEls)))
 
 
 
+
+if(!exists("map", globalenv(), inherits = FALSE))
+    source("basics.R")
 
 map$descLen = nchar(map$description)
 map$descNumWords = sapply(strsplit(map$description, "[[:space:][:punct:]]+"), length)
@@ -50,7 +61,7 @@ com = mapply(function(x, pos) {
 
 
 
-com2 = uuname(unlist(com))
+com2 = unname(unlist(com))
 w2 = grepl("[:!]", com2)
 table(nchar(com2[!w2]))
 

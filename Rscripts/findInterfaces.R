@@ -1,10 +1,15 @@
 #
 # Examine all the XML documents and all their nodes and attributes to find
 # the UUIDs of the objects in the Appian application.
+#
+# Need dir and map
 
 
 if(FALSE) {
-    xml = xmlFiles()
+    library(RAppian)
+    library(XML)
+    
+    xml = xmlFiles(dir)
     docs = lapply(xml, xmlParse)
     names(docs) = sapply(docs, getName)
 

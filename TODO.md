@@ -3,25 +3,27 @@
 + support dir as argument and not having to have the working directory be the root directory 
   of the Appian export.
    + works for 
-     + Rscripts/allSAILCode.R
-     + Rscripts/allXMLElements.R
-     + Rscripts/app.R
-     + Rscripts/CMN.R
-     + Rscripts/documentation.R
-     + Rscripts/dupConstants.R
-     + Rscripts/findInterfaces.R
-     + Rscripts/findSAILCode.R
+     + Rscripts/allSAILCode.R - needs ind.all from funs.R and then gets an error
      + Rscripts/funs.R
-     + Rscripts/getProgUnitTaskMasterIds.R
-     + Rscripts/InXML.R
-     + Rscripts/startingPoints.R
-     + Rscripts/summary2.R
-     + Rscripts/summaryXML.R
-     + Rscripts/TasksTypesForRoles.R
-     + Rscripts/whereSAILCode.R
-     + √ Rscripts/basics.R	 
-     + √ Rscripts/procModelCustomOutputs.R	 
-	 
+     + √ Rscripts/allXMLElements.R - check again after reinstall	 
+     + √ Rscripts/app.R
+     + √ Rscripts/basics.R
+     + √ Rscripts/CMN.R
+     + √ Rscripts/documentation.R
+     + √ Rscripts/dupConstants.R	 
+     + √ Rscripts/findInterfaces.R	 - just defines a function and the script code is if(FALSE)-ed
+     + √ Rscripts/findSAILCode.R
+     + √ Rscripts/getProgUnitTaskMasterIds.R
+     + √ Rscripts/InXML.R
+     + √ Rscripts/procModelCustomOutputs.R
+     + √ Rscripts/whereSAILCode.R
+     + √ Rscripts/startingPoints.R - problem because of constant in names. Not a dir problem.
+     + √ Rscripts/summary2.R - issue with uses(txt=, toplevel =) but that is uses0.  and change to uses()
+     + √ Rscripts/summaryXML.R
+     + √ Rscripts/TasksTypesForRoles.R
+
++ fix startingPoints.R now broken due to constants for name - that's my intentional doing!
+
 + for summarizeProcModel/customOutputs, 
    + handle when the assignment is to a field in a record type and not just NA in the target.
    + convert the code to map the UUID expressions to regular names.

@@ -80,7 +80,7 @@ k$value[k$type == "Text?list"]
 
 # Find folders.
 #XXX fails in Sep 22 version - Exported_4
-folders = getFolders()
+folders = getFolders(dir)
 table(folders)
 table(dirname(names(folders)[is.na(folders)]))
 xml = xmlFiles(dir)
@@ -101,7 +101,7 @@ sapply(com, function(x) any(nchar(x) > 100))
 
 
 #XXXX specify correct directory
-db = readDBDump(dir = "..")
+db = readDBDump(dir = "~/OGS/EForms/CodeReview/DBDumps")
 db = db[grep("^EFRM", names(db))]
 names(db) = gsub("^EFRM_", "", names(db))
 t(sapply(db, dim))
@@ -204,7 +204,7 @@ customParams(file.path(dir, "processModel/0002eab7-e965-8000-03e1-7f0000014e7a.x
 
 
 # interfaceInformation objects in process models
-int = lapply(ff , interfaceInfo, map)
+int = lapply(ff, interfaceInfo, map)
 names(int) = sapply(ff, getName)
 w = sapply(int, length) > 0 
 table( w )

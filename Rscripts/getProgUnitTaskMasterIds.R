@@ -1,10 +1,14 @@
+library(RAppian)
+# See also TasksTypesForRoles.R .
+# Merge into one file.
+
 i = which(map$name == "EFRM_getProgramUnitAndItsTaskMasterIds")
 k = rcode2[[ i ]][-1]
 unitName = sapply(k,  function(x) x[[2]])
 names(k) = unitName
-role = sapply(k,  function(x) RAppian:::mapConsValue(x[[3]], map))
+role = sapply(k,  function(x) mapConsValue(x[[3]], map))
 tids = lapply(k,  function(x) as.list(x[[4]])[-1])
-tids2 = lapply(tids,  function(x) sapply(x, RAppian:::mapConsValue, map))
+tids2 = lapply(tids,  function(x) sapply(x, mapConsValue, map))
 
 # The dump of EFRM_INT_TASK_MASTER_ID_FILING_PROCESS does not contain the values,  so get NAs
 
@@ -18,7 +22,7 @@ if(exists("dbs")) {
           )
 }
 
-# 
+# What does the ER EFRM_FORM_TaskReassignmentForm use
 
 j = which("EFRM_FORM_TaskReassignmentForm" == map$name)
 fns = findCallsTo(rcode2[[j]])

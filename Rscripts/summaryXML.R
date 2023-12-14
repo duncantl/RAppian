@@ -1,10 +1,14 @@
 library(RAppian)
 library(XML)
+
+if(!exists("dir", globalenv(), inherits = FALSE))
+   stop("dir must be defined")
+
 #appDir = "~/OGS/EForms/RAppian/R"
 #invisible(lapply(list.files(appDir, pattern = "\\.R$", full = TRUE), source))
 # was just exploreCode.R and xmlFuns.R
 
-con.files = list.files("content", pattern = "\\.xml$", full.names = TRUE)
+con.files = list.files(file.path(dir, "content"), pattern = "\\.xml$", full.names = TRUE)
 # file.path("content", paste0(con.uuids, ".xml"))
 nm = sapply(con.files, function(x) names(xmlRoot(xmlParse(x))[2]))
 showCounts(dsort(table(nm)))
@@ -33,7 +37,7 @@ showCounts(dsort(table(cons$type)))
 # app = xmlParse(list.files("application", full = TRUE))
 # con.uuids = xpathSApply(app, "//application//associatedObjects//item[./type = 'content']/uuids/uuid", xmlValue)
 
-ff = list.files("content", full.names = TRUE)
+ff = list.files(file.path(dir, "content"), full.names = TRUE)
 ff2 = lapply(ff[file.info(ff)$isdir], list.files)
 table(sapply(ff2, length))
 showCounts(dsort(table(unlist(ff2))))

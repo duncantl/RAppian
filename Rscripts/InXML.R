@@ -1,5 +1,5 @@
-if(!exists("xml") && !exists("xmlc")) {
-   xml = list.files(pattern = "\\.xml$", recursive = TRUE, full = TRUE)
+if(!exists("xml", inherits = FALSE) && !exists("xmlc", inherits = FALSE)) {
+   xml = list.files(dir, pattern = "\\.xml$", recursive = TRUE, full = TRUE)
    xmlc = lapply(xml, readLines)
 }
 

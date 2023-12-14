@@ -1,7 +1,8 @@
 # map comes from funs.R
 
-if(exists("map")) {
+if(exists("map", globalenv(), inherits = FALSE)) {
 
+    library(RAppian)
     cons = do.call(rbind, lapply(map$file[map$type == "constant"], getConstantInfo))
     dup = duplicated(cons$value)
     d = cons[cons$value %in% cons$value[dup], ]
