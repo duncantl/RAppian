@@ -13,6 +13,18 @@ Warning message:
 In ans[multipart] <- if (!paths) sapply(murn, function(x) x[length(x)]) else sapply(murn,  :
   number of items to replace is not a multiple of replacement length
 ```
+Same for
+vv = callGraph("EFRM_FRM_qeReportGradStudiesReview", rcode, funOp = findAppianRecordTypeUses, map =
+map)
+but get 2 warnings.
+And it looks like they come from
+```
+$EFRM_FRM_qeReportGradStudiesReview[[9]]
+`#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4afbd93/b87539b2-1296-40a5-acad-2393cab2ba04`
+
+$EFRM_FRM_qeReportGradStudiesReview[[10]]
+`#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4afbd93/1cb529a4-9e21-4074-b6b7-39df41b99f78`
+```
 
 + for an expression or interface or any SAIL code,   determine for rule inputs
   which are 
