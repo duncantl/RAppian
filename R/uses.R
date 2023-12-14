@@ -29,7 +29,7 @@ function(code, uuids = FALSE)
 {
     code = mkCode(code)
 
-    syms = setdiff(unique(c(CodeAnalysis:::all_symbols(code),
+    syms = setdiff(unique(c(all_symbols(code),
                             unlist(lapply(findCallsTo(code), names)))), "")
     if(uuids)
         grep("^(#|SYSTEM_SYSRULES_)", syms, value = TRUE)

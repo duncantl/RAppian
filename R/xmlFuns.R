@@ -106,7 +106,7 @@ function(doc)
 
 
 getFolders =
-function(files = xmlFiles())
+function(dir = ".", files = xmlFiles(dir))
 {
     fld = sapply(files, getFolder)
     names(fld) = files
@@ -116,7 +116,7 @@ function(files = xmlFiles())
     names(u) = u
 
     w = !is.na(u) & isUUID(u)
-    u[w] = sapply( u[w], function(x) getName(uuid2File(x, missing = NA)))
+    u[w] = sapply( u[w], function(x) getName(uuid2File(x, dir = dir, missing = NA)))
 
     # Now use these names as the values for fld, keeping the original xml file name
     # as the names of the vector.
