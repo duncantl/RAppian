@@ -1,13 +1,23 @@
 xmlFiles =
-function(dir = ".")    
+function(dir = ".", rmDir = dir == ".")    
 {
     ans = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$")
+    if(rmDir)
+        rmCommonPrefix(ans)
+    else
+        ans
+}
+
+rmCommonPrefix =
+function(ans)
+{
     pre = Rlibstree::getCommonPrefix(ans)
     if(nchar(pre) > 0)
         ans = substring(ans, nchar(pre) + 1L)
 
     ans
 }
+
 
 
 mkSummary = mkAppInfo =
