@@ -35,9 +35,9 @@ mkSummary = mkAppInfo =
     # Maybe faster to parse each document and then
     # call getName, getDocType, etc. on the preparsed documents.
     #
-function(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = recordTypeRelationships)
+function(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = recordTypeRelationships,
+         xf = xmlFiles(dir))
 {
-    xf = xmlFiles()
     af = list.files(dir, recursive = TRUE, full = TRUE)
 
     if(showOthers) 
@@ -56,7 +56,6 @@ function(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = rec
     # duplicate name values so can't use as rownames()
     #    rownames(info) = info$name
     rownames(info) = info$uuid
-
 
     if(is.function(recTypes)) {
         tmp = vector("list", nrow(info))
