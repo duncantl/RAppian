@@ -58,8 +58,8 @@ export(readDBDump)
 export(dbDump)
 
 
-export(mapConsValue)
-export(getDescription,
+export(mapConsValue,
+       getDescription,
        getConstants,
        getFolders,
        getFolder,
@@ -79,6 +79,8 @@ export(getDescription,
        )
 
 
+export(mkTaskRoleUnitMap)
+
   # better names to indicate for process model
 export(
     customParams, 
@@ -87,4 +89,5 @@ export(
 
 
 
+export(AppianTypesNS)
 
