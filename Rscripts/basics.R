@@ -3,9 +3,11 @@ library(RAppian)
 library(RJSONIO)
 # invisible(lapply(list.files("~/OGS/EForms/RAppian/R", full = TRUE, pattern = "\\.R$"), source))
 
-dir = "."
+if(!exists("dir"))
+    dir = "."
+
 #umap = mkUUIDMap(dir)
-map = mkSummary()
+map = mkSummary(dir)
 map$code = sapply(map$file, getCode)
 map$LOC = sapply(strsplit(map$code, "\n"), length)
 code = mkCodeInfo(dir)

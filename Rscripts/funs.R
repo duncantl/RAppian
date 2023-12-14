@@ -48,8 +48,8 @@ calls = calls[ sapply(calls, length) > 0]
 
 tt = table(unlist(calls))
 showCounts(dsort(tt))
-omit = c("(", ">", "<", "$", "<=", ">=", "==", "&", "[", "-", "+", ":")
 
+omit = c("(", ">", "<", "$", "<=", ">=", "==", "&", "[", "-", "+", ":")
 sysFuns = setdiff(names(tt)[ (grepl("^a!", names(tt)) | !grepl("!", names(tt))) & !grepl("^#", names(tt))], omit)
 
 ldefs = names(tt) %in% map$name
@@ -83,7 +83,7 @@ k$value[k$type == "Text?list"]
 folders = getFolders()
 table(folders)
 table(dirname(names(folders)[is.na(folders)]))
-xml = xmlFiles()
+xml = xmlFiles(dir)
 folders = sapply(xml, getFolder)
 names(folders) = xml
 
@@ -100,7 +100,7 @@ sapply(com, function(x) any(nchar(x) > 100))
 
 
 
-#
+#XXXX specify correct directory
 db = readDBDump(dir = "..")
 db = db[grep("^EFRM", names(db))]
 names(db) = gsub("^EFRM_", "", names(db))
@@ -144,8 +144,8 @@ if(FALSE) {
 
 
 #####
-ff = list.files("processModel", full = TRUE)
-pms = structure(lapply(ff, procModelNodes), names = unname(sapply(ff, getName)))
+ff = list.files(file.path(dir, "processModel"), full = TRUE)
+pms = structure(lapply(ff, procModelNodes, map), names = unname(sapply(ff, getName)))
 
 # duplicated names
 sapply(pms, function(x) sum(duplicated(x$label)))
@@ -182,7 +182,8 @@ sub = unique(file.path("processModel", unlist(lapply(pms, function(x) x$uuid[x$i
 # 
 # Is dynamic name
 
-pname = sapply(ff, procName)
+# what does procName get?
+pname = sapply(ff, RAppian:::procName)  
 #literal = grepl('^=?"[^"]+"$', pname)
 #pcode = lapply(gsub("^=", "", pname[!literal]), function(x) try(rewriteCode(StoR(x, TRUE), map), silent = TRUE))
 
@@ -199,11 +200,11 @@ data.frame(name = pname[err], file = names(pname)[err], row.names = NULL)
 #3    EFRM Phd Exam Report Upload to Banner processModel/0008eabb-8b17-8000-0471-7f0000014e7a.xml
 #4             ="EFRM ATC Upload to Banner" processModel/0009eab0-2a03-8000-027b-7f0000014e7a.xml
 
-customParams("processModel/0002eab7-e965-8000-03e1-7f0000014e7a.xml")
+customParams(file.path(dir, "processModel/0002eab7-e965-8000-03e1-7f0000014e7a.xml"))
 
 
 # interfaceInformation objects in process models
-int = lapply(ff , interfaceInfo)
+int = lapply(ff , interfaceInfo, map)
 names(int) = sapply(ff, getName)
 w = sapply(int, length) > 0 
 table( w )

@@ -1,7 +1,8 @@
 library(RAppian)
-ff = list.files("processModel", pattern = "\\.xml$", full = TRUE)
+dir = "~/OGS/EForms/CodeReview/EFormsDec13"
+ff = list.files(file.path(dir, "processModel"), pattern = "\\.xml$", full = TRUE)
 ids = sapply(ff, getName)
-map = mkSummary()
+map = mkSummary(dir)
 pm = summarizeProcModel(ff[2], map)
 
 u = pm$nodes$uuid[pm$nodes$label == "Construct Data"]

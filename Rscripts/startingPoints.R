@@ -1,4 +1,3 @@
-
 k = rcode2$EFRM_getWorkflowFormRelatedInformationBasedOnVisibility$"local!allFormMap"
 
 wkflows = lapply(k[-1], function(x) x[ - 1])
@@ -14,9 +13,7 @@ info = data.frame(name = sapply(f2, function(x) x$name),
 info$procModel = sapply(info$processModel, function(x) getName(uuid2File(getConstantInfo(map$file[x == map$name])$value)))
 info$params = lapply(f2, function(x) names(x$processParameters)[-1])
 
-
 # Too recursive.
 #findCallsTo(k, "a!map", parse = FALSE)
-
 
 ################

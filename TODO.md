@@ -1,5 +1,27 @@
 # To-Do List for RAppian
 
++ support dir as argument and not having to have the working directory be the root directory 
+  of the Appian export.
+   + works for 
+     + Rscripts/allSAILCode.R
+     + Rscripts/allXMLElements.R
+     + Rscripts/app.R
+     + Rscripts/CMN.R
+     + Rscripts/documentation.R
+     + Rscripts/dupConstants.R
+     + Rscripts/findInterfaces.R
+     + Rscripts/findSAILCode.R
+     + Rscripts/funs.R
+     + Rscripts/getProgUnitTaskMasterIds.R
+     + Rscripts/InXML.R
+     + Rscripts/startingPoints.R
+     + Rscripts/summary2.R
+     + Rscripts/summaryXML.R
+     + Rscripts/TasksTypesForRoles.R
+     + Rscripts/whereSAILCode.R
+     + √ Rscripts/basics.R	 
+     + √ Rscripts/procModelCustomOutputs.R	 
+	 
 + for summarizeProcModel/customOutputs, 
    + handle when the assignment is to a field in a record type and not just NA in the target.
    + convert the code to map the UUID expressions to regular names.
@@ -14,17 +36,16 @@ In ans[multipart] <- if (!paths) sapply(murn, function(x) x[length(x)]) else sap
   number of items to replace is not a multiple of replacement length
 ```
 Same for
+```
 vv = callGraph("EFRM_FRM_qeReportGradStudiesReview", rcode, funOp = findAppianRecordTypeUses, map =
-map)
-but get 2 warnings.
-And it looks like they come from
 ```
-$EFRM_FRM_qeReportGradStudiesReview[[9]]
-`#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4afbd93/b87539b2-1296-40a5-acad-2393cab2ba04`
+  but get 2 warnings.
+And it looks like one can be reproduced with
+```
+rewriteCode( as.name("#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4afbd93/1cb529a4-9e21-4074-b6b7-39df41b99f78"), map)
+```
+    + in resolveURN() in uuids.R
 
-$EFRM_FRM_qeReportGradStudiesReview[[10]]
-`#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4afbd93/1cb529a4-9e21-4074-b6b7-39df41b99f78`
-```
 
 + for an expression or interface or any SAIL code,   determine for rule inputs
   which are 
