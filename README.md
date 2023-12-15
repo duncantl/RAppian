@@ -1,6 +1,7 @@
 # RAppian
 
-This is currently a relatively simple package to analyze (XML) data exported from an Appian instance for an application or package.
+This is a package for code analysis of an Appian application/package. 
+We use the "Export App" functionality to get the XML for all of the objects.
 The exported information includes all the relevant objects we see in the Appian Designer.
 
 The Appian Designer allows us to get almost all of the data we explore via this package.
