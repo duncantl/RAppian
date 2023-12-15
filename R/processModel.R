@@ -393,12 +393,17 @@ function(x, map = NULL, code = TRUE, dir = Rlibstree::getCommonPrefix(map$file))
     if(code)  {
         # can also get it by mapping the uuid to a uuid2File()
         # and
-        tmp = if("code" %in% names(map))
-                  map$code [[ which(map$uuid == ans$uuid ) ]]
-              else
-                  rewriteCode(StoR(getCode(uuid2File(ans$uuid, dir)), TRUE), map)
-        
-        ans$code = tmp
+
+        m = match(ans$uuid, map$uuid)
+        if(!is.na(m)) {
+            tmp = if("code" %in% names(map))
+                      map$code [[ i ]]
+                  else
+                      rewriteCode(StoR(getCode(uuid2File(ans$uuid, dir)), TRUE), map)
+            
+            ans$code = tmp
+        } else
+            warning("couldn't find the UUID ", ans$uuid, " in the map")
     }
     
     ans
