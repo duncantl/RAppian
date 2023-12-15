@@ -7,7 +7,7 @@ function(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix 
     ids = sapply(j[w], `[[`, "name")
     
     if(efrmOnly) {
-        w2 = grepl("^EFRM_", ids)
+        w2 = grepl("^(EFRM_|CMN)", ids)
         i = which(w)[w2]
         ids = ids[w2]
     } else
