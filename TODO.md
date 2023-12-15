@@ -51,9 +51,10 @@ rewriteCode( as.name("#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4
 
 + for an expression or interface or any SAIL code,   determine for rule inputs
   which are 
-   + inputs-only, 
-   + outputs only, 
-   + input-outputs
+   + inputs-only - never saved to 
+   + outputs only - only saved  
+   + input-outputs - used and saved
+   + not used.
 
 + understand Schema/XML documents
   + Rscripts/allXMLElements.R
