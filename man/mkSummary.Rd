@@ -1,89 +1,59 @@
 \name{mkSummary}
 \alias{mkSummary}
+\alias{xmlFiles}
 \title{Compute information about all objects in Appian app.}
 \description{
+  \code{mkSummary} reads all of the specified XML files in the
+  Appian export and provides a description of each
+  object as a row in a data.frame including the object name, type, description,
+  SAIL code, uuid.
+
+  \code{xmlFiles} returns the character vector
+  of paths to all the XML files in the Appian directory and subdirectories.
+  One can optionally remove the path to the directory to be able to
+  reference the files relative to the root directory.
 }
 \usage{
-mkSummary(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = recordTypeRelationships, xf = xmlFiles(dir))
+mkSummary(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo,
+          recRels = recordTypeRelationships, xf = xmlFiles(dir))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{dir}{
-%%     ~~Describe \code{dir} here~~
-}
-  \item{showOthers}{
-%%     ~~Describe \code{showOthers} here~~
-}
-  \item{recTypes}{
-%%     ~~Describe \code{recTypes} here~~
-}
-  \item{recRels}{
-%%     ~~Describe \code{recRels} here~~
-}
-  \item{xf}{
-%%     ~~Describe \code{xf} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
-\value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
-}
-\author{
-%%  ~~who you are~~
-}
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
-\seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
-}
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, 
-    recRels = recordTypeRelationships, xf = xmlFiles(dir)) 
-{
-    af = list.files(dir, recursive = TRUE, full = TRUE)
-    if (showOthers) 
-        print(dsort(table(tools::file_ext(setdiff(af, xf)))))
-    info = data.frame(name = sapply(xf, getName), type = sapply(xf, 
-        getDocType), uuid = gsub("\\.xml$", "", basename(xf)), 
-        file = xf)
-    info$description = sapply(xf, getDescription)
-    info$qname = paste(info$type, info$name, sep = "!")
-    rownames(info) = info$uuid
-    if (is.function(recTypes)) {
-        tmp = vector("list", nrow(info))
-        w = info$type == "recordType"
-        tmp[w] = lapply(info$file[w], recTypes)
-        info$recordType = tmp
-    }
-    if (is.function(recRels)) {
-        tmp = vector("list", nrow(info))
-        w = info$type == "recordType"
-        tmp[w] = lapply(info$file[w], recRels)
-        info$recordRelationships = tmp
-    }
-    class(info) = c("AppianAppInfo", class(info))
-    attr(info, "directory") = dir
-    info
+  \item{dir}{the path to the directory containing the Appian export}
+  \item{showOthers}{a logical value that controls whether
+    we print the information about files in the directory but not in the
+    list of XML files. This includes \code{.docx},
+     \code{.xsd}, \code{.json} and files in the \code{META-INF} subdirectory.
   }
+  \item{recTypes,recRels}{a function or \code{NULL}. If this is a function, it is called
+      for each record type object, passing the file name of the XML file  corresponding to that
+      record type. The results are then added as a column in the data.frame.
+      For the result for recTypes is stored in the column named \code{recordType},
+      and the result for recRels in a column named \code{recordRelationships}.
+    }
+  \item{xf}{the XML files as a character vector of full file names}
 }
+%\details{}
+\value{
+  A data.frame with a row for each XML file and elements
+  \item{name}{the name of the Appian object}
+  \item{type}{its type as a string}
+  \item{uuid}{its UUID}
+  \item{file}{the XML file for that object}
+  \item{description}{the text describing the object.}
+  \item{qname}{the qualified name, i.e. with the domain prefix such as \code{interface!},
+  \code{constant!}, ...}
+  \item{recordType}{a list. By default, any element corresponding to a \sQuote{recordType} is a
+  data.frame describing the fields and their types in the record}
+  \item{recordRelationships}{a list. By default, any element corresponding to a \sQuote{recordType} is a
+  data.frame describing the relationships between fields in this record type and fields in other record types}
+  \item{LOC}{the number of lines of code}      
+
+}
+%\references{}
+\author{Duncan Temple Lang}
+\seealso{}
+%\examples{}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 % \keyword{ ~kwd1 }
