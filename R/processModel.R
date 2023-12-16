@@ -353,7 +353,7 @@ function(x, map)
 
 getAppValue =
     #
-    # If tye == "a:Bean?list", then this is a a list of acp objects
+    # If type == "a:Bean?list", then this is a a list of acp objects
     #
 function(x, map = NULL, type = xmlGetAttr(x, "type"))
 {

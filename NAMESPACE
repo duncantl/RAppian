@@ -17,7 +17,8 @@ export(
 
 export(procModelNodes,
        procModelVars,
-       summarizeProcModel)
+       summarizeProcModel,
+       procName)
 
 
 
@@ -106,6 +107,8 @@ export(isEnvSpecific,
 # findMissingUUIDs
 #
 # outputInfo 
-# procVars
 
+# procVars - but procModelVars is exported and parallels procModelNodes
+# procModelPos, lanes, plotProcModel.
 #
+# 

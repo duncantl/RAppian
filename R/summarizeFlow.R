@@ -20,12 +20,16 @@ function(name, map = mkSummary())
 {
     ff = mapFile(name, map)
 
+    ff = mkDoc(ff)
+    
     co = customOutputs(ff)
     structure(list(nodes = procModelNodes(ff),
                    processVars = procVars(ff),
                    interfaceInfo = interfaceInfo(ff, map),
                    customOutputs = co,
                    outputVarFuns = outputInfo(co),
+                   dynamicName = procName(ff),
+                   name = getName(ff),
                    file = ff
                    ), class = "ProcessModelInfo")
 }
