@@ -1,14 +1,15 @@
+# Also, see callGraph.R developed without thinking of this code!
 #
-# For each object, find which 
+# For each object, find which ....?????
 #
 # Should we be working from the SAIL code or from the XML
 #
 #
 
 if(FALSE) {
-    af = list.files(recursive = TRUE, pattern = "\\.xml$")
+    af = xmlFiles(dir) # list.files(recursive = TRUE, pattern = "\\.xml$")
     top = toplevelUUIDs(af = af)
-    us = lapply(af, uses, toplevel = top)
+    us = lapply(af, RAppian:::uses0, toplevel = top)
 }
 
 if(FALSE) {
@@ -54,8 +55,8 @@ uses0 =
     #
     # Also, can use StoR(, TRUE) and then get the symbols from the code
     # to see what the SAIL code calls.
-    # This is only focuses on the SAIL code, not the UUIDs in other parts of he
-    # XML, but that includes the history, versions, permissions/roles, etc.
+    # This only focuses on the SAIL code, not the UUIDs in other parts of the
+    # XML, which includes the history, versions, permissions/roles, etc.
     #
 function(file, txt = paste(readLines(file), collapse = "\n"),
          toplevel = toplevelUUIDs(),
@@ -69,11 +70,14 @@ function(file, txt = paste(readLines(file), collapse = "\n"),
 }
 
 toplevelUUIDs =
+    #
+    # Get the UUIDs of the top-level objects across all objects
+    # in the Appian application.
+    #
 function(dir = ".", af = xmlFiles(dir))
 {
     gsub("\\.xml$", "", basename(af))
 }
-
 
 
 directUses =
