@@ -13,11 +13,14 @@ function(doc)
 
     ans = structure(as.data.frame(tmp), names = names(vars))
     ans[c("x", "y")] =    lapply(ans[c("x", "y")] , as.integer)
-    ans
+    structure(ans, class = c("ProcessModelPositions", class(ans)))
 }
 
-plotProcModel =
-function(doc, pm = procModelPos(doc), cex = .6)
+plot.ProcessModelPositions =
+function(x, y, ...)    
+    plotProcModel(x, ...)
+    
+function(doc, pm = procModelPos(doc), cex = .6, ...)
 {
     plot(1, xlim = c(0, max(pm$x)), ylim = c(0, max(pm$y)), type = "n", axes = FALSE, xlab = "", ylab = "")
     box()
