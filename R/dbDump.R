@@ -125,11 +125,25 @@ yaml_structure_or_data = "data")
 
 
 dbDump =
+    #
+    #  Can we renew the token by visiting
+    #    https://ucdavisdev.appiancloud.com/database/index.php
+    #  with the previous token?
+    #
+    #
 function(con = mkDBCon(...), params = DBParams,
          url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/export",
          read = TRUE, ...)
 {
     json = postForm(url, .params = params, curl = con, style = "post")
+
+    # Check we got a valid result and if not, raise an error now rather
+    # than when parsing the result as JSON when it is not.
+    a = attributes(json)
+    if( ! ("Content-Type" %in% names(a)) ||
+        a$"Content-Type"[1] != "text/plain")
+        stop("Didn't get the database content - probably an expired cookie")
+    
     if(read)
         readDBDump(json)
     else
@@ -139,10 +153,15 @@ function(con = mkDBCon(...), params = DBParams,
 mkDBCon =
 function(cookie = getDBCookie(), ...)
 {
-    getCurlHandle(cookie = cookie)
+    getCurlHandle(cookie = cookie, followlocation = TRUE, cookiejar = "")
 }
 
 getDBCookie =
+    #
+    # The cookie is sufficiently short that it can be readily pasted into
+    # the R session and it is sufficiently short-lived that it doesn't
+    # necessarily warrant saving to a file for reuse in a different R session.
+    #
 function()
 {
     ff = c("~/appiandev.cookie", "~/appian.cookie", "appian.cookie")
