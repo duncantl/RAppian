@@ -3,9 +3,8 @@
 + support dir as argument and not having to have the working directory be the root directory 
   of the Appian export.
    + works for 
-     + Rscripts/allSAILCode.R - needs ind.all from funs.R and then gets an error
-     + Rscripts/funs.R
-     + √ Rscripts/allXMLElements.R - check again after reinstall	 
+     + Rscripts/allSAILCode.R - needs ind.all from funs.R and then gets an error not dir related.
+     + √ Rscripts/allXMLElements.R 
      + √ Rscripts/app.R
      + √ Rscripts/basics.R
      + √ Rscripts/CMN.R
@@ -13,16 +12,19 @@
      + √ Rscripts/dupConstants.R	 
      + √ Rscripts/findInterfaces.R	 - just defines a function and the script code is if(FALSE)-ed
      + √ Rscripts/findSAILCode.R
+     + √ Rscripts/funs.R
      + √ Rscripts/getProgUnitTaskMasterIds.R
      + √ Rscripts/InXML.R
      + √ Rscripts/procModelCustomOutputs.R
      + √ Rscripts/whereSAILCode.R
      + √ Rscripts/startingPoints.R - problem because of constant in names. Not a dir problem.
-     + √ Rscripts/summary2.R - issue with uses(txt=, toplevel =) but that is uses0.  and change to uses()
+     + √ Rscripts/summary2.R
      + √ Rscripts/summaryXML.R
      + √ Rscripts/TasksTypesForRoles.R
 
-+ fix startingPoints.R now broken due to constants for name - that's my intentional doing!
++ fix startingPoints.R now broken due to constants for name
+
++ allSAILCode.R - issue now with the GM1_legacyHandler_submit not being in the ind.all.
 
 + for summarizeProcModel/customOutputs, 
    + handle when the assignment is to a field in a record type and not just NA in the target.
@@ -49,7 +51,8 @@ rewriteCode( as.name("#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4
     + in resolveURN() in uuids.R
 
 
-+ for an expression or interface or any SAIL code,   determine for rule inputs
+
++ for an expression or interface or any SAIL code, determine for rule inputs
   which are 
    + inputs-only - never saved to 
    + outputs only - only saved  
@@ -143,7 +146,7 @@ rewriteCode(k, map)
    + see uses.R
 
 + which expression rules use which record types.
-   + see uses.R
+   + see uses.R and callGraph.R
 
 + [partial] get the details from nodes in a process model
     + procModelNodes()
@@ -156,6 +159,8 @@ rewriteCode(k, map)
 
 
 # Done
+
++ √ check if saveTo() identifies parameters such as saveInto and selectionSaveInto (EFRM_SEC_OpenTasks)
 
 + √ Show call graph for 2 or more functions.
 ```
