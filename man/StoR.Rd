@@ -2,93 +2,53 @@
 \alias{StoR}
 \alias{rewriteCode}
 \alias{findComments}
+% \alias{mkCode}
 \title{Convert SAIL code to R language objects}
 \description{
+  Functions to convert SAIL code from Appian objects
+  to an equivalent representation as R language objects
+  so we can analyze the contents of the code
+  using R tools.
+  These leverage the fact that the SAIL syntax is very close
+  to R's and relatively few and simple transformations
+  of the text of SAIL code makes it parseable as R code.
+  These functions can convert the raw SAIL code
+  to R and also resolve UUIDs in the code to symbolic
+  names corresponding to record types, record fields,
+  domain names (e.g., a!) to make the SAIL code
+  similar to what is visible in the Appian designer interface.
+
+  \code{StoR} is the primary function that transform the text of the SAIL
+  code to R syntax. This optionally parses the result R code.
+
+  \code{rewriteCode} is called on the result of \code{StoR} to
+  transform the UUIDs in the code to human-readable references to
+  other SAIL objects, e.g., the names of expression rules, record types,
+  fields in record types. 
 }
 \usage{
 StoR(x, parse = FALSE, procModel = FALSE)
 rewriteCode(code, map, warn = FALSE, parse = TRUE) 
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{x}{
-%%     ~~Describe \code{x} here~~
+  \item{x}{the SAIL code as a character string/vector}
+  \item{parse}{a logical value indicating whether to parse the resulting
+    R code and return an R language object}
+  \item{procModel}{a logical value that indicates whether the SAIL code
+    is the value of a process model custom output and so could contain a
+   \code{&} in the form \code{var&:code} as part of an \code{is appended to} operation.}
 }
-  \item{parse}{
-%%     ~~Describe \code{parse} here~~
-}
-  \item{procModel}{
-%%     ~~Describe \code{procModel} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
-}
+%\details{}
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
-}
-\references{
-%% ~put references to the literature/web site here ~
+  A character vector/string or an R language object.
 }
 \author{
-%%  ~~who you are~~
+Duncan Temple Lang
 }
-\note{
-%%  ~~further notes~~
-}
-
-%% ~Make other sections like Warning with \section{Warning }{....} ~
-
 \seealso{
-%% ~~objects to See Also as \code{\link{help}}, ~~~
+  \code{\link{xmlFiles}},   \code{\link{mkSummary}}
 }
-\examples{
-##---- Should be DIRECTLY executable !! ----
-##-- ==>  Define data, use random,
-##--	or do  help(data=index)  for the standard data sets.
-
-## The function is currently defined as
-function (x, parse = FALSE, procModel = FALSE) 
-{
-    x = gsub(",[[:space:]]*$", "", x)
-    x = gsub("(![a-zA-Z0-9]+)\\.\\[", "\\1[", x)
-    x = fixAdjStrings(x)
-    x = removeComments(x)
-    x = mkList(x)
-    x = gsub("^= *", "", x)
-    x = gsub(": =ri!", ": ri!", x)
-    x = gsub(":= #\"", ": #\"", x)
-    if (procModel) 
-        x = gsub("&:", ":", x)
-    x = changeOperators(x)
-    x = gsub("(![a-zA-Z0-9]+)\\.(?= )", "\\1 & \".\" ", x, perl = TRUE)
-    x = gsub("(![a-zA-Z0-9]+)\\.(?=[^ ])", "\\1$", x, perl = TRUE)
-    x = escapeUUIDs(x)
-    x = gsub("([a-z]+|AC)!([a-zA-Z0-9]+)", "`\\1!\\2`", x)
-    x = gsub(": ", " = ", x)
-    x = gsub("if\\(", "IF\\(", x)
-    x = gsub("repeat\\(", "Repeat(", x)
-    x = gsub("\\)\\.", ")$", x)
-    x = gsub("= _([,)])", "= `_`\\1", x)
-    x = gsub("\\(_([,)])", "(`_`\\1", x)
-    x = gsub(" = == ", " == ", x)
-    x = gsub("\\\\", "\\\\\\\\", x)
-    if (parse) {
-        ans = tryCatch(parse(text = x, keep.source = FALSE), 
-            error = function(e) {
-                parse(text = collapseLines(x), keep.source = FALSE)
-            })
-        if (is.expression(ans) && length(ans) == 1) 
-            ans[[1]]
-        else ans
-    }
-    else x
-  }
-}
+%\examples{}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 % \keyword{ ~kwd1 }
