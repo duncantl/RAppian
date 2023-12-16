@@ -5,6 +5,7 @@
 \alias{getDescription}
 \alias{getFolder}
 \alias{getCode}
+\alias{getUUID}
 \alias{recordType}
 \alias{ruleInputs}
 \alias{siteInfo}
@@ -13,36 +14,29 @@
 \alias{interfaceInfo}
 \title{Get meta information from Appian object}
 \description{
+  These functions read the XML for an Appian object and return the
+  meta data about that object such as
+  the name, description, type, the UUID, which folder it is in.
+  For record types, we can get a description of fields and types.
 }
 \usage{
 getName(doc)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{doc}{
-%%     ~~Describe \code{doc} here~~
-}
-}
-\details{
-%%  ~~ If necessary, more details than the description above ~~
+  \item{doc}{the path to the XML file for the Appian object or the parsed XML document for that object.}
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
 }
-\references{
-%% ~put references to the literature/web site here ~
-}
+%\references{}
 \author{
   Duncan Temple Lang
 }
 
 \seealso{
+\code{\link{procModelNodes}}, \code{\link{procModelVars}}
 }
-\examples{}
+%\examples{}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 %\keyword{ ~kwd1 }
