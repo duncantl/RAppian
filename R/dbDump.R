@@ -131,7 +131,8 @@ dbDump =
     #  with the previous token?
     #
     #
-function(con = mkDBCon(...), params = DBParams,
+function(con = mkDBCon(cookie, ...),
+         cookie = getDBCookie(), params = DBParams,
          url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/export",
          read = TRUE, ...)
 {
