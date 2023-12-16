@@ -5,9 +5,15 @@ function(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix 
     j = RJSONIO::fromJSON(file)
     w = sapply(j, `[[`, "type") == "table"
     ids = sapply(j[w], `[[`, "name")
+
+    tableNameRX = "^(EFRM|CMN|EXP)"
+    if(is.character(efrmOnly)) {
+        tableNameRX = sprintf("^(%s)", paste(efrmOnly, collapse = "|"))
+        efrmOnly = TRUE
+    }
     
     if(efrmOnly) {
-        w2 = grepl("^(EFRM_|CMN)", ids)
+        w2 = grepl(tableNameRX, ids)
         i = which(w)[w2]
         ids = ids[w2]
     } else
@@ -15,7 +21,7 @@ function(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix 
 
 
     if(removePrefix)
-        ids = gsub("^(EFRM|CMN|RWM)_", "", ids)
+        ids = gsub("^(EFRM|CMN|RWM|EXP|[A-Z]+)_", "", ids)
     
     structure(lapply(j[i], mkDBTable), names = ids)
 }
