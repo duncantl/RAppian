@@ -246,6 +246,7 @@ v = saveTo(rcode2$EFRM_FORM_qeApplication)
 #   "Designated Emphasis Application"
 # "Yes", "No" in {} of choice labels in about 74 places.
 
+library(rstatic) #XXX
 literals = lapply(rcode2, function(x) find_nodes(to_ast(x), function(x) inherits(x, c("Numeric", "Integer", "Character"))))
 z = unlist(literals, recursive = FALSE)
 lit.class = sapply(z, function(x) class(x)[1])
@@ -280,8 +281,6 @@ isnum = sapply(z, inherits, "Numeric")
 num = z[ isnum ]
 num.vals = sapply(num, function(x) x$value)
 w = num.vals == 30
-
-
 
 
 
@@ -320,6 +319,5 @@ table(tmp$type[tmp$numUses > 1])
 
 tmp.inf = tmp[ tmp$type == "interface" & tmp$numUses > 1,]
 tmp.inf[order(tmp.inf$numUses, decreasing = TRUE),  c("name", "numUses")]
-
 
 rownames(ind.all)[ ind.all[, "EFRM_GRID_COMMON_ActionHistory"] > 0]
