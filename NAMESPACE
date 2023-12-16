@@ -50,13 +50,13 @@ export(uses, ruses,
        toplevelUUIDs)
 
 export(rewriteCode, mkCountDfs, table2df, getPMWriteTypes, procModelUses, mergeCounts)
+export(customInputs, customOutputs) # called by procModelUses but make them available directly.
 
 export(mapName)
 
 
 export(readDBDump)
 export(dbDump)
-
 
 export(mapConsValue,
        getDescription,
@@ -94,3 +94,18 @@ export(AppianTypesNS)
 # Conflicts with CodeAnalysis
 export(callGraph)
 
+export(findAppianCalledFuns, findAppianRecordTypeUses, findAppianConstants)
+
+
+export(isEnvSpecific,
+       localVarNames
+# varNames - same as localVarNames       
+       )
+
+# getCustomizationConstants
+# findMissingUUIDs
+#
+# outputInfo 
+# procVars
+
+#
