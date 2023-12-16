@@ -371,10 +371,12 @@ function(x, map = NULL, type = xmlGetAttr(x, "type"))
 
 
 interfaceInfo =
-function(doc, map = NULL)
+function(doc, map = NULL, dir = Rlibstree::getCommonPrefix(map$file))
 {
     doc = mkDoc(doc)
-    ans = xpathApply(doc, "//x:interfaceInformation", mkInterfaceInfo, map = map, namespaces = AppianTypesNS)
+    ans = xpathApply(doc, "//x:interfaceInformation",
+                     mkInterfaceInfo, map = map, dir = dir,
+                     namespaces = AppianTypesNS)
     names(ans) = sapply(ans, `[[`, "name")
     ans
 }
@@ -397,7 +399,7 @@ function(x, map = NULL, code = TRUE, dir = Rlibstree::getCommonPrefix(map$file))
         m = match(ans$uuid, map$uuid)
         if(!is.na(m)) {
             tmp = if("code" %in% names(map))
-                      map$code [[ i ]]
+                      map$code [[ m ]]
                   else
                       rewriteCode(StoR(getCode(uuid2File(ans$uuid, dir)), TRUE), map)
             
