@@ -75,7 +75,9 @@ function(x, map = NULL)
 
 
 saveTo =
-function(x, asArg = FALSE)
+    #
+    #
+function(x, asArg = TRUE)
 {
     ans = findCallsTo(x, "a!save", parse = FALSE)
     if(length(ans)) {
@@ -86,12 +88,12 @@ function(x, asArg = FALSE)
 
     if(asArg) {
         k = findCallsTo(x)
-        w = sapply(k, function(x) "saveInto" %in% names(x) )
+        w = sapply(k, function(x) c("saveInto", "selectSaveInto") %in% names(x) )
         ans = c(ans, k[w])
     }
     
-    
     ans
 }
+
 
 
