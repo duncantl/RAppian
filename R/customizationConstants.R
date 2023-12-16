@@ -10,5 +10,5 @@ isEnvSpecific =
 function(doc)
 {
     doc = mkDoc(doc)
-    xpathSApply(doc, "//isEnvironmentSpecific", xmlValue) == "true"
+    getType(doc) == "constant" && xpathSApply(doc, "//isEnvironmentSpecific", xmlValue) == "true"
 }
