@@ -3,7 +3,8 @@
 This is a package for code analysis of an Appian application/package. 
 We use the "Export App" functionality to get the XML for all of the objects.
 This exported information includes all the relevant objects we see in the Appian Designer, with some
-rare exceptions.
+rare exceptions such as when an object is not included in the export of the values of a constant
+that is marked environment-specific in Appian.
 
 The Appian Designer allows us to get almost all of the data we explore via this package.
 However, it is a different interface and exploration model, specifically, not programmatic.
