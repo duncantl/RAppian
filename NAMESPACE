@@ -112,3 +112,6 @@ export(isEnvSpecific,
 # procModelPos, lanes, plotProcModel.
 #
 # 
+
+
+export(changed, cmp, stack, showDiffs, showDiffDF)
