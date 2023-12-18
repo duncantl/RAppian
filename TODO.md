@@ -33,25 +33,6 @@
 + for summarizeProcModel/customOutputs, if appends to, indicate this.  We remove the & but don't
    keep that information.
 
-+ For EFormsDec13
-```
-Warning message:
-In ans[multipart] <- if (!paths) sapply(murn, function(x) x[length(x)]) else sapply(murn,  :
-  number of items to replace is not a multiple of replacement length
-```
-Same for
-```
-vv = callGraph("EFRM_FRM_qeReportGradStudiesReview", rcode, funOp = findAppianRecordTypeUses, map =
-```
-  but get 2 warnings.
-And it looks like one can be reproduced with
-```
-rewriteCode( as.name("#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4afbd93/1cb529a4-9e21-4074-b6b7-39df41b99f78"), map)
-```
-    + in resolveURN() in uuids.R
-
-
-
 + for an expression or interface or any SAIL code, determine for rule inputs
   which are 
    + inputs-only - never saved to 
@@ -143,7 +124,7 @@ rewriteCode(k, map)
 
 
 + call graph of which object uses other objects
-   + see uses.R
+   + see uses.R & callGraph.R
 
 + which expression rules use which record types.
    + see uses.R and callGraph.R
@@ -152,13 +133,44 @@ rewriteCode(k, map)
     + procModelNodes()
 
 + login() and be able to 
-   + download the exported databases
+   + √ download the exported databases
+       + need cookie.
    + dowload the export Application
 
 
 
 
 # Done
+
++ For EFormsDec13
+```
+Warning message:
+In ans[multipart] <- if (!paths) sapply(murn, function(x) x[length(x)]) else sapply(murn,  :
+  number of items to replace is not a multiple of replacement length
+```
+Same for
+```
+vv = callGraph("EFRM_FRM_qeReportGradStudiesReview", rcode, funOp = findAppianRecordTypeUses, map =
+```
+  but get 2 warnings.
+And it looks like one can be reproduced with
+```
+dir = "~/OGS/EForms/CodeReview/EFormsDec13"
+source("Rscripts/basics.R")
+rewriteCode(rcode[["EFRM_TestDumbFormStart"]], map)
+# OR previously before we included CMN
+rewriteCode(as.name("#urn:appian:record-field:v1:a959cec9-97e5-46ca-9274-d693b4afbd93/1cb529a4-9e21-4074-b6b7-39df41b99f78"),
+map)
+```
+    + in resolveURN() in uuids.R
+	+ resolveMultiURN() returning c(NA, NA)
+    + Problem is referencing objects that are in another application, e.g, CMN, Explorations,
+	   "GradSphere Release 1 Mockups (GM1)"
+    + Seem to have fixed by coercing the return in resolveMultiURN() when all NAs to character
+      vector.  resolveURN() checks sum(multipart) == 1 && is.character(murn). So ensuring
+	   murn is a character vector fixes the warning. 
+	   Still can't resolve but leaves as is.
+
 
 + √ check if saveTo() identifies parameters such as saveInto and selectionSaveInto (EFRM_SEC_OpenTasks)
 

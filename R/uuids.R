@@ -172,7 +172,7 @@ function(x, map, col = "qname")
     w =  els[i] == map$uuid 
     file = map$file[w]
     if(length(file) == 0)
-        return(rep(NA, length(els)))
+        return(as.character(rep(NA, length(els))))
     
     rt = map$recordType[[ which(w) ]]
     rr = map$recordRelationships [[ which(w) ]] # recordTypeRelationships(file)
