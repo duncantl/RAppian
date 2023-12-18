@@ -4,18 +4,24 @@ library(RJSONIO)
 # invisible(lapply(list.files("~/OGS/EForms/RAppian/R", full = TRUE, pattern = "\\.R$"), source))
 
 if(!exists("dir", inherits = FALSE)) {
-    if(file.exists("META-INF"))
-        dir = "."
-    else
-        dir = "~/OGS/EForms/CodeReview/EFormsDec13"
+
+    dir = getOption("AppianExport", 
+    
+                    if(file.exists("META-INF"))
+                        dir = "."
+                    else
+                        dir = "~/OGS/EForms/CodeReview/EFormsDec13"
+                    )
 }
 
 
 #umap = mkUUIDMap(dir)
 map = mkSummary(dir)
 
-if(file.exists("~/OGS/EForms/CodeReview/CMN")) 
-    map = rbind(map, mkSummary("~/OGS/EForms/CodeReview/CMN"))
+# "~/OGS/EForms/CodeReview/CMN"
+cmn.dir = mostRecent("^CMN",  normalizePath(file.path(dir, "..")))
+if(length(cmn.dir)) 
+    map = rbind(map, mkSummary(cmn.dir))
 
 map$code = sapply(map$file, getCode)
 map$LOC = sapply(strsplit(map$code, "\n"), length)
