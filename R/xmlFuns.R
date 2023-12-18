@@ -33,7 +33,8 @@ function(doc)
                        else
                            xmlValue(con[["typedValue"]][["value"]]),
                type = xmlValue(con[["typedValue"]][["type"]][["name"]]),
-               numValues = xmlSize(con[["typedValue"]][["value"]]))
+               numValues = xmlSize(con[["typedValue"]][["value"]]),
+               file = docName(doc))
 }
 
 
