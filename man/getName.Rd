@@ -1,5 +1,6 @@
 \name{getName}
 \alias{getName}
+\alias{procName}
 \alias{getType}
 \alias{getDocType}
 \alias{getDescription}
@@ -12,6 +13,7 @@
 \alias{recordTypeInfo}
 \alias{getConstantInfo}
 \alias{interfaceInfo}
+\alias{isEnvSpecific}
 \title{Get meta information from Appian object}
 \description{
   These functions read the XML for an Appian object and return the
@@ -21,10 +23,21 @@
 }
 \usage{
 getName(doc)
+procName(doc)
+getType(doc)
+recordType(doc)
+siteInfo(doc)
+getCode(doc, noCode = NA)
+getUUID(doc)
+ruleInputs(doc, map = NULL)
+isEnvSpecific(doc)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{doc}{the path to the XML file for the Appian object or the parsed XML document for that object.}
+  \item{noCode}{the value to return for an XML document that contains no code content}
+  \item{map}{a data.frame describing all of the objects in the exported application(s),
+    typically created via \code{\link{mkSummary}}.}
 }
 \value{
 }
