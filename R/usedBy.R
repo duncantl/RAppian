@@ -1,6 +1,13 @@
 usedBy = 
 function(code, domain = "interface", fun = mkUsesFun(domain))
 {
+    w = is.na(names(code))
+    if(any(w)) {
+        warning(paste(sum(w), " element(s) have NA as their name. Converting to NA1, ..."))
+        names(code)[w] = paste0("NA", seq_len(sum(w)))
+    }
+    
+    
     iuses = lapply(code, fun)
 
     ind = matrix(0, length(iuses), length(iuses), dimnames = list(names(code), names(code)))
