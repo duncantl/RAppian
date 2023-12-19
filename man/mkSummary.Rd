@@ -1,6 +1,9 @@
 \name{mkSummary}
 \alias{mkSummary}
+\alias{mkAppInfo} % direct alias of mkSummary.
 \alias{xmlFiles}
+\alias{getFolder}
+\alias{toplevelUUIDs}
 \title{Compute information about all objects in Appian app.}
 \description{
   \code{mkSummary} reads all of the specified XML files in the
@@ -12,10 +15,19 @@
   of paths to all the XML files in the Appian directory and subdirectories.
   One can optionally remove the path to the directory to be able to
   reference the files relative to the root directory.
+
+  \code{getFolder} computes the name of the folder for each of the
+  Appian objects/XML files in the application.
+
+  \code{toplevelUUIDS} gets the UUIDs from the XML file names and is the same
+  as \code{sapply(xmlFiles(dir), getUUID)} but extracts the UUID from the file name
+  not the contents of the file.
 }
 \usage{
 mkSummary(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo,
           recRels = recordTypeRelationships, xf = xmlFiles(dir))
+getFolders(dir = ".", files = xmlFiles(dir))
+xmlFiles(dir = ".", rmDir = dir == ".") 
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -31,7 +43,9 @@ mkSummary(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo,
       For the result for recTypes is stored in the column named \code{recordType},
       and the result for recRels in a column named \code{recordRelationships}.
     }
-  \item{xf}{the XML files as a character vector of full file names}
+    \item{xf}{the XML files as a character vector of full file names}
+    \item{rmDir}{a logical value controlling whether to remove the common
+     prefix which is \code{dir} to have relative file names.}
 }
 %\details{}
 \value{
