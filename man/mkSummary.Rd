@@ -4,6 +4,7 @@
 \alias{xmlFiles}
 \alias{getFolders}
 \alias{toplevelUUIDs}
+\alias{mkCodeInfo}
 \title{Compute information about all objects in Appian app.}
 \description{
   \code{mkSummary} reads all of the specified XML files in the
@@ -27,8 +28,8 @@ mkSummary(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo,
 getFolders(dir = ".", files = xmlFiles(dir))
 xmlFiles(dir = ".", rmDir = dir == ".")
 toplevelUUIDs(dir = ".", xf = xmlFiles(dir), simple = TRUE)
+mkCodeInfo(dir = ".", files = xmlFiles(dir))
 }
-%- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{dir}{the path to the directory containing the Appian export}
   \item{showOthers}{a logical value that controls whether
@@ -42,7 +43,7 @@ toplevelUUIDs(dir = ".", xf = xmlFiles(dir), simple = TRUE)
       For the result for recTypes is stored in the column named \code{recordType},
       and the result for recRels in a column named \code{recordRelationships}.
     }
-    \item{xf}{the XML files as a character vector of full file names}
+    \item{xf,files}{the XML files as a character vector of full file names}
     \item{rmDir}{a logical value controlling whether to remove the common
       prefix which is \code{dir} to have relative file names.}
     \item{simple}{a logical value. If \code{TRUE}, we compute the UUIDs from
@@ -50,7 +51,7 @@ toplevelUUIDs(dir = ".", xf = xmlFiles(dir), simple = TRUE)
 }
 %\details{}
 \value{
-  A data.frame with a row for each XML file and elements
+  \code{mkSummary} returns a data.frame with a row for each XML file and elements
   \item{name}{the name of the Appian object}
   \item{type}{its type as a string}
   \item{uuid}{its UUID}
@@ -62,12 +63,18 @@ toplevelUUIDs(dir = ".", xf = xmlFiles(dir), simple = TRUE)
   data.frame describing the fields and their types in the record}
   \item{recordRelationships}{a list. By default, any element corresponding to a \sQuote{recordType} is a
   data.frame describing the relationships between fields in this record type and fields in other record types}
-  \item{LOC}{the number of lines of code}      
 
+\code{mkCodeInfo} returns a similar data.fame with \code{name}, \code{type},
+\code{uuid}, \code{file} and an element named \code{code}
+which contains the primary SAIL code for the corresponding Appian object/XML file.
 }
 %\references{}
 \author{Duncan Temple Lang}
-\seealso{}
+\seealso{
+  \code{\link{getCode}},
+  \code{\link{getName}},
+  \code{\link{getUUID}}
+}
 %\examples{}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
