@@ -30,6 +30,8 @@
    + handle when the assignment is to a field in a record type and not just NA in the target.
    + convert the code to map the UUID expressions to regular names.
 
+
+
 + for summarizeProcModel/customOutputs, if appends to, indicate this.  We remove the & but don't
    keep that information.
 
@@ -141,6 +143,10 @@ rewriteCode(k, map)
 
 
 # Done
+
++ √ Enhance localVarNames to handle NULL and calls that are not to a!localVariables, e.g.,
+   optionally don't throw an error but just return character() so we can 
+   lapply(rcode2, localVarNames) w/o errors.
 
 + For EFormsDec13
 ```
