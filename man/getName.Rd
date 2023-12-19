@@ -15,6 +15,7 @@
 \alias{getConstantInfo}
 \alias{interfaceInfo}
 \alias{isEnvSpecific}
+\alias{getRecordTypeCode}
 \title{Get meta information from Appian object}
 \description{
   These functions read the XML for an Appian object and return the
