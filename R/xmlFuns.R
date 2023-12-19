@@ -46,7 +46,7 @@ getName =
     #
 function(doc)
 {
-    if(is.na(doc))
+    if((is.logical(doc) || is.character(doc)) && is.na(doc))
         return(NA)
     
     if(is.name(doc))
