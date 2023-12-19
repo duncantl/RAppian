@@ -83,11 +83,15 @@ stack =
     #   tmp = do.call(rbind, stack(d1, d0, "TASK_LOG"))
     #   split(tmp, tmp[,1])
     #
-function(new, prev, table, id = 94)    
+function(new, prev, table, id = 94, byRecord = FALSE)    
 {
     new2 = subset(new[[table]], REQUEST_ID == id)
     prev2 = subset(prev[[table]], REQUEST_ID == id)
-    list(new = new2, old = prev2)
+    if(byRecord) {
+        tmp = rbind(new2, prev2)
+        split(tmp,  tmp[[1]])
+    } else
+        list(new = new2, old = prev2)
 }
 
 
