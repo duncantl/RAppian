@@ -30,7 +30,7 @@ mkUsesFun2 =
 function(codeNames)
 {
     function(x) {
-        g = CodeAnalysis:::all_symbols(x)
+        g = CodeAnalysis::all_symbols(x)
         g = gsub(".*!", "", g)
         
         table(g[ g %in% codeNames ] )

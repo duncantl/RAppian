@@ -1,7 +1,7 @@
 xmlFiles =
 function(dir = ".", rmDir = dir == ".")    
 {
-    ans = list.files(dir, recursive = TRUE, full = TRUE, pattern = "\\.xml$")
+    ans = list.files(dir, recursive = TRUE, full.names = TRUE, pattern = "\\.xml$")
     if(rmDir)
         rmCommonPrefix(ans)
     else
@@ -38,7 +38,7 @@ mkSummary = mkAppInfo =
 function(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = recordTypeRelationships,
          xf = xmlFiles(dir))
 {
-    af = list.files(dir, recursive = TRUE, full = TRUE)
+    af = list.files(dir, recursive = TRUE, full.names = TRUE)
 
     if(showOthers) 
         print(dsort(table(tools::file_ext(setdiff(af, xf)))))

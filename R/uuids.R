@@ -31,8 +31,6 @@ function(dir = ".", ff = list.files(dir, recursive = TRUE, full.names = TRUE))
               names = gsub("\\.xml", "", basename(ff)))
 }
 
-
-
 mapName =
     #
     # convert a uuid in various forms to a qualified name (e.g., a!foo)

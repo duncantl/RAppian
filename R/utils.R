@@ -15,7 +15,7 @@ function(x, dir = ".", missing = TRUE)
         return(ff)
  }
     
-    ffs = list.files(dir, pattern = "\\.xml$", full = TRUE, recursive = TRUE)
+    ffs = list.files(dir, pattern = "\\.xml$", full.names = TRUE, recursive = TRUE)
     i = grep(paste0("^", x), basename(ffs))
 #    i = pmatch(x, basename(ffs))
     if(length(i) == 0) {
