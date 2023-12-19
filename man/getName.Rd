@@ -4,6 +4,7 @@
 \alias{getType}
 \alias{getDocType}
 \alias{getDescription}
+\alias{getDefinition}
 \alias{getFolder}
 \alias{getCode}
 \alias{getUUID}
@@ -28,6 +29,7 @@ getType(doc)
 recordType(doc)
 siteInfo(doc)
 getCode(doc, noCode = NA)
+getDefinition(doc, noCode = NA)
 getUUID(doc)
 ruleInputs(doc, map = NULL)
 isEnvSpecific(doc)
