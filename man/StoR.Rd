@@ -33,6 +33,7 @@ rewriteCode(code, map, warn = FALSE, parse = TRUE)
 }
 \arguments{
   \item{x}{the SAIL code as a character string/vector}
+  \item{code}{the R language object (or string)}
   \item{parse}{a logical value indicating whether to parse the resulting
     R code and return an R language object}
   \item{procModel}{a logical value that indicates whether the SAIL code

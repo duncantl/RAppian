@@ -28,7 +28,7 @@ mkSummary(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo,
 getFolders(dir = ".", files = xmlFiles(dir))
 xmlFiles(dir = ".", rmDir = dir == ".")
 toplevelUUIDs(dir = ".", xf = xmlFiles(dir), simple = TRUE)
-mkCodeInfo(dir = ".", files = xmlFiles(dir))
+mkCodeInfo(dir = ".", xf = xmlFiles(dir))
 }
 \arguments{
   \item{dir}{the path to the directory containing the Appian export}

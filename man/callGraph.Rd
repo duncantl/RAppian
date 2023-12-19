@@ -38,7 +38,8 @@ callGraph(funNames, codeObjs, asDf = FALSE, funOp = findAppianCalledFuns, ...)
 Duncan Temple Lang
 }
 \seealso{
-  \code{\link{uses}},   \code{\link{uses0}}
+  % \code{\link{uses}},   \code{\link{uses0}}
+   \code{\link{usedBy}}
 }
 \examples{}
 % Add one or more standard keywords, see file 'KEYWORDS' in the

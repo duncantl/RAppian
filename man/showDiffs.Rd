@@ -19,17 +19,18 @@
 }
 \usage{
 showDiffs(new, prev, id = 94)
-showDiffDF(new, prev, id = 94)
+showDiffDF(new, prev, table, id = 94)
 changed(new, prev, op = identical)
 stack(new, prev, table, id = 94, byRecord = FALSE)    
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{new}{the new version of the database}
+  \item{new}{the new version of the database, a list of data.frames}
   \item{prev}{the previous/old version of the database}
   \item{id}{the Request ID of interest}
   \item{op}{the function for comparing two tables/data.frames, either \code{\link{identical}} or
     \code{\link{all.equal}}}
+  \item{table}{the name of the table within the database}
   \item{byRecord}{a logical value controlling whether to return
     the two data.frames in \code{stack} or to group the
     corresponding records and return the list of these data.frames.}

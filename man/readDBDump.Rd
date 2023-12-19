@@ -11,7 +11,8 @@
   via \code{\link{dbDump}}
 }
 \usage{
-readDBDump(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix = TRUE, efrmOnly = TRUE)
+readDBDump(file = mostRecent("127_0_0_1.*\\\\.json$", dir),
+           dir = ".", removePrefix = TRUE, efrmOnly = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

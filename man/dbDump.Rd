@@ -14,7 +14,7 @@ dbDump(con = mkDBCon(cookie, ...),
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
-  \item{con}{}
+  \item{con}{the \code{RCurl} connection created via \code{mkDBCon}}
   \item{cookie}{the cookie for the HTTP request
     which can be provided as a character
     string or stored in a file \code{~/appiandev.cookie},
@@ -30,7 +30,8 @@ dbDump(con = mkDBCon(cookie, ...),
   \item{read}{a logical value controlling whether
     we return the JSON content or parse it into a list of data.frames
     via \code{readDBDump}}
-  \item{\dots}{}
+  \item{\dots}{additional arguments passed to \code{mkDBCon}
+    which passes them to \code{RCurl::getCurlHandle}}
 }
 \details{
 %%  ~~ If necessary, more details than the description above ~~
