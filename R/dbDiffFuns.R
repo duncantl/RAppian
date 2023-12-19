@@ -6,8 +6,8 @@
 
 changed = diff =
     # Which tables are different in the two database snapshots
-function(new, prev)
-    names(new)[!sapply(names(new), function(v) identical(new[[v]], prev[[v]]))]
+function(new, prev, op = identical)
+    names(new)[sapply(names(new), function(v) isFALSE(op(new[[v]], prev[[v]])))]
 
 showDiffs =
     # for each table that is different in the two databases
