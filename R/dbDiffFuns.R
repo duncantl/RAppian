@@ -15,10 +15,11 @@ showDiffs =
     # for each table in both the new and previous.
 function(new, prev, id = 94)
 {
+    # call changed above.
     w = !sapply(names(new), function(v) identical(new[[v]], prev[[v]]))
     invisible(lapply(names(new)[w],
                      function(v)
-                         showDiffDF( new , prev, v)))
+                         showDiffDF( new , prev, v, id)))
 }
 
 showDiffDF =
