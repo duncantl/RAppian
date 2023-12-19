@@ -24,7 +24,7 @@ export(procModelNodes,
 
 # sailCode.R
 
-export(findCalls, getDomains)
+# export(findCalls, getDomains)
 
 # get all UUIDs in a document/text
 export(getUUIDs,

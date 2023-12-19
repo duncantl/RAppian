@@ -20,9 +20,12 @@ defs = sapply(con.files[hasCode], getDefinition)
 names(defs) = sapply(con.files[hasCode], getName)
 
 
-showCounts(dsort(table(unlist(lapply(defs, getDomains)))))
+# Do we want to work from actual R language objects representing the SAIL code and
+# get the domains from these rather than regular expressions.
+showCounts(dsort(table(unlist(lapply(defs, RAppian:::getDomains)))))
 
-showCounts(dsort(table(unlist(lapply(defs, findCalls)))))
+# Do we want findCalls or findCallsTo and process those?
+showCounts(dsort(table(unlist(lapply(defs, RAppian:::findCalls)))))
 
 
 ####
