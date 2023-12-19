@@ -6,13 +6,19 @@
   a SAIL \code{a!localVariables} call.
 }
 \usage{
-localVarNames(x, removeDomain = TRUE)
+localVarNames(x, removeDomain = TRUE, error = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{x}{the R call object representing the \code{a!localVariables} call}
   \item{removeDomain}{a logical value controlling whether
     to remove the \code{local!} prefix/domain from each of the variable names.}
+  \item{error}{a logical value controlling whether we raise an error
+    if \code{x} is not a call to \code{a!localVariables},
+    or instead return \code{character()}.
+    This makes it convenient to \code{lapply} \code{localVarNames} to a
+    a collection of code objects without having to deal with errors.
+  }
 }
 \value{
 A character vector.

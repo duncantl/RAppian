@@ -41,11 +41,16 @@ function(code)
 
 
 localVarNames = varNames =
-function(x, removeDomain = TRUE)
+function(x, removeDomain = TRUE, error = TRUE)
 {
     x = mkCode(x)
-    if(!is.call(x) || ! (is.name(x[[1]]) && as.character(x[[1]]) == "a!localVariables"))
+    if(!is.call(x) || ! (is.name(x[[1]]) && as.character(x[[1]]) == "a!localVariables")) {
+        if(!error)
+            return(character())
+        
         stop("localVarNames expects a call to a!localVariables")
+    }
+    
 
     x =  x[ - c(1, length(x) )]
     vars = names(x)
@@ -88,7 +93,7 @@ function(x, asArg = TRUE)
 
     if(asArg) {
         k = findCallsTo(x)
-        w = sapply(k, function(x) c("saveInto", "selectSaveInto") %in% names(x) )
+        w = sapply(k, function(x) any(c("saveInto", "selectSaveInto") %in% names(x) ))
         ans = c(ans, k[w])
     }
     
