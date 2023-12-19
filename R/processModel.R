@@ -19,7 +19,8 @@ function(doc)
 plot.ProcessModelPositions =
 function(x, y, ...)    
     plotProcModel(x, ...)
-    
+
+plotProcModel =
 function(doc, pm = procModelPos(doc), cex = .6, ...)
 {
     plot(1, xlim = c(0, max(pm$x)), ylim = c(0, max(pm$y)), type = "n", axes = FALSE, xlab = "", ylab = "")
