@@ -27,8 +27,8 @@ export(procModelNodes,
 # export(findCalls, getDomains)
 
 # get all UUIDs in a document/text
-export(getUUIDs,
-       mkUUIDMap)
+#export(getUUIDs,
+#       mkUUIDMap)
 
 # recordTypes.R
 export(
@@ -47,7 +47,7 @@ export(mkCodeInfo)
 export(compareTypeCounts)
 
 
-export(uses, ruses,
+export(#uses, ruses,
        toplevelUUIDs)
 
 export(rewriteCode, mkCountDfs, table2df, getPMWriteTypes, procModelUses, mergeCounts)
@@ -115,3 +115,8 @@ export(isEnvSpecific,
 
 
 export(changed, cmp, stack, showDiffs, showDiffDF)
+
+
+# Don't need to export this but make it available for me/others to build on
+export(resolveURN)
+
