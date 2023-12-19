@@ -74,9 +74,12 @@ toplevelUUIDs =
     # Get the UUIDs of the top-level objects across all objects
     # in the Appian application.
     #
-function(dir = ".", af = xmlFiles(dir))
+function(dir = ".", xf = xmlFiles(dir), simple = TRUE)
 {
-    gsub("\\.xml$", "", basename(af))
+    if(simple)
+        gsub("\\.xml$", "", basename(xf))
+    else
+        sapply(xf, getUUID)
 }
 
 

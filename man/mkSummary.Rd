@@ -19,15 +19,14 @@
   \code{getFolder} computes the name of the folder for each of the
   Appian objects/XML files in the application.
 
-  \code{toplevelUUIDS} gets the UUIDs from the XML file names and is the same
-  as \code{sapply(xmlFiles(dir), getUUID)} but extracts the UUID from the file name
-  not the contents of the file.
+  \code{toplevelUUIDS} gets the UUIDs from the XML files in the Appian application.
 }
 \usage{
 mkSummary(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo,
           recRels = recordTypeRelationships, xf = xmlFiles(dir))
 getFolders(dir = ".", files = xmlFiles(dir))
-xmlFiles(dir = ".", rmDir = dir == ".") 
+xmlFiles(dir = ".", rmDir = dir == ".")
+toplevelUUIDs(dir = ".", xf = xmlFiles(dir), simple = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -45,7 +44,9 @@ xmlFiles(dir = ".", rmDir = dir == ".")
     }
     \item{xf}{the XML files as a character vector of full file names}
     \item{rmDir}{a logical value controlling whether to remove the common
-     prefix which is \code{dir} to have relative file names.}
+      prefix which is \code{dir} to have relative file names.}
+    \item{simple}{a logical value. If \code{TRUE}, we compute the UUIDs from
+    the file name; otherwise, we call \code{\link{getUUID}} for each file to get the UUID.}
 }
 %\details{}
 \value{
