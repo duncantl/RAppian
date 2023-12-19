@@ -2,7 +2,7 @@
 \alias{mkSummary}
 \alias{mkAppInfo} % direct alias of mkSummary.
 \alias{xmlFiles}
-\alias{getFolder}
+\alias{getFolders}
 \alias{toplevelUUIDs}
 \title{Compute information about all objects in Appian app.}
 \description{
