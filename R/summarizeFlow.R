@@ -27,7 +27,7 @@ function(name, map = mkSummary())
                    processVars = procVars(ff),
                    interfaceInfo = interfaceInfo(ff, map),
                    customOutputs = co,
-                   outputVarFuns = outputInfo(co),
+                   outputVarFuns = outputInfo(co, map),
                    dynamicName = procName(ff),
                    name = getName(ff),
                    file = ff
@@ -65,7 +65,7 @@ function(name, map)
 
 
 outputInfo =
-function(co)    
+function(co, map)    
 {
     data.frame(nodeName = co$name,
                outVar = sapply(co$code, mkOutVar, map),
@@ -83,7 +83,7 @@ function(x, map)
        mapName(ans, map)
    else {
        if(ans == "[") {
-           ans = mapFieldAccessor(x[[3]])
+           ans = mapFieldAccessor(x[[3]], map)
        }
        ans
    }
@@ -106,14 +106,14 @@ function(x, map)
         stop("still not sure what to do with", deparse(k))
 
     if(as.character(k) == "[") 
-        return(mapFieldAccessor(e))
+        return(mapFieldAccessor(e, map))
 
 
     return("???")
 }
 
 mapFieldAccessor =
-function(e)
+function(e, map)
 {
     paste(as.character(e[[2]]),
           gsub(".*\\.", "", resolveURN(as.character(e[[3]]), map, "name", paths = FALSE)),
