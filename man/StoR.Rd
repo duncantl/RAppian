@@ -2,6 +2,7 @@
 \alias{StoR}
 \alias{rewriteCode}
 \alias{findComments}
+%\alias{mapName}
 % \alias{mkCode}
 \title{Convert SAIL code to R language objects}
 \description{
@@ -36,9 +37,15 @@ rewriteCode(code, map, warn = FALSE, parse = TRUE)
     R code and return an R language object}
   \item{procModel}{a logical value that indicates whether the SAIL code
     is the value of a process model custom output and so could contain a
-   \code{&} in the form \code{var&:code} as part of an \code{is appended to} operation.}
+    \code{&} in the form \code{var&:code} as part of an \code{is appended to} operation.}
+  \item{map}{the data.frame describing all of the objects in the
+    Appian application, typically obtained via call to \code{\link{mkSummary}}.
+    If this is supplied, the result includes a column
+    for the type of the variables providing the human-readable type name rather than the UUID.
+  }
+  \item{warn}{a logical value indicating whether to emit a warning
+    if any of the raw identifiers cannot be mapped to regular names.}
 }
-%\details{}
 \value{
   A character vector/string or an R language object.
 }
