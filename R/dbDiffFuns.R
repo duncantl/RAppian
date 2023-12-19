@@ -32,8 +32,10 @@ showDiffDF =
 function(new, prev, table, id = 94)
 {
     cat("##", table, "\n\n")
-    new2 = subset(new[[table]], REQUEST_ID == id)
-    prev2 = subset(prev[[table]], REQUEST_ID == id)    
+    a = subsetTables(new, prev, table, id)
+    new2 = a$new2
+    prev2 = a$prev2
+    
     if(nrow(new2) != nrow(prev2)) {
         idx = seq_len(min(nrow(new2), nrow(prev2)))
         if(length(idx) > 0 && !isTRUE( a <- all.equal(new2[idx,], prev2[idx,]))) {
@@ -42,10 +44,17 @@ function(new, prev, table, id = 94)
         }
         
         print(list(new = new2, old = prev2))
-    } else
+    } else {
         print(all.equal(new2, prev2))
+    }
 }
 
+subsetTables =
+function(new, prev, table, id)    
+{
+    list(new2 = subset(new[[table]], REQUEST_ID == id),
+         prev2 = subset(prev[[table]], REQUEST_ID == id))
+}
 
 cmp =
     # Check whether the subset of rows for the two tables
