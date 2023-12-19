@@ -6,5 +6,5 @@ Description: This allows us to explore different aspects
 Author: Duncan Temple Lang
 Maintainer: Duncan Temple Lang <dtemplelang@ucdavis.edu>
 Version: 0.1-0
-License: GPL2
-Imports: XML, RJSONIO
+License: GPL-2
+Imports: XML, RJSONIO, CodeAnalysis, RCurl, igraph, Rlibstree

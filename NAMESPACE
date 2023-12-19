@@ -2,6 +2,7 @@ import(XML)
 import(RJSONIO)
 import(RCurl)
 import(CodeAnalysis)
+importFrom("utils", "type.convert")
 
 #exportPattern(".*")
 
