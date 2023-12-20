@@ -87,6 +87,7 @@ function(x, asArg = TRUE)
     ans = findCallsTo(x, "a!save", parse = FALSE)
     if(length(ans)) {
         # ans = split(lapply(ans, function(x) x[[3]]), sapply(ans, function(x) as.character(x[[2]])))
+        # group the expressions being assigned by variable name.
         ans = split(lapply(ans, function(x) x[[3]]), sapply(ans, function(x) deparse(x[[2]])))        
     } else
         ans = list()
