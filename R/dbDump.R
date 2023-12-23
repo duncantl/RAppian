@@ -10,8 +10,41 @@ if(FALSE) {
     dput(p)
 }
 
-DBParams =
-    list(db = "Appian", table = "", export_type = "database", export_method = "quick", 
+DBParams = list(db = "", table = "", export_type = "server", export_method = "quick", 
+template_id = "", token = "7637672d5b5d262f3e7634683e665872", 
+quick_or_custom = "quick", what = "json", `db_select[]` = "Appian", 
+aliases_new = "", output_format = "sendit", filename_template = "@SERVER@", 
+remember_template = "on", charset = "utf-8", compression = "none", 
+maxsize = "", codegen_structure_or_data = "data", codegen_format = "0", 
+csv_separator = ",", csv_enclosed = "\"", csv_escaped = "\"", 
+csv_terminated = "AUTO", csv_null = "NULL", csv_columns = "something", 
+csv_structure_or_data = "data", excel_null = "NULL", excel_columns = "something", 
+excel_edition = "win", excel_structure_or_data = "data", json_structure_or_data = "data", 
+json_unicode = "something", latex_caption = "something", latex_structure_or_data = "structure_and_data", 
+latex_structure_caption = "Structure+of+table+@TABLE@", latex_structure_continued_caption = "Structure+of+table+@TABLE@+(continued)", 
+latex_structure_label = "tab:@TABLE@-structure", latex_comments = "something", 
+latex_columns = "something", latex_data_caption = "Content+of+table+@TABLE@", 
+latex_data_continued_caption = "Content+of+table+@TABLE@+(continued)", 
+latex_data_label = "tab:@TABLE@-data", latex_null = "%5Ctextit{NULL}", 
+mediawiki_structure_or_data = "data", mediawiki_caption = "something", 
+mediawiki_headers = "something", htmlword_structure_or_data = "structure_and_data", 
+htmlword_null = "NULL", ods_null = "NULL", ods_structure_or_data = "data", 
+odt_structure_or_data = "structure_and_data", odt_comments = "something", 
+odt_columns = "something", odt_null = "NULL", pdf_report_title = "", 
+pdf_structure_or_data = "data", phparray_structure_or_data = "data", 
+sql_include_comments = "something", sql_header_comment = "", 
+sql_use_transaction = "something", sql_compatibility = "NONE", 
+sql_structure_or_data = "structure_and_data", sql_create_table = "something", 
+sql_auto_increment = "something", sql_create_view = "something", 
+sql_create_trigger = "something", sql_backquotes = "something", 
+sql_type = "INSERT", sql_insert_syntax = "both", sql_max_query_size = "50000", 
+sql_hex_for_binary = "something", sql_utc_time = "something", 
+texytext_structure_or_data = "structure_and_data", texytext_null = "NULL", 
+yaml_structure_or_data = "data")
+
+
+# Was
+list(db = "Appian", table = "", export_type = "database", export_method = "quick", 
 template_id = "", token = "6442594b6250503c40446b46547b6834", 
 quick_or_custom = "quick", what = "json", structure_or_data_forced = "1", 
 `table_select[]` = "CMN_APPLICATION", `table_select[]` = "CMN_LOOKUP", 
@@ -30,7 +63,8 @@ quick_or_custom = "quick", what = "json", structure_or_data_forced = "1",
 `table_select[]` = "EFRM_REASSIGNMENT_LOG", `table_select[]` = "EFRM_REQUEST_DETAILS", 
 `table_select[]` = "EFRM_STUDENT_DETAILS", `table_select[]` = "EFRM_TASK_LOG", 
 `table_select[]` = "EFRM_TASK_MASTER", `table_select[]` = "EFRM_TERM_QUARTER_DETAILS_LOOKUP", 
-`table_select[]` = "EFRM_TITLE_MAP", `table_select[]` = "EFRM_WORKFLOW", 
+`table_select[]` = "EFRM_TITLE_MAP", `table_select[]` = "EFRM_WORKFLOW",
+#`table_select[]` = "EFRM_LEGACY_DETAILS", 
 `table_select[]` = "EXP_BOX_REPLACEMENT_ROUTING", `table_select[]` = "EXP_CHECK", 
 `table_select[]` = "EXP_FORM_DESCRIPTION", `table_select[]` = "EXP_GRADUATE_DIVISION_UNITS", 
 `table_select[]` = "M_MICROCREDENTIAL", `table_select[]` = "M_USER_MICRO_CREDENTIAL", 
@@ -123,6 +157,11 @@ xml_export_tables = "something", xml_export_triggers = "something",
 xml_export_views = "something", xml_export_contents = "something", 
 yaml_structure_or_data = "data")
 
+# Difference between the two sets
+# New:  has db_select[] = "Appian" element.
+# Old: has structure_or_data_forced, table_select[], sql_procedure_function, xml_structure_or_data,
+#      xml_export_events, xml_export_functions, xml_export_procedures, xml_export_tables, xml_export_triggers, xml_export_views, xml_export_contents
+# 73 elements in common.
 
 dbDump =
     #
@@ -134,7 +173,7 @@ dbDump =
 function(con = mkDBCon(cookie, ...),
          cookie = getDBCookie(), params = DBParams,
          url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/export",
-         read = TRUE, ...)
+         read = TRUE, removePrefix = TRUE, efrmOnly = TRUE, ...)
 {
     json = postForm(url, .params = params, curl = con, style = "post")
 
@@ -146,7 +185,7 @@ function(con = mkDBCon(cookie, ...),
         stop("Didn't get the database content - probably an expired cookie")
     
     if(read)
-        readDBDump(json)
+        readDBDump(json, removePrefix = removePrefix, efrmOnly = efrmOnly)
     else
         json
 }
