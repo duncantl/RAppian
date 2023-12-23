@@ -10,7 +10,8 @@ dbDump(con = mkDBCon(cookie, ...),
        cookie = getDBCookie(),
        params = DBParams,
        url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/export",
-       read = TRUE, ...)
+       read = TRUE, removePrefix = TRUE, efrmOnly = TRUE,
+      ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -30,18 +31,16 @@ dbDump(con = mkDBCon(cookie, ...),
   \item{read}{a logical value controlling whether
     we return the JSON content or parse it into a list of data.frames
     via \code{readDBDump}}
+  \item{removePrefix,efrmOnly}{passed to \code{\link{readDBDump}}. See description.}
   \item{\dots}{additional arguments passed to \code{mkDBCon}
     which passes them to \code{RCurl::getCurlHandle}}
 }
 \details{
-%%  ~~ If necessary, more details than the description above ~~
+  This makes an HTTPS POST request to get the JSON output
+  of all the tables contents.
 }
 \value{
-%%  ~Describe the value returned
-%%  If it is a LIST, use
-%%  \item{comp1 }{Description of 'comp1'}
-%%  \item{comp2 }{Description of 'comp2'}
-%% ...
+A list of data.frames.
 }
 \references{
 }
