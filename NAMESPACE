@@ -121,3 +121,6 @@ export(changed, cmp, stack, showDiffs, showDiffDF)
 # Don't need to export this but make it available for me/others to build on
 export(resolveURN)
 
+
+
+export(genRecordTypeCode)
