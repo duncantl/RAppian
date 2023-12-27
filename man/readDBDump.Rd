@@ -12,7 +12,8 @@
 }
 \usage{
 readDBDump(file = mostRecent("127_0_0_1.*\\\\.json$", dir),
-           dir = ".", removePrefix = TRUE, efrmOnly = TRUE)
+           dir = ".", removePrefix = TRUE, efrmOnly = TRUE,
+           convertTimestamps = c(GMT = ""))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,7 +24,14 @@ readDBDump(file = mostRecent("127_0_0_1.*\\\\.json$", dir),
  \item{efrmOnly}{either a logical value controlling whether the
    RWM tables are excluded or retained (\code{FALSE}) from the results
    or a character vector of prefixes identifying the table names to include, e.g.,
-    \code{c("EFRM", "EXP")}.}
+   \code{c("EFRM", "EXP")}.}
+ \item{convertTimestamps}{a named character vector with one element.
+   The name identifies the timezone for the original data and the
+   value specifies which timezone to convert the resulting POSIXct values to.
+   If this is \code{NA}, the columns are not converted.
+   If not \code{NA}, this converts all columns whose name
+   ends with \code{_ON} in each of the tables of the result.
+  }
 }
 
 \value{
