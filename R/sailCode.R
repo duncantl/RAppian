@@ -80,8 +80,7 @@ function(x, map = NULL)
 
 
 saveTo =
-    #
-    #
+    # Find the a!save() calls and optionally the saveInto and selectSaveInto.
 function(x, asArg = TRUE)
 {
     ans = findCallsTo(x, "a!save", parse = FALSE)
