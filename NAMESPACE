@@ -124,3 +124,5 @@ export(resolveURN)
 
 
 export(genRecordTypeCode)
+
+export(getTestCases)
