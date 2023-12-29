@@ -1,5 +1,9 @@
 # To-Do List for RAppian
 
++ StoR converts = to much, 
+   + e.g. "=" in `queryFilter(operator: "=")` becomes `operator == "===="`
+   + See test case code in EFRM_configureActiveInactiveCommitteeMembers
+
 + support dir as argument and not having to have the working directory be the root directory 
   of the Appian export.
    + works for 
