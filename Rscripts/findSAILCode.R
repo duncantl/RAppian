@@ -14,6 +14,7 @@ xpath = "//*[contains(./text(), '!') or contains(./text(), 'SYSTEM_SYSRULES_') o
 bang = lapply(map$file, function(x) getNodeSet(xmlParse(x), xpath))
 map$numBangs = sapply(bang, length)
 
+# Those types that appear to have no !
 table(map$type[map$numBangs == 0])
 
 

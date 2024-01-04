@@ -17,7 +17,7 @@ function(name = "EFRM Task Log", map,
 
     flds = mkRecordTypeFieldAccessors(uuid, name, rt)
 
-    if(tis.function(rhs)) {
+    if(is.function(rhs)) {
         rhs(flds, rt, uuid, name)
     } else
         flds
