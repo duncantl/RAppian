@@ -1,6 +1,6 @@
 source("basics.R")
 
-w = map$type == "Constant"
+w = map$type == "constant"
 y = sapply(map$file[w], isEnvSpecific)
 
 z = data.frame(name = map$name[w][y],
