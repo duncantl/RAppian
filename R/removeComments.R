@@ -1,6 +1,8 @@
 removeComments =
-function(x)
+function(x, procModel = FALSE)
 {
+    if(procModel)
+        x = gsub(":/\\*.*?\\*/ *=", ": ", x, perl = FALSE)    
    gsub("/\\*.*?\\*/", "", x, perl = FALSE)
 }
 

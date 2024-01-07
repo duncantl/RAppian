@@ -15,7 +15,7 @@ function(x, parse = FALSE, procModel = FALSE)
     # Fix the "....""...." or "....."""
     x = fixAdjStrings(x)
     
-    x = removeComments(x)
+    x = removeComments(x, procModel = procModel)
 
     # Do we need this given fixAdjStrings above?
     # Appears we don't 
@@ -30,10 +30,18 @@ function(x, parse = FALSE, procModel = FALSE)
     x = gsub(": =ri!", ": ri!", x)
     x = gsub(':= #"', ': #"', x)
 
-    if(procModel)
+    if(procModel) {
         # This may be the format for a "is appended to" a variable
         # rather than is stored.
         x = gsub("&:", ":", x)
+
+        # also, cases such as   <<<<<<<<<<<<<<<<
+        # "legacyDetails[#\"urn:appian:record-field:v1:169a9a73-eb0e-4bea-b812-643499e8b123/939e934d-4088-4a5e-a1e6-70cb20b21e17\"]:=pv!requestId"
+        # where there is a :=
+        #????
+        x = gsub(":=", ":", x)
+    }
+    
 
     # the order/when in this transformation process this is done is important.
     # Can end up with !===
