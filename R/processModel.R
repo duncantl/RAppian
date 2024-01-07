@@ -288,7 +288,7 @@ function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
         ans[1:2] = lapply(ans[1:2], unlist)
         ans$type = as.integer(ans$type)
         # node name
-        ans$name = rep(ids, sapply(tmp, length))
+        ans$nodeName = rep(ids, sapply(tmp, length))
         ans$uuid = rep(sapply(nn, xmlGetAttr, "uuid"), sapply(tmp, length))
         
         if(toR) {
