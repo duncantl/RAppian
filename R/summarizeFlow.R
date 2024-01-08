@@ -67,7 +67,7 @@ function(name, map)
 outputInfo =
 function(co, map)    
 {
-    data.frame(nodeName = co$name,
+    data.frame(nodeName = co$nodeName,
                outVar = sapply(co$code, mkOutVar, map),
                fun = sapply(co$code, mkOutFun, map))
 }
