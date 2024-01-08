@@ -1,5 +1,8 @@
 # To-Do List for RAppian
 
++ Add function to check activity chaining is complete along a path, or identify paths for which it
+  is complete.
+
 + StoR converts = to much, 
    + e.g. "=" in `queryFilter(operator: "=")` becomes `operator == "===="`
    + See test case code in EFRM_configureActiveInactiveCommitteeMembers
