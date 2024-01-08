@@ -405,7 +405,7 @@ function(x, map = NULL, code = TRUE, dir = Rlibstree::getCommonPrefix(map$file))
             tmp = if("code" %in% names(map))
                       map$code [[ m ]]
                   else
-                      rewriteCode(StoR(getCode(uuid2File(ans$uuid, dir)), TRUE), map)
+                      rewriteCode(StoR(getCode(uuid2File(ans$uuid, dir, map = map)), TRUE), map)
             
             ans$code = tmp
         } else

@@ -1,9 +1,13 @@
 uuid2File =
     # How related to mapFile() in summarizeFlow.R
-function(x, dir = ".", missing = TRUE)
+function(x, dir = ".", missing = TRUE, map = NULL)
 {
     if(file.exists(x))
         return(x)
+
+    if(!is.null(map) && !is.na(m <- match(x, map$uuid))) 
+        return(map$file[m])
+    
 
  if(FALSE) {
     ff = file.path(dir, "content", paste0(x, ".xml"))
