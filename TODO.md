@@ -3,6 +3,12 @@
 + Add function to check activity chaining is complete along a path, or identify paths for which it
   is complete.
 
++ Use of _ in SAIL code 
+   + legacy
+   + https://community.appian.com/discussions/f/rules/25286/underscore-using-within-functions
+   + partial evaluation
+   + See sail_underscore.sail
+
 + StoR converts = to much, 
    + e.g. "=" in `queryFilter(operator: "=")` becomes `operator == "===="`
    + See test case code in EFRM_configureActiveInactiveCommitteeMembers
