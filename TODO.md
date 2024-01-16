@@ -1,11 +1,22 @@
 # To-Do List for RAppian
 
++ fixAdjStrings is wrong and too agressive.
+  + Parsing problems after StoR for "EFRM_legacy_requestMilestones" 
+```
+"#\"SYSTEM_SYSRULES_milestoneField\"(steps: { \"Initiation\", \"Graduate Studies Review\", \"Banner Upload\", \n                            \"Completed\" & if(local!qualifier <> \"\", \" - \", \"\") & local!qualifier\n                          })"
+```
+    + removes the two "" in the if(), matching the end of the Completed" all the way to the start of
+      the " - ".
+    + we are trying to find "a string""another string"	  
+
+
 + Add function to check activity chaining is complete along a path, or identify paths for which it
   is complete.
 
 + Use of _ in SAIL code 
    + legacy
    + https://community.appian.com/discussions/f/rules/25286/underscore-using-within-functions
+   + https://community.appian.com/discussions/f/general/22179/meaning-of-underscore-_-in-a-pickerfieldcustom-component
    + partial evaluation
    + See sail_underscore.sail
 
