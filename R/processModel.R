@@ -2,6 +2,9 @@
 
 
 procModelPos =
+    #
+    # Doesn't show the connections yet.
+    #
 function(doc)
 {
     if(is.character(doc))
@@ -28,16 +31,21 @@ function(doc, pm = procModelPos(doc), cex = .6, ...)
     text(pm$x, max(pm$y) - pm$y, pm$label, cex = cex)
 }
 
-iconType =c("Write Record" = "155", "Interface" = "21",
-            "End Node" = "50", "End Event" = "51",
+
+iconType =c("Write Record" = "155",
+            "Interface" = "21",
+            "End Node" = "50",
+            "End Event" = "51",
             "AND" = "52",
-            "XOR" = "58", 
+            "XOR" = "58",
+            "OR" = "56",             
             "Script Task" = "68",
             "Subprocess" = "60", #XX reconcile these two
             "Subprocess" = "998", #XXX
             "Send E-Mail" = "84",
             "Generate Word Document" = "152",
-            "Delete Word Document" = "763")
+            "Delete Word Document" = "763"
+           )
 
 
 if(FALSE)  {
@@ -85,12 +93,28 @@ function(doc, map = NULL)
 
     # connections to other nodes
     cons = lapply(nodes, function(x) getNodeSet(x, ".//x:connections/x:connection", AppianTypesNS))
-    ans$connections = lapply(cons, function(x) do.call(rbind, lapply(x, function(x) data.frame(to = xmlValue(x[["to"]]),
-                                                                                        label = xmlValue(x[["flowLabel"]])))))
+    ans$connections = lapply(cons, function(x)
+                                       do.call(rbind, lapply(x, mkConnectionDF)))
     ans$numConnections = sapply(ans$connections, NROW)
     
     ans
 }
+
+mkConnectionDF =
+function(x)
+{
+    tmp = x[["chained"]]
+    chained = if(is.null(tmp))
+                  FALSE
+              else
+                  as.logical(toupper(xmlValue(tmp)))
+    
+    data.frame(to = xmlValue(x[["to"]]),
+               label = xmlValue(x[["flowLabel"]]),
+               chained = chained
+              )    
+}
+
 
 doACPs =
     #
