@@ -11,7 +11,7 @@ function(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix 
     w = sapply(j, `[[`, "type") == "table"
     ids = sapply(j[w], `[[`, "name")
 
-    tableNameRX = "^(EFRM|CMN|EXP)"
+    tableNameRX = "^(EFRM|CMN|EXP|EDOCS)"
     if(is.character(efrmOnly)) {
         tableNameRX = sprintf("^(%s)", paste(efrmOnly, collapse = "|"))
         efrmOnly = TRUE
