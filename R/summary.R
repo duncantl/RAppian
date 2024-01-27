@@ -59,14 +59,14 @@ function(dir = ".", showOthers = FALSE, recTypes = recordTypeInfo, recRels = rec
 
     if(is.function(recTypes)) {
         tmp = vector("list", nrow(info))
-        w = info$type == "recordType"
+        w = !is.na(info$type) & info$type == "recordType"
         tmp[w] = lapply(info$file[w], recTypes)
         info$recordType = tmp
     }
 
     if(is.function(recRels)) {
         tmp = vector("list", nrow(info))
-        w = info$type == "recordType"
+        w = !is.na(info$type) & info$type == "recordType"
         tmp[w] = lapply(info$file[w], recRels)
         info$recordRelationships = tmp
     }    
@@ -136,7 +136,7 @@ function(...)
 getConstants =
 function(map = mkSummary(dir), dir = ".")
 {
-   do.call(rbind, lapply( map$file[map$type == "constant"], getConstantInfo))
+   do.call(rbind, lapply( map$file[!is.na(map$type) & map$type == "constant"], getConstantInfo))
 }
 
     
