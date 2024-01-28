@@ -61,6 +61,9 @@ function(doc)
     # has @class=d-print-none 
     colNames = xpathSApply(tbl, ".//thead//th[@data-column]/@data-column")
     d = readHTMLTable(tbl)
+    if(is.null(d))
+        return(NULL)
+    
     # When should we be removing these? It is for the edit, delete, copy.
     #
     if(nrow(d) > 0 && ncol(d) > 3 && all(d[1, 1:3, drop = TRUE] == c("", " Edit", " Copy")))
