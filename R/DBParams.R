@@ -29,7 +29,7 @@ c(ajax_request = "true",
   server = "1",
   sql_query = "SELECT+*+FROM+%60EFRM_APPROVAL_DETAILS%60+WHERE+1%3B", 
   is_browse_distinct = "",
-  goto = "index.php%3Froute%3D%2Ftable%2Fstructure", 
+  goto = "", # "index.php%3Froute%3D%2Ftable%2Fstructure", 
   pos = "0",
   unlim_num_rows = "179",
   token = NA, 
@@ -49,7 +49,9 @@ function(token = getOption("AppianDBToken", stop("No Appian DB token")),
 
 if(FALSE) {
     url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/import"
-    cmd = mkPOSTBody(NA, params = SetNRowsParams, token = token, table = "EFRM_TASK_LOG")
-    z = httpPOST(url, postfields = cmd, cookie = k)
+    cmd = mkPOSTBody("SELECT COUNT(*) FROM EFRM_TASK_LOG", params = SetNRowsParams, token = token, table = "EFRM_TASK_LOG")
+    z = httpPOST(url, postfields = cmd, cookie = cookie)
+    ans = fromJSON(z)
+    ans$success
 }
 

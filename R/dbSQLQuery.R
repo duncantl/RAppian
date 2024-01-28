@@ -15,6 +15,11 @@ function(query, cookie, token = NA, url = "https://ucdavisdev.appiancloud.com/da
 {
     bdy = mkPOSTBody(query, token)
     z = httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
+
+    ct = attr(z, "Content-Type")
+    if(ct[1] == "text/html")
+        stop("query returned HTML. Probably stale cookie and/or token")
+    
     a = readDBResults(z)
 }
 
@@ -22,11 +27,18 @@ mkPOSTBody =
     #
     # Create the body of the POST request by merging the parameters into a name=value&name=value...
     #
-function(query, token = NA, params = RAppian:::DefaultParams)    
+function(query, token = NA, table = NA, params = RAppian:::DefaultParams)    
 {
     if(!is.na(token)) 
         params[names(params) == "token"] = token
 
+    if(!is.na(table)) 
+        params[names(params) == "table"] = table
+
+
+    if("_nocache" %in% names(params))
+        params["_nocache"] = as.character( as.numeric(Sys.time()) * 1e9)
+    
     params["sql_query"] = query
 
     paste(names(params), params, sep = "=", collapse = "&")
