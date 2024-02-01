@@ -446,3 +446,14 @@ function(x)
                type = xmlValue(x[["typeQName"]]),
                value = xmlValue(x[["value"]]))
 }
+
+
+getSubProcessUUIDs =
+function(doc)
+{
+    if(is.character(doc))
+        doc = xmlParse(doc)
+
+    xpathSApply(doc, "//x:node[./x:icon/@id = '60']//x:ac//x:acp[@name = 'pmUUID']/x:value",
+                xmlValue, namespaces = AppianTypesNS)    
+}
