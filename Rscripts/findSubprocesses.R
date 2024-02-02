@@ -1,11 +1,12 @@
 # Examine the process models and find all the subprocesses used within these
 #
 
+library(XML)
 pm = map$file[map$type == "processModel"]
 pm.docs = lapply(pm, function(x) xmlParse(x))
 names(pm.docs) = sapply(pm.docs, getName)
 
-subs = lapply(pm.docs, getSubProcessUUIDs)
+subs = lapply(pm.docs, RAppian:::getSubProcessUUIDs)
 subs = subs[sapply(subs, length) > 0]
 
 tt = table(unlist(subs))

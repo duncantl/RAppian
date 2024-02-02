@@ -440,6 +440,7 @@ function(x, map = NULL, code = TRUE, dir = Rlibstree::getCommonPrefix(map$file))
 }
 
 mkInterfaceInfoRI =
+    # RI - rule input
 function(x)    
 {
     data.frame(name = xmlValue(x[["name"]]),
