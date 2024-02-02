@@ -129,3 +129,5 @@ export(getTestCases)
 
 
 export(sql)
+
+export(listLogs, downloadLogs)
