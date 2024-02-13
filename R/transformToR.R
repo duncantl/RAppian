@@ -113,10 +113,23 @@ function(x)
 fixAdjStrings =
 function(x)
 {
+    # Problem with "" in code such as
+    # if(local!qualifier <> "", " - ", "")
+    # where we end up removing the two ""
+    # So we look for ' "",' or ' "")', i.e. "" that are clearly separated
+    # from other elements because of the leading space and
+    # replacing each "" with something that "can't" occur in the code
+    # then doing the regular replacement to combine "...""..." into "......"
+    # and then we reverse/undo the original replacement of "".
+    # Works for now. Should make the original regexp smarter.
+    x = gsub(' "",', ' "XXXXXXXXXXXXXXXXXX",', x)
+    x = gsub(' ""\\)', ' "XXXXXXXXXXXXXXXXXX")', x)
+    
     while(grepl('"([^"]+)""([^"]*)"', x)) {
         x = gsub('"([^"]+)""([^"]*)"', '"\\1\\2"', x)
     }
-    x
+
+    gsub("XXXXXXXXXXXXXXXXXX", "", x)    
 }
 
 
