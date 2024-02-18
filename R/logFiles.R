@@ -12,7 +12,8 @@ if(FALSE) {
 
     
     li = listLogs(cookie, TRUE)
-    tomcat = downloadLogs(k, grep("/tomcat", li, value = TRUE))
+    tc = grep("/tomcat", li, value = TRUE)
+    tomcat = downloadLogs(cookie, tail(tc, 3))
 }
 
 
@@ -21,7 +22,11 @@ function(cookie,
          docs = listLogs(cookie, url, relative = TRUE),
          url = "https://ucdavisdev.appiancloud.com/suite/logs")    
 {
-    lapply(docs, function(x) tryCatch(getURLContent(x, binary = TRUE, cookie = cookie, followlocation = TRUE), error = function(e) NULL))
+   ans = lapply(docs, function(x)
+                        tryCatch(getURLContent(x, binary = TRUE, cookie = cookie, followlocation = TRUE),
+                                 error = function(e) NULL))
+   names(ans) = basename(docs)
+   ans
 }
 
 listLogs =
