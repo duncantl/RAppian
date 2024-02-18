@@ -51,7 +51,7 @@ function(code)
 {
     k = findCallsTo(code)
     ids = sapply(k, function(x) deparse(x[[1]]))
-    gsub(".*!", "", grep("^(rule|interface)", ids, value = TRUE))
+    gsub(".*!", "", grep("^(rule|interface|outboundIntegration)", ids, value = TRUE))
 }
 
 findAppianConstants =
