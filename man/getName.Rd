@@ -14,6 +14,7 @@
 \alias{recordTypeInfo}
 \alias{getConstantInfo}
 \alias{interfaceInfo}
+\alias{startForm}
 \alias{isEnvSpecific}
 \alias{getRecordTypeCode}
 \title{Get meta information from Appian object}
@@ -34,6 +35,7 @@ getDefinition(doc, noCode = NA)
 getUUID(doc)
 ruleInputs(doc, map = NULL)
 isEnvSpecific(doc)
+interfaceInfo(doc, map = NULL, dir = Rlibstree::getCommonPrefix(map$file)) )
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -41,6 +43,7 @@ isEnvSpecific(doc)
   \item{noCode}{the value to return for an XML document that contains no code content}
   \item{map}{a data.frame describing all of the objects in the exported application(s),
     typically created via \code{\link{mkSummary}}.}
+  \item{dir}{the path to the directory containing the XML export files}
 }
 \value{
 }

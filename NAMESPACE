@@ -86,7 +86,8 @@ export(mkTaskRoleUnitMap)
   # better names to indicate for process model
 export(
     customParams, 
-    interfaceInfo
+    interfaceInfo,
+    startForm
 )
 
 

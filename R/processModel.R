@@ -398,7 +398,7 @@ function(x, map = NULL, type = xmlGetAttr(x, "type"))
 
 
 
-interfaceInfo =
+interfaceInfo = startForm = 
 function(doc, map = NULL, dir = Rlibstree::getCommonPrefix(map$file))
 {
     doc = mkDoc(doc)
