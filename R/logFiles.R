@@ -12,8 +12,16 @@ if(FALSE) {
 
     
     li = listLogs(cookie, TRUE)
-    tc = grep("/tomcat", li, value = TRUE)
+    tc = grep("/tomcat-stdOut", li, value = TRUE)
     tomcat = downloadLogs(cookie, tail(tc, 3))
+    
+    tc = grep("tomcat-stdOut.*2024-02-[12].$", li, value = TRUE)
+    tomcat = downloadLogs(cookie, tc)
+    tlogs = lapply(tomcat, readTomcatLog)
+
+    num = sapply( tlogs, function(log) sum(sapply(log, function(x) sum(grepl("https://api.appian-test.ucdavis.edu/", x)))))
+
+    err = lapply( tlogs, function(log) unlist(lapply(log, function(x) grep("https://api.appian-test.ucdavis.edu/", x, value = TRUE))))
 }
 
 
