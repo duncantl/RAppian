@@ -131,4 +131,4 @@ export(getTestCases)
 
 export(sql)
 
-export(listLogs, downloadLogs)
+export(listLogs, downloadLogs, readTomcatLog)
