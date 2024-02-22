@@ -132,3 +132,6 @@ export(getTestCases)
 export(sql)
 
 export(listLogs, downloadLogs, readTomcatLog)
+
+
+export(getAllDependents)
