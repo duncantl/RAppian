@@ -36,5 +36,21 @@ names(rcode) = code$name
 rcode2 = lapply(rcode, function(x) try(rewriteCode(x, map)))
 err = sapply(rcode2, inherits, 'try-error')
 # stopifnot(!any(err))
+
 if(any(err))
     message("problems parsing ", sum(err), " SAIL code objects")
+
+
+if(any(err)) {
+    # remove
+    #     "CMN_ucAnyTypeArrayPickerFilter"
+    # and fix up rcode2, map, err, ....
+    if("CMN_ucAnyTypeArrayPickerFilter" %in% names(err)[err]) {
+        id = "CMN_ucAnyTypeArrayPickerFilter"
+        m = match(id, names(rcode2))
+        map = map[ -m, ]
+        err = err [ -m ]
+        rcode2 = rcode2[ -m ]
+    }
+}
+
