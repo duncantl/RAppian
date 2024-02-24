@@ -20,7 +20,7 @@ function(query, cookie, token = NA, url = "https://ucdavisdev.appiancloud.com/da
     if(ct[1] == "text/html")
         stop("query returned HTML. Probably stale cookie and/or token")
     
-    a = readDBResults(z)
+    readDBResults(z)
 }
 
 mkPOSTBody =
@@ -63,8 +63,11 @@ function(doc)
         doc = htmlParse(doc)
 
     tbls = getNodeSet(doc, "//table")
-    if(length(tbls) == 0)
-        stop("no table")
+    if(length(tbls) == 0) {
+        warning("no results table")
+        return(NULL)
+    }
+    
 
     tbl = tbls[[ if(length(tbls) > 1L) 2L else 1L]]
     #    browser()
