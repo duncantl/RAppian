@@ -420,6 +420,7 @@ function(x, map = NULL, code = TRUE, dir = Rlibstree::getCommonPrefix(map$file))
     ans = list(name = xmlValue(x[["name"]]),
                uuid = xmlValue(x[["uuid"]]),
                ruleInputs = ri)
+    
     if(code)  {
         # can also get it by mapping the uuid to a uuid2File()
         # and

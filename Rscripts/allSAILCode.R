@@ -49,10 +49,6 @@ for(i in idx) {
     ind.all[i, names(tt)] = ind.all[i, names(tt)] + tt
 }
 
-
-
-
-
 # record types -
 #  code in the views, filters, 
 ty = which(map$type == "recordType")
