@@ -105,7 +105,7 @@ export(isEnvSpecific,
 # varNames - same as localVarNames       
        )
 
-# getCustomizationConstants
+export( getCustomizationConstants)
 # findMissingUUIDs
 #
 # outputInfo 

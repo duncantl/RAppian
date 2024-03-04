@@ -21,7 +21,9 @@ function(map = mkSummary(), file = file.path(metaInfDir(dir), "design-guidance.j
 
     df$objectTypeName = gsub("^\\{http://www.appian.com/ae/types/2009\\}", "", df$objectTypeName)
 
-    vars = c("name", "designGuidanceKey", "dismissed", "instanceCount", "objectTypeName", "objectUuid")
+    df$key = gsub(".*\\.", "", df$designGuidanceKey)
+    vars = c("name", "key", "dismissed", "instanceCount",
+             "objectTypeName", "designGuidanceKey", "objectUuid")
     df[, vars]
 }
 
