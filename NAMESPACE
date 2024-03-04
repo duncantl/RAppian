@@ -135,3 +135,8 @@ export(listLogs, downloadLogs, readTomcatLog)
 
 
 export(getAllDependents)
+
+
+export(checkIfLoggedInUser )
+
+export(readExportLog, guidance)
