@@ -90,6 +90,16 @@ function(uuid, uuids, out)
 }
 
 
+fixURN =
+    #
+    # For cases where we have URNs of the form =#"....".
+    #
+function(x)
+{
+    gsub( '"$', "", gsub('^=#"urn', "#urn", x))
+}
+
+
 resolveURN =
     # The urn:appian:<type>:v1 we see are 
     #  record-field (1623)
@@ -116,6 +126,7 @@ resolveURN =
     #
 function(x, map, col = "qname", paths = TRUE)
 {
+    x = fixURN(x)
     type = urnType(x)
     
     tmp = gsub("^#urn:.*:v1:", "", x)
