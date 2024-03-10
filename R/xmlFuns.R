@@ -187,11 +187,6 @@ function(doc)
         ans
 }
 
-
-
-
-
-
 mkDoc =
 function(doc)    
 {

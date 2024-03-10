@@ -51,7 +51,8 @@ export(compareTypeCounts)
 export(#uses, ruses,
        toplevelUUIDs)
 
-export(rewriteCode, mkCountDfs, table2df, getPMWriteTypes, procModelUses, mergeCounts)
+export(rewriteCode, mkCountDfs, table2df, procModelUses, mergeCounts)
+export(pmWriteRecords, getPMWriteTypes)
 export(customInputs, customOutputs) # called by procModelUses but make them available directly.
 
 export(mapName)

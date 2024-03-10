@@ -14,20 +14,4 @@ if(FALSE) {
 }
 
 
-pmWriteRecords =
-function(pm, map)
-{
-    isWrite = !is.na(pm$nodes$icon) & pm$nodes$icon == "Write Record"
-    if(any(isWrite)) {
-        acps = pm$nodes[isWrite, "ACPs"]
-        ty = sapply(acps, function(y) {
-                             w = y$name == "RecordType"
-                              y$code[w]
-        })
-        resolveURN(fixURN(ty), map)
-        
-    } else
-       character()
-}
-
 
