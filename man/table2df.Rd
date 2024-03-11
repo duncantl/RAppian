@@ -3,7 +3,7 @@
 \alias{compareTypeCounts}
 \alias{mkCountDfs}
 \alias{mergeCounts}
-\title{Utility functions for working tables of counts}
+\title{Utility functions for working with tables of counts}
 \description{
 }
 \usage{
@@ -17,15 +17,13 @@ compareTypeCounts(...)
   \item{syms}{}
   \item{\dots}{}
 }
-\value{
-}
+%\value{}
 \author{
 Duncan Temple Lang
 }
-\seealso{
-}
-\examples{
-}
+%\seealso{}
+%
+%\examples{}
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):
 % \keyword{ ~kwd1 }
