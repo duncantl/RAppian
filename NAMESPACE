@@ -4,6 +4,8 @@ import(RCurl)
 import(CodeAnalysis)
 importFrom("utils", "type.convert")
 
+importFrom("graphics", "box", "text")
+
 #exportPattern(".*")
 
 # transformToR.R
