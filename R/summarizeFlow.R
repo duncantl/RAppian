@@ -35,10 +35,13 @@ function(name, map = mkSummary())
 }
 
 mapFile =
-function(name, map)    
+function(name, map = NULL)    
 {
     if(file.exists(name))
         return(name)
+
+    if(is.null(map))
+        stop("cannot determine file w/o map object")
     
     w = map$name == name
     if(!any(w)) {

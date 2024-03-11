@@ -3,10 +3,10 @@ library(XML)
 getRuleCode = getInterfaceCode = getCode =
 getDefinition =
 # Get the SAIL code from an Appian object        
-function(doc, noCode = NA)
+function(doc, map = NULL, noCode = NA)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     ans = xpathSApply(doc, "//definition", xmlValue)
     if(length(ans) == 0)
@@ -20,10 +20,10 @@ getConstantInfo =
     #
     # get a data.frame providing details of a constant object.
     #
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     con = xmlRoot(doc)[["constant"]]
     data.frame(name = xmlValue(con[["name"]]),
@@ -76,13 +76,14 @@ getDocType = getType =
     #
     # get type of an Appian object
     #
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     r = xmlRoot(doc)
     switch(xmlName(r),
+           #XXX extend to cover more cases.
            "processModelHaul" = "processModel",
            names(r)[2])
 }
@@ -91,10 +92,10 @@ function(doc)
 
 getFolder =
     # look for the parentUuid element of the XML as the folder.
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc)) 
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     ans = xpathSApply(doc, "//parentUuid", xmlValue)
     if(length(ans) == 0) {
@@ -143,7 +144,7 @@ ruleInputs =
 function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     ans = do.call(rbind, xpathApply(doc, "//interface//namedTypedValue", mkRIDesc))
     if(!is.null(map)) {
@@ -166,10 +167,10 @@ function(x)
 
 
 getDescription =
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     type = getType(doc)
     xp = switch(type,

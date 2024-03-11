@@ -27,15 +27,15 @@
 \usage{
 getName(doc)
 procName(doc)
-getType(doc)
+getType(doc, map = NULL)
 recordType(doc)
-siteInfo(doc)
-getCode(doc, noCode = NA)
-getDefinition(doc, noCode = NA)
-getUUID(doc)
+siteInfo(doc, map = NULL)
+getCode(doc, map = NULL, noCode = NA)
+getDefinition(doc, map = NULL, noCode = NA)
+getUUID(doc, map = NULL)
 ruleInputs(doc, map = NULL)
 isEnvSpecific(doc)
-interfaceInfo(doc, map = NULL, dir = Rlibstree::getCommonPrefix(map$file)) )
+interfaceInfo(doc, map = NULL, dir = Rlibstree::getCommonPrefix(map$file))
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{

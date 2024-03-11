@@ -11,7 +11,7 @@ function(name = "EFRM Task Log", map,
          rhs = mkDefaultValue)
 {
     file = map$file[map$name == name]
-    doc = RAppian:::mkDoc(file)
+    doc = mkDoc(file)
     uuid = getUUID(file)
     rt = recordTypeInfo(file)
 

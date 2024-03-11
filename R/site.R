@@ -1,8 +1,8 @@
 siteInfo =
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     do.call(rbind, xpathApply(doc, "//page", mkSitePage))
 }

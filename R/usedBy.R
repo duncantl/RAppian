@@ -66,6 +66,8 @@ procModelUses =
     #
 function(file, map, fun = mkUsesFun2(map$name))
 {
+    #XXX Consider mapFile(file, map)
+    
     if(!file.exists(file)) {
         # if file is not a file, consider it the name of a process model
         # or a constant identifying a process model.        

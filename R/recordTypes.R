@@ -73,10 +73,10 @@ recordTypeRelationships =
     #
     # Gets the recordRelationshipCfg from an XML file describing a Record Type
     #
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     ans = do.call(rbind, xpathApply(doc, "//x:recordRelationshipCfg", mkRecordRelationshipCfg, namespaces = AppianTypesNS))
     rownames(ans) = NULL
@@ -102,10 +102,10 @@ getUUID =
     #
     # should this be in uuids.R
     # 
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
 #    ty = xmlName(xmlRoot(doc))
 #    xp = switch(ty,
@@ -120,10 +120,11 @@ function(doc)
 
 
 recordTypeInfo =
-function(doc)
+    # recordTypeInfo("EFRM Request Details", map)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     tmp = do.call(rbind, xpathApply(doc, "//field", mkFieldInfo))
     logicalVars = c("isRecordId", "isCustomField")

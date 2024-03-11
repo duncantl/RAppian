@@ -5,10 +5,10 @@ procModelPos =
     #
     # Doesn't show the connections yet.
     #
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
     
     vars = c(x = "x", y = "y", label = "fname//x:value")
     tmp = lapply(paste0("//x:nodes//x:", vars),
@@ -76,7 +76,7 @@ procModelNodes = procNodes =
 function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     nodes = getNodeSet(doc, "//x:nodes/x:node", namespaces = AppianTypesNS)
     
@@ -176,7 +176,7 @@ procVars = procModelVars =
 function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     ans = do.call(rbind, xpathApply(doc, "//x:pvs/x:pv", mkProcessVar, namespaces = AppianTypesNS))
 
@@ -206,7 +206,7 @@ lanes =
 function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     ans = getNodeSet(doc, "//x:lanes/x:lane", AppianTypesNS)
     names(ans) = sapply(ans, function(x) xmlValue(x[["laneLabel"]]))
@@ -296,7 +296,7 @@ customOutputs =
 function(doc, map = NULL, asDF = TRUE, toR = TRUE, rewrite = length(map) > 0)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     nn = getNodeSet(doc, "//x:node[.//x:output-exprs/x:el]", AppianTypesNS)
     ans = lapply(nn, getNodeCustomOutputs, map = map)
@@ -451,10 +451,10 @@ function(x)
 
 
 getSubProcessUUIDs =
-function(doc)
+function(doc, map = NULL)
 {
     if(is.character(doc))
-        doc = xmlParse(doc)
+        doc = xmlParse(mapFile(doc, map))
 
     xpathSApply(doc, "//x:node[./x:icon/@id = '60']//x:ac//x:acp[@name = 'pmUUID']/x:value",
                 xmlValue, namespaces = AppianTypesNS)    

@@ -2,7 +2,7 @@ getTestCases =
 function(x, map)
 {
     if(is.character(x))
-        x = RAppian:::mkDoc(x)
+        x = mkDoc(mapFile(x, map))
 
     tests = getNodeSet(x, "//typedValue[./type/name[starts-with(., 'RuleTestConfig')]]//el")
     if(length(tests) == 0)
