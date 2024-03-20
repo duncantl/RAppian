@@ -163,6 +163,18 @@ yaml_structure_or_data = "data")
 #      xml_export_events, xml_export_functions, xml_export_procedures, xml_export_tables, xml_export_triggers, xml_export_views, xml_export_contents
 # 73 elements in common.
 
+dbURL =
+function(inst)    
+{
+    host = switch(inst,
+                  dev = "ucdavisdev.appiancloud.com",
+                  test = "ucdavistest.appiancloud.com",
+                  prod = "ucdavis.appiancloud.com"
+                 )
+    
+    sprintf("https://%s/database/index.php?route=/export", host)
+}
+
 dbDump =
     #
     #  Can we renew the token by visiting
@@ -172,7 +184,8 @@ dbDump =
     #
 function(con = mkDBCon(cookie, ...),
          cookie = getDBCookie(), params = DBParams,
-         url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/export",
+         instance = "dev",
+         url = dbURL(instance), 
          read = TRUE, removePrefix = TRUE, efrmOnly = TRUE, ...)
 {
     json = postForm(url, .params = params, curl = con, style = "post")
