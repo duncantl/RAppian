@@ -1,5 +1,5 @@
 pms = pms(map)
-ow = sapply(pms, RAppian:::pmOwner, map)
+ow = sapply(pms, pmOwner, map)
 
 m = match(ow, map$uuid)
 ow2 = data.frame(name = names(ow), owner = map$name[m])
