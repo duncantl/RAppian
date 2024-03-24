@@ -85,6 +85,7 @@ function(doc, map = NULL)
     switch(xmlName(r),
            #XXX extend to cover more cases.
            "processModelHaul" = "processModel",
+           "applicationPatches" = xmlName(r),
            names(r)[2])
 }
 

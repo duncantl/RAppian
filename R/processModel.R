@@ -499,7 +499,7 @@ function(doc, map = NULL)
 pms =
 function(map)
 {
-    map$name[map$type == "processModel"]
+    map$name[!is.na(map$type) & map$type == "processModel"]
 }
 
 byType =
