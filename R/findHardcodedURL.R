@@ -26,7 +26,7 @@ function(dir = ".")
 
     fi = gsub(":.*", "", ll[ names(ll3) ])
 
-    w = grepl("\\.(properties|html)$", fi)
+    w = grepl("\\.(properties|html|zip)$", fi) | grepl("~$", fi)
 
     #nm = sapply(fi[!w], function(x) tryCatch(getName(x), error = function(e) NA))
     nm = sapply(fi[!w], getName)

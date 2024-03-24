@@ -25,3 +25,6 @@ table(user = pmn$user == "", recipient = pmn$recipients.exp == "")
 pmn[pmn$user == "" & pmn$recipients.exp == "", ]
 
 
+
+w = pmn$user != ""
+m = match(pmn$user[w], map$uuid)
