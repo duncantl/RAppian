@@ -1,14 +1,13 @@
 pms = pms(map)
-#ow = sapply(pms, mapFile, map)
 ow = sapply(pms, RAppian:::pmOwner, map)
-byo = split(names(ow), ow)
 
-m = match(names(byo), map$uuid)
-names(byo) = map$name[m]
+m = match(ow, map$uuid)
+ow2 = data.frame(name = names(ow), owner = map$name[m])
 
-#w = map$type == "processModel"
-#ow = sapply(map$file[w], RAppian:::pmOwner)
-#names(ow) = map$name[w]
+byo = split(ow2$name, ow2$owner)
+# m = match(names(byo), map$uuid)
+#names(byo) = map$name[m]
+
 
 
 
