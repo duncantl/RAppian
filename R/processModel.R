@@ -396,12 +396,23 @@ function(x, map = NULL, type = xmlGetAttr(x, "type"))
            )
 }
 
+startForm =
+function(doc, map)
+{
+    doc = mapFile(doc, map)
+    doc = mkDoc(doc)
+    xpathSApply(doc, "//x:interfaceInformation/x:name", xmlValue,
+                namespaces = AppianTypesNS)
+}
 
 
-interfaceInfo = startForm = 
+
+interfaceInfo = 
 function(doc, map = NULL, dir = Rlibstree::getCommonPrefix(map$file))
 {
+    doc = mapFile(doc, map)
     doc = mkDoc(doc)
+    
     ans = xpathApply(doc, "//x:interfaceInformation",
                      mkInterfaceInfo, map = map, dir = dir,
                      namespaces = AppianTypesNS)
@@ -458,4 +469,64 @@ function(doc, map = NULL)
 
     xpathSApply(doc, "//x:node[./x:icon/@id = '60']//x:ac//x:acp[@name = 'pmUUID']/x:value",
                 xmlValue, namespaces = AppianTypesNS)    
+}
+
+
+
+pmRoleMap =
+function(doc, map = NULL)
+{
+    doc = mkDoc( mapFile(doc, map) )
+
+    roles = getNodeSet(doc, "/processModelHaul/roleMap/role")
+    structure( lapply(roles, mkRole), names = sapply(roles, xmlGetAttr, "name"))
+}
+
+mkRole =
+function(node)    
+{
+  xmlApply(node, function(x) unname( xmlSApply(x, xmlValue, trim = TRUE)) )
+}
+
+pmOwner =
+function(doc, map = NULL)
+{
+    doc = mkDoc( mapFile(doc, map) )
+    xpathSApply(doc, "/processModelHaul/roleMap/role[@name = 'ADMIN_OWNER']//groupUuid", xmlValue)
+}
+
+
+pms =
+function(map)
+{
+    map$name[map$type == "processModel"]
+}
+
+byType =
+function(map)
+{
+    split(map$name, map$type)
+}
+
+
+pmNotifications =
+function(doc, map)
+{
+    doc = mkDoc( mapFile(doc, map) )
+    nd = getNodeSet(doc, "//x:pm-notification-settings", namespaces = AppianTypesNS)
+    if(length(nd) == 0)
+        return(NULL)
+    
+    ans = as.data.frame(xmlApply(nd[[1]], xmlValue))
+
+    v = c("custom.settings", "notify.initiator", "notify.owner")
+    ans[v] = lapply(ans[v], toLogical)
+
+    v = "recipients.exp"    
+    if(length(map) && ans[[v]] != "") {
+        tmp = deparse(rewriteCode(ans[[v]], map))
+        if(!is.na(tmp))
+            ans[[v]] = tmp
+    }
+    ans
 }
