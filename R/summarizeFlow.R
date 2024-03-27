@@ -37,6 +37,9 @@ function(name, map = mkSummary())
 mapFile =
 function(name, map = NULL)    
 {
+    if(!is.character(name))
+        return(name)
+    
     if(file.exists(name))
         return(name)
 
