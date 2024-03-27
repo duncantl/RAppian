@@ -56,6 +56,10 @@ function(doc)
         doc = xmlParse(doc)
 
     r = xmlRoot(doc)
+
+    if(xmlName(r) == "applicationPatches")
+        return("AppPatches")
+    
     xp = switch(xmlName(r),
                 "siteHaul" = "/siteHaul/site/@name",
                 "processModelHaul" = "//x:process_model_port//x:meta//x:name//x:value",
