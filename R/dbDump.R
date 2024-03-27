@@ -169,7 +169,7 @@ function(inst)
     host = switch(inst,
                   dev = "ucdavisdev.appiancloud.com",
                   test = "ucdavistest.appiancloud.com",
-                  prod = "ucdavis.appiancloud.com"
+                  prod = "gradsphere.ucdavis.edu"    # ucdavis.appiancloud.com
                  )
     
     sprintf("https://%s/database/index.php?route=/export", host)
