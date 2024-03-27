@@ -22,6 +22,7 @@ fun = mkUsesFun2(map$name)
 
 # Site
 
+# Currently this code assumes only one site.  But there are now 3.
 w = map$type == "site"
 si = siteInfo(map$file[w])
 a = mapUUID(si$uuid, map, "name")
