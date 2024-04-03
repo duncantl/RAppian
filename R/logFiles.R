@@ -8,9 +8,10 @@
 
 if(FALSE) {
 
+    cookie = cookie("cookie")
+
     all = downloadLogs(cookie)
 
-    
     li = listLogs(cookie, TRUE)
     tc = grep("/tomcat-stdOut", li, value = TRUE)
     tomcat = downloadLogs(cookie, tail(tc, 3))
@@ -27,7 +28,7 @@ if(FALSE) {
 
 downloadLogs =
 function(cookie,
-         docs = listLogs(cookie, url, relative = TRUE),
+         docs = listLogs(cookie, url = url, relative = TRUE),
          url = "https://ucdavisdev.appiancloud.com/suite/logs")    
 {
    ans = lapply(docs, function(x)
