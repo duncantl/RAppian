@@ -10,6 +10,14 @@ if(FALSE) {
 
     cookie = cookie("cookie")
 
+    li = listLogs(cookie, TRUE)
+    tc = grep("/tomcat-stdOut", li, value = TRUE)
+    tc = tc[ !grepl("\\.gz$", tc) ]
+    u = XML::getRelativeURL(tc, url = "https://gradsphere.ucdavis.edu/suite/logs")
+    logs = downloadLogs(k, u)
+
+#------    
+    
     all = downloadLogs(cookie)
 
     li = listLogs(cookie, TRUE)
@@ -37,6 +45,7 @@ function(cookie,
    names(ans) = basename(docs)
    ans
 }
+
 
 listLogs =
 function(cookie, relative = FALSE, drop = TRUE, url = "https://ucdavisdev.appiancloud.com/suite/logs")    
