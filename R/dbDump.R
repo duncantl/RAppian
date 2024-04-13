@@ -163,16 +163,29 @@ yaml_structure_or_data = "data")
 #      xml_export_events, xml_export_functions, xml_export_procedures, xml_export_tables, xml_export_triggers, xml_export_views, xml_export_contents
 # 73 elements in common.
 
-dbURL =
-function(inst)    
+getHost =
+function(inst, prefix = "https://")    
 {
     host = switch(inst,
                   dev = "ucdavisdev.appiancloud.com",
                   test = "ucdavistest.appiancloud.com",
                   prod = "gradsphere.ucdavis.edu"    # ucdavis.appiancloud.com
                  )
-    
-    sprintf("https://%s/database/index.php?route=/export", host)
+
+    if(!is.na(prefix))
+        paste0(prefix, host)
+    else
+        host
+}
+
+
+dbURL =
+function(inst)    
+{
+    host = getHost(inst) # , "")
+
+    # "https://
+    sprintf("%s/database/index.php?route=/export", host)
 }
 
 dbDump =

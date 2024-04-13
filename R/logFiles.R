@@ -7,14 +7,36 @@
 # + /suite/shared-logs/ucdavisdev-1/tomcat/
 
 if(FALSE) {
+    li2 = listLogs(cookie, TRUE, url = "https://gradsphere.ucdavis.edu/suite/logs", filter = "/tomcat-stdOut.*[0-9]$")
+}
+
+
+
+if(FALSE) {
 
     cookie = cookie("cookie")
 
-    li = listLogs(cookie, TRUE)
+    li = listLogs(cookie, TRUE, url = "https://gradsphere.ucdavis.edu/suite/logs")
     tc = grep("/tomcat-stdOut", li, value = TRUE)
     tc = tc[ !grepl("\\.gz$", tc) ]
-    u = XML::getRelativeURL(tc, url = "https://gradsphere.ucdavis.edu/suite/logs")
-    logs = downloadLogs(k, u)
+    u = XML::getRelativeURL(tc, "https://gradsphere.ucdavis.edu/suite/logs")
+    logs = downloadLogs(cookie, tc)
+
+    logs2 = lapply(logs, function(x) strsplit(rawToChar(x), "\n")[[1]])
+
+    sapply(logs2, length)
+
+    cogn = lapply(logs2, function(x) grep("cognito:groups", x, value = TRUE))
+    cogn2 = unlist(cogn)
+
+    cogn3 = grep("Unable to find element cognito:groups in user data token", cogn2, value = TRUE, invert = TRUE)
+
+    gr = gsub(".*'cognito:groups' = '\\[([^]]+)\\]'", "\\1", cogn3)
+    groups = unlist(strsplit(gr, ", "))
+
+
+    grep("ASSOCIATE_DEAN\\.", cogn2, value = TRUE)
+    grep("DEAN\\.", cogn2, value = TRUE)
 
 #------    
     
@@ -36,25 +58,39 @@ if(FALSE) {
 
 downloadLogs =
 function(cookie,
-         docs = listLogs(cookie, url = url, relative = TRUE),
-         url = "https://ucdavisdev.appiancloud.com/suite/logs")    
+         docs = listLogs(cookie, url = url, relative = TRUE, ...),
+         instance = "dev",
+         url = file.path(getHost(instance), "suite/logs"), ...)
 {
    ans = lapply(docs, function(x)
                         tryCatch(getURLContent(x, binary = TRUE, cookie = cookie, followlocation = TRUE),
                                  error = function(e) NULL))
    names(ans) = basename(docs)
+
+   
    ans
 }
 
 
+
+
 listLogs =
-function(cookie, relative = FALSE, drop = TRUE, url = "https://ucdavisdev.appiancloud.com/suite/logs")    
+function(cookie, relative = FALSE, drop = TRUE,
+         filter = character(),
+         instance = "dev",
+         url = file.path(getHost(instance), "suite/logs"))
 {
     tt = getURLContent(url, cookie = cookie, followlocation = TRUE)
     doc = htmlParse(tt)
     ll = getHTMLLinks(doc)
+
+
+    if(length(filter)) 
+        ll = grep(filter, ll, value = TRUE)
+
+
     if(drop)
-        ll = ll[ !grepl("^[^/]", ll) ]
+        ll = ll[ !grepl("^[^/]", ll) ]    
     
     if(relative)
         getRelativeURL(ll, url)
