@@ -8,11 +8,18 @@
   of the application objects
 }
 \usage{
-mapFile(name, map)
+mapFile(name, map, resolve = FALSE)
 }
 \arguments{
   \item{name}{a character string giving the name or UUID of the Appian object}
   \item{map}{a data.frame, typically computed via \code{\link{mkSummary}}}
+  \item{resolve}{a logical value. If \code{TRUE} and the
+    name corresponds to a constant, the function examines
+    the value of the constant and if it is a UUID,
+    resolves that. This is useful for
+    getting the object to which a constant points/references, e.g.,
+    a group or a process model.
+  }
 }
 \value{
   A character string.
@@ -23,7 +30,17 @@ Duncan Temple Lang
 \seealso{
    \code{\link{mkSummary}}
 }
-%\examples{}
+\examples{
+\dontrun{
+  # mapping the constant we get the file
+  mapFile("EFRM_GROUP_GS_ASSOCIATE_DEANS", map)
+  # and can check we get the correct value.
+  getName(mapFile("EFRM_GROUP_GS_ASSOCIATE_DEANS", map))
+
+  # However, if we resolve this, we get the actual group.
+  getName(mapFile("EFRM_GROUP_GS_ASSOCIATE_DEANS", map, resolve = TRUE))
+}
+}
 
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory (show via RShowDoc("KEYWORDS")):

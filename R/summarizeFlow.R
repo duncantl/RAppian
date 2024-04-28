@@ -35,7 +35,7 @@ function(name, map = mkSummary())
 }
 
 mapFile =
-function(name, map = NULL)    
+function(name, map = NULL, resolve = FALSE)    
 {
     if(!is.character(name))
         return(name)
@@ -63,9 +63,16 @@ function(name, map = NULL)
     
 
     ff = map$file[w]
-    if(map$type[w] == "constant")
-        ff = uuid2File(getConstantInfo(ff)$value)
 
+    # Is this appropriate?? Commenting out for now.
+    # Makes sense if the constant points to another object, e.g.,
+    # a group or a process model.
+    if(resolve && map$type[w] == "constant") {
+        val = getConstantInfo(ff)$value
+        if(isUUID(val))
+            ff = uuid2File(val, map = map)
+    }
+    
     ff
 }
 
