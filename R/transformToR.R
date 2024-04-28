@@ -29,6 +29,8 @@ function(x, parse = FALSE, procModel = FALSE)
     # Check this doesn't break a lot of other things.
     x = gsub(": =ri!", ": ri!", x)
     x = gsub(':= #"', ': #"', x)
+    # a named parameter followed by = then code
+    x = gsub(': *= ', ': ', x)    
 
     if(procModel) {
         # This may be the format for a "is appended to" a variable
@@ -84,6 +86,10 @@ function(x, parse = FALSE, procModel = FALSE)
 
     # to handle \x in strings
     x = gsub("\\\\", "\\\\\\\\", x)    
+
+
+    # if end up with ====
+    x = gsub("====", "==", x)
     
     if(parse) {
        ans =  tryCatch(parse(text = x, keep.source = FALSE),
