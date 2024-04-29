@@ -178,6 +178,10 @@ function(inst, prefix = "https://")
         host
 }
 
+appianInstance =
+function()
+   getOption("AppianInstance", "dev")    
+
 
 dbURL =
 function(inst)    
@@ -197,7 +201,7 @@ dbDump =
     #
 function(con = mkDBCon(cookie, ...),
          cookie = getDBCookie(), params = DBParams,
-         instance = "dev",
+         instance = appianInstance(), # "dev",
          url = dbURL(instance), 
          read = TRUE, removePrefix = TRUE, efrmOnly = TRUE, ...)
 {

@@ -148,3 +148,5 @@ export(readExportLog, guidance)
 export(pms, byType)
 export(pmOwner, pmNotifications)
 
+export(appianInstance)
+

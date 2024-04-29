@@ -59,7 +59,7 @@ if(FALSE) {
 downloadLogs =
 function(cookie,
          docs = listLogs(cookie, url = url, relative = TRUE, ...),
-         instance = "dev",
+         instance = appianInstance(),
          url = file.path(getHost(instance), "suite/logs"), ...)
 {
    ans = lapply(docs, function(x)
@@ -77,7 +77,7 @@ function(cookie,
 listLogs =
 function(cookie, relative = FALSE, drop = TRUE,
          filter = character(),
-         instance = "dev",
+         instance = appianInstance(),
          url = file.path(getHost(instance), "suite/logs"))
 {
     tt = getURLContent(url, cookie = cookie, followlocation = TRUE)
