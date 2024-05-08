@@ -66,7 +66,7 @@ mapUUID =
     #
     #
     #
-function(uuid, uuids, out)
+function(uuid, uuids, out = "name")
 {
     if(is.data.frame(uuids) && "uuid" %in% names(uuids)) {
         if(length(out) == 1)

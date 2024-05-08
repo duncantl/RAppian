@@ -40,10 +40,9 @@ ind.all[w, names(ab)] = ind.all[w, names(ab)] + ab
 #    code
 #    value
 #
-#
-#
 #  customOutputs
 #
+# See pmCode.R also.
 idx = which(map$type == "processModel")
 for(i in idx) {
     tt = procModelUses(map$file[i], map, fun)
