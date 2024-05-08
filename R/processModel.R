@@ -89,6 +89,7 @@ function(doc, map = NULL)
 
     # Activity class parameters for each node.
     ans$ACPs = lapply(nodes, function(node) doACPs(getNodeSet(node, ".//x:ac/x:acps/x:acp", namespaces = AppianTypesNS), map))
+    names(ans$ACPs) = ans$label
     ans$numACPs = sapply(ans$ACPs, NROW) 
 
     # connections to other nodes
@@ -384,7 +385,7 @@ function(x, map = NULL, type = xmlGetAttr(x, "type"))
 {
     hasContent = xmlSize(x)
     switch(type,
-           "a:Processodel" = xmlGetAttr(x, "id", NA),
+           "a:ProcessModel" = xmlGetAttr(x, "id", NA),
            "xsd:string" = xmlValue(x),
            "xsd:int" = as.integer(xmlValue(x)),
            "xsd:boolean" = xmlValue(x) == "true",
