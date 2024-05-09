@@ -13,8 +13,11 @@ if(FALSE) {
     w = pn$icon == "Subprocess"
     sub = pn$ACPs[w]
 
-    checkSubProcessCall(sub[[6]], map)  # $"GPC Send Email"
+    # Check one sub-process node
+    # "GPC Send Email"
+    checkSubProcessCall(sub[[6]], map) 
 
+    # Check all sub-process nodes
     xx = lapply(sub, checkSubProcessCall, map)
 }
 
