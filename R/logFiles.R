@@ -21,6 +21,7 @@ if(FALSE) {
     tc = tc[ !grepl("\\.gz$", tc) ]
     u = XML::getRelativeURL(tc, "https://gradsphere.ucdavis.edu/suite/logs")
     logs = downloadLogs(cookie, tc)
+    names(tc) = gsub("tomcat-stdOut.log.", "", basename(tc))
 
     logs2 = lapply(logs, function(x) strsplit(rawToChar(x), "\n")[[1]])
 
