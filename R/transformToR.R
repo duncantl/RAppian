@@ -45,7 +45,7 @@ function(x, parse = FALSE, procModel = FALSE)
     }
     
 
-    # the order/when in this transformation process this is done is important.
+    # the order/when in this transformation process this step is done is important.
     # Can end up with !===
     x = changeOperators(x)
 
@@ -179,6 +179,8 @@ function(x)
     # at the very start of the transformation (StoR)
     x = gsub('#"urn:appian:function:v1:a:isusermemberofgroup\\?okey==([^"]+)"', "\\1", x)    
 
+    x = gsub('#"urn:appian:function:v1:fn:[^?]+\\?okey==([^"]+)"', "\\1", x)    
+    
     x = gsub('#"(urn:appian:function:v1:a:update)"', "`#\\1`", x)
     x = gsub('#"([-0-9a-f_]+)"', "`#\\1`", x)    
 }
