@@ -59,7 +59,7 @@ function(x, removeDomain = TRUE, error = TRUE)
        vars[w] = sapply(x[w], as.character)
 
     if(removeDomain)
-        gsub("^local!", "", vars)
+        gsub("^[Ll]ocal!", "", vars)
     else
         vars
 }
