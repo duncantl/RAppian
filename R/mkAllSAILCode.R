@@ -1,7 +1,15 @@
+if(FALSE) {
+    # from Rscripts/basics.R, get map and rcode2
+    # Then add the information from the site, record type and process model to the call graph.
+    z = mkAllCode(map, rcode2)
+}
+
+
 
 mkAllCode =
     #
-    # Add the site, process model and record type uses of functions in the applications.
+    # Add the site, process model and record type uses of functions in the applications
+    # to the call graph g.
     #
 function(map, rcode2, g = callGraph(map$name, rcode, TRUE))
 {
@@ -54,7 +62,6 @@ function(code, map, name)
     data.frame(calls = rep(name, length(tmp2)),
                called = tmp2)    
 }
-
 
 siteInfoCallGraph =
 function(file, map, rcode2, name = getName(file) )
