@@ -11,8 +11,9 @@ mkSitePage =
 function(x)
 {
     data.frame(name = xmlValue(x[["staticName"]]),
-               uuid = xmlGetAttr(x[["uiObject"]], "uuid"),
+               uuid = if("uiObject" %in% names(x)) xmlGetAttr(x[["uiObject"]], "uuid", NA) else NA,
                description = xmlValue(x[["description"]]),
                visibility = xmlValue(x[["visibilityExpr"]])
                )
 }
+

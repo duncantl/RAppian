@@ -210,7 +210,7 @@ function(doc, map)
 {
     doc = mkDoc(doc)
     nodes = getNodeSet(doc, "//x:facetExpr | //x:listViewTemplateExpr | //x:uiExpr | //x:titleExpr | //x:defaultFiltersExpr | //customFieldExpr | //x:contextExpr", AppianTypesNS)
-    rcode = lapply(nodes, function(x) rewriteCode(StoR(xmlValue(x), TRUE), map))
+    rcode = lapply(nodes, function(x) tryCatch(rewriteCode(StoR(xmlValue(x), TRUE), map), error = function(err) quote({})))
     names(rcode) = sapply(nodes, xmlName)
     rcode[ sapply(rcode, length) > 0 ]
 }
