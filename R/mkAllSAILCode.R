@@ -110,12 +110,12 @@ pmConstantCallGraph =
     #
     # Which constants refer to process models as a calls/called data.frame
     #
-function(map, info = getConstantInfo(map))
+function(map, info = getConstants(map = map))
 {
     tmp = pmConstants(map, info)
     m = match(tmp$value, map$uuid)
     data.frame(calls = tmp$name,
-               called = map$name[i])
+               called = map$name[m])
 }
 
 pmConstants =
