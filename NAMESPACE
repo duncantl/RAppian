@@ -151,7 +151,7 @@ export(pmOwner, pmNotifications)
 export(appianInstance)
 
 
-export(mkAllCode)
+export(mkAllCodeCallGraph)
 export(mkPMCallGraph,
        mkRecordTypeCallGraph,
        mkCallGraph,
