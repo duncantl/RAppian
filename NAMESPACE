@@ -157,3 +157,4 @@ export(mkPMCallGraph,
        mkCallGraph,
        siteInfoCallGraph)
 
+export(getPMCode)
