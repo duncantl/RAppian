@@ -27,6 +27,8 @@ if(FALSE) {
 
     sapply(logs2, length)
 
+
+    ###
     cogn = lapply(logs2, function(x) grep("cognito:groups", x, value = TRUE))
     cogn2 = unlist(cogn)
 

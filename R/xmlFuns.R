@@ -151,7 +151,7 @@ function(doc, map = NULL)
     if(is.character(doc))
         doc = xmlParse(mapFile(doc, map))
 
-    ans = do.call(rbind, xpathApply(doc, "//x:interface//x:namedTypedValue", mkRIDesc, namespaces = AppianTypesNS))
+    ans = do.call(rbind, xpathApply(doc, "//x:interface//x:namedTypedValue | //contentHaul//namedTypedValue", mkRIDesc, namespaces = AppianTypesNS))
     if(!is.null(map)) {
         w = isUUID(ans$type)
         ans$type[w] = mapUUID(ans$type[w], map, "name")
