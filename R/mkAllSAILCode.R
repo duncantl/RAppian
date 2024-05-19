@@ -12,12 +12,11 @@ if(FALSE) {
 
 
 mkAllCodeCallGraph =
-    # Really the call graph.
     #
     # Add the site, process model and record type uses of functions in the applications
     # to the call graph g.
     #
-function(map, rcode2, g = callGraph(map$name, rcode, TRUE), constants = TRUE)
+function(map, rcode2, g = callGraph(names(rcode2), rcode2, TRUE), constants = TRUE)
 {
     ty = (map$type == "processModel")
     g2 = do.call(rbind, lapply(map$file[ty], mkPMCallGraph, map, rcode2))
