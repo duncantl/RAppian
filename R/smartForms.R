@@ -9,19 +9,20 @@
 getSmartFormsDescriptions =
 function(code = rcode2$EFRM_smartGenericFormInfo, map)
 {
-    code = replaceConstants(code, map)    
+    code = replaceConstants(code, map)
+    vars = mkVars(code)    
     desc = code[["local!actualForms"]]
 
-    vars = mkVars(code)
-    lapply(desc[-1], mkSmartFormDesc, vars)
+    lapply(as.list(desc)[-1], mkSmartFormDesc, vars)
 }
 
 mkSmartFormDesc =
 function(m, vars)
 {
-
     # now replace any variables.
+    # remove the a!map().
     desc = as.list( m[-1] )
+    lapply(desc, langReplace, vars)
 }
 
 mkVars =
@@ -44,6 +45,15 @@ langReplace =
 function(x, what)    
 {
 
+    if(is.symbol(x)) {
+        m <- match(as.character(x), names(what))
+        return(if(!is.na(m))
+                   what[[m]]
+               else
+                   x)
+    }
+        
+    
     # recursively process any language objects that are not symbols.
     w = sapply(x, is.symbol)
     wl = sapply(x, is.language)
