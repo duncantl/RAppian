@@ -22,7 +22,24 @@ function(x, map)
     }
     
     tmp = gsub("constant!", "", as.character(con))
-    v = getConstantInfo(map$file[ match(tmp, map$name) ])$value
-    strsplit(v, "; ")[[1]][i]
+    info = getConstantInfo(map$file[ match(tmp, map$name) ])
+    val = strsplit(info$value, "; ")[[1]][i]
+
+    cvtConstantValue(val, info)
+    
+#    val
 }
 
+cvtConstantValue =
+function(val, info)
+{
+    ty = gsub("\\?list", "", info$type)
+    switch(ty,
+           text = ,
+           string = val,
+           Integer = ,
+           int = as.integer(val),
+           boolean = as.logical(val),
+           val
+           )
+}
