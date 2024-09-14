@@ -1,10 +1,15 @@
 #
 # Get information about the "generic" smart forms.
 #
+# These expands the code for each form to replace constants and local variables that are shared
+# across forms.
+#
+#
 
 getSmartFormsDescriptions =
-function(code = rcode2$EFRM_smartGenericFormInfo)
+function(code = rcode2$EFRM_smartGenericFormInfo, map)
 {
+    code = replaceConstants(code, map)    
     desc = code[["local!actualForms"]]
 
     vars = mkVars(code)
