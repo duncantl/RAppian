@@ -1,4 +1,7 @@
 # To-Do List for RAppian
+
++ process a decision object.
+   + e.g. EFRM_Culminating_Work
  
 + Can't fully parse PMs Edocs Incremental upload and Exp Create Or Update Form Description3 in summarizeProcModel.
 
