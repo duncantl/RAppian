@@ -167,8 +167,8 @@ getHost =
 function(inst, prefix = "https://")    
 {
     host = switch(inst,
-                  dev = "ucdavisdev.appiancloud.com",
-                  test = "ucdavistest.appiancloud.com",
+                  dev = "gradspheredev.ucdavis.edu", # "ucdavisdev.appiancloud.com",
+                  test = "gradspheretest.ucdavis.edu", # "ucdavistest.appiancloud.com",
                   prod = "gradsphere.ucdavis.edu"    # ucdavis.appiancloud.com
                  )
 
