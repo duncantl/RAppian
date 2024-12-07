@@ -44,7 +44,9 @@ langReplace =
     #
 function(x, what)    
 {
-
+    if(is.atomic(x))
+        return(x)
+    
     if(is.symbol(x)) {
         m <- match(as.character(x), names(what))
         return(if(!is.na(m))
@@ -53,7 +55,6 @@ function(x, what)
                    x)
     }
         
-    
     # recursively process any language objects that are not symbols.
     w = sapply(x, is.symbol)
     wl = sapply(x, is.language)
