@@ -16,7 +16,12 @@ function(inst = appianInstance(), setOpt = TRUE)
         if(!any(ex))
             stop("Cannot find ", fn)
 
-        ans = cookie(fls[which(ex)[1]])
+        fl = fls[which(ex)[1]]
+        delta = difftime(Sys.time(), file.info(fl)[1, "mtime"], "mins")
+        if(delta > 23)
+            warning("cookie has probably expired")
+        
+        ans = cookie(fl)
     }
 
     if(setOpt && !is.na(ans))
