@@ -11,7 +11,8 @@ sql =
     # z = sql("SELECT * FROM EFRM_TASK_LOG WHERE REQUEST_ID = 355 AND ACCEPTED_BY IN ('sbdriver', 'sligday')", k)
     #  
     #
-function(query, cookie, token = NA, url = "https://ucdavisdev.appiancloud.com/database/index.php?route=/import", ...)
+    # "https://ucdavisdev.appiancloud.com/database/index.php?route=/import"
+function(query, cookie, token = NA, url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), ...)
 {
     bdy = mkPOSTBody(query, token)
     z = httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
