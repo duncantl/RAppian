@@ -31,3 +31,16 @@ function(rid, db = dbDump(), current = TRUE,
 }
 
 
+requestEmails =
+    #
+    # There is no TASK_LOG_ID associated with a NOTIFICATION_LOG entry
+    # so can't directly connect the email to a task.
+    #
+function(rid, db = dbDump(), toWhom = FALSE)    
+{
+    ans = subset(db$NOTIFICATION_LOG, REQUEST_ID == rid)
+    if(toWhom)
+        structure(strsplit(ans$TO_ADDRESS, "; ?"), names = ans$SUBJECT)
+    else
+        ans
+}

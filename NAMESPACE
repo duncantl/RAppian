@@ -161,4 +161,4 @@ export(mkPMCallGraph,
 export(getPMCode)
 
 
-export(assignedTo, requestTasks)
+export(assignedTo, requestTasks, requestEmails)
