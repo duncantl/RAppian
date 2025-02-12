@@ -62,6 +62,7 @@ export(mapName)
 
 export(readDBDump)
 export(dbDump)
+export(dbCookie)
 
 export(mapConsValue,
        getDescription,
@@ -158,3 +159,6 @@ export(mkPMCallGraph,
        siteInfoCallGraph)
 
 export(getPMCode)
+
+
+export(assignedTo, requestTasks)
