@@ -200,8 +200,8 @@ dbDump =
     #
     #
 function(con = mkDBCon(cookie, ...),
-         cookie = getDBCookie(), params = DBParams,
-         instance = appianInstance(), # "dev",
+         cookie = dbCookie(), params = DBParams,
+         instance = appianInstance(),
          url = dbURL(instance), 
          read = TRUE, removePrefix = TRUE, efrmOnly = TRUE, ...)
 {
@@ -226,25 +226,3 @@ function(cookie = getDBCookie(), ...)
     getCurlHandle(cookie = cookie, followlocation = TRUE, cookiejar = "")
 }
 
-getDBCookie =
-    #
-    # The cookie is sufficiently short that it can be readily pasted into
-    # the R session and it is sufficiently short-lived that it doesn't
-    # necessarily warrant saving to a file for reuse in a different R session.
-    #
-function()
-{
-    ff = c("~/appiandev.cookie", "~/appian.cookie", "appian.cookie")
-    w = file.exists(ff)
-    if(!any(w))
-        stop("cannot find Gradhub cookie")
-
-    if(sum(w) == 1)
-        ff = ff[w]
-    else {
-        info = file.info(ff[w])
-        ff = ff[w][which.max(info$mtime)]
-    }
-    
-    readLines(ff, warn = FALSE)[1]
-}
