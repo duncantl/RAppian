@@ -3,6 +3,8 @@ Title: Read Exported XML descriptions of Appian applications
 Description: This allows us to explore different aspects
  of an Appian application, including the SAIL code, the
  different record types, constants, interfaces, process models, ...
+ It also allows us to query the database and its tables
+ and track requests, meta-data about forms, ...
 Author: Duncan Temple Lang
 Maintainer: Duncan Temple Lang <dtemplelang@ucdavis.edu>
 Version: 0.1-0
