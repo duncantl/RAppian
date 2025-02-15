@@ -1,6 +1,6 @@
 sql =
     #
-    # Need the token 
+    # Don't always need the token.
     # Don't need to escape the query.
     #
     # z = sql("SELECT * FROM EFRM_TASK_LOG WHERE REQUEST_ID = 355", k)
@@ -17,16 +17,23 @@ sql =
     #
     #  o = sql("SELECT * FROM EFRM_DEGREE_PLAN_MAP",  maxRecords = 100)
     #
-function(query, cookie = dbCookie(), token = dbToken(), url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), maxRecords = Inf, ...)
+function(query, cookie = dbCookie(), token = dbToken(),
+         url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), maxRecords = Inf,
+         verbose = FALSE,
+         con = getCurlHandle(..., cookie = cookie),
+         ...)
 {
-    ans = sqlGetNextPage(query, cookie, token, pos = 0L, url = url, ...)
+    ans = sqlGetNextPage(query, cookie, token, pos = 0L, url = url, con = con, ...)
 
     nr = attr(ans, "totalRecords")
 
     if(!is.na(nr)) {
+        if(verbose)
+            message(nr, " total records ", ceiling(nr/25), " requests")
         while(nrow(ans) < nr && nrow(ans) < maxRecords) {
-            # message("next page ", nrow(ans))
-            tmp = sqlGetNextPage(query, cookie, token, pos = nrow(ans) - 1L, url = url)
+            if(verbose)
+                message("next page ", nrow(ans))
+            tmp = sqlGetNextPage(query, cookie, token, pos = nrow(ans) - 1L, url = url, con = con)
             ans = rbind(ans, tmp)
         }
     }
@@ -35,10 +42,10 @@ function(query, cookie = dbCookie(), token = dbToken(), url = gsub("/export$", "
 }
 
 sqlGetNextPage =
-function(query, cookie, token, pos = 25L, url, ...)
+function(query, cookie, token, pos = 25L, url, con = getCurlHandle(..., cookie = cookie), ...)
 {
     bdy = mkPOSTBody(query, token, pos = pos)
-    z = httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
+    z = httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ..., curl = con) # , verbose = TRUE)
 
     ct = attr(z, "Content-Type")
     if(ct[1] == "text/html")
