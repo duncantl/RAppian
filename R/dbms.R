@@ -32,7 +32,8 @@ function(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix 
     if(length(convertTimestamps) && !all(is.na(convertTimestamps)))
         ans = lapply(ans, cvtTimestamps, tz = convertTimestamps)
 
-    ans
+
+    structure(ans, class = c("GradsphereDB", "AppianDB", "MySQLDB")) 
 }
 
 mkDBTable =

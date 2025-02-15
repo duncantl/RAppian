@@ -215,7 +215,8 @@ function(con = mkDBCon(cookie, ...),
         stop("Didn't get the database content - probably an expired cookie")
     
     if(read)
-        readDBDump(json, removePrefix = removePrefix, efrmOnly = efrmOnly)
+        structure(readDBDump(json, removePrefix = removePrefix, efrmOnly = efrmOnly),
+                  instance = instance, url = url, when = Sys.time())
     else
         json
 }
