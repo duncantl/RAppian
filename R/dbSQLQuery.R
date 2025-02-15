@@ -12,7 +12,11 @@ sql =
     #  
     #
     # "https://ucdavisdev.appiancloud.com/database/index.php?route=/import"
-function(query, cookie, token = NA, url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), ...)
+    #
+    # Need to get next pages of results.
+    # 
+    #
+function(query, cookie, token = NA, url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), maxRecords = Inf, ...)
 {
     bdy = mkPOSTBody(query, token)
     z = httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
@@ -20,15 +24,36 @@ function(query, cookie, token = NA, url = gsub("/export$", "/import", dbURL(inst
     ct = attr(z, "Content-Type")
     if(ct[1] == "text/html")
         stop("query returned HTML. Probably stale cookie and/or token")
-    
-    readDBResults(z)
+
+    ans = readDBResults(z)
+
+    nr = attr(ans, "totalRecords")
+
+    if(!is.na(nr)) {
+        while(nrow(ans) < nr && nrow(ans) < maxRecords) {
+            z = sqlGetNextPage(query, cookie, token, pos = nrow(ans) - 1L, url = url)
+            tmp = readDBResults(z)
+            ans = rbind(ans, tmp)
+        }
+
+    }
+
+    ans
 }
+
+sqlGetNextPage =
+function(query, cookie, token, pos = 25L, url, ...)
+{
+    bdy = mkPOSTBody(query, token, pos = pos)
+    httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
+}
+
 
 mkPOSTBody =
     #
     # Create the body of the POST request by merging the parameters into a name=value&name=value...
     #
-function(query, token = NA, table = NA, params = RAppian:::DefaultParams)    
+function(query, token = NA, table = NA, params = RAppian:::DefaultParams, pos = 0L)    
 {
     if(!is.na(token)) 
         params[names(params) == "token"] = token
@@ -41,6 +66,7 @@ function(query, token = NA, table = NA, params = RAppian:::DefaultParams)
         params["_nocache"] = as.character( as.numeric(Sys.time()) * 1e9)
     
     params["sql_query"] = query
+    params["pos"] = pos
 
     paste(names(params), params, sep = "=", collapse = "&")
 }
@@ -69,7 +95,6 @@ function(doc)
         return(NULL)
     }
     
-
     tbl = tbls[[ if(length(tbls) > 1L) 2L else 1L]]
     #    browser()
     # The query SHOW TABLES returns a table with 2 columns but the second is empty except
@@ -86,6 +111,19 @@ function(doc)
         d = d[, -(1:4)]
     
     names(d) = colNames
+
+    attr(d, "totalRecords") = numRecordsTotal(doc)
     
     d
+}
+
+numRecordsTotal =
+    function(doc)
+{
+    node = getNodeSet(doc, "//div[@class='alert alert-success']//text()[ contains(., 'total, Query took')]")
+
+    if(length(node) == 0)
+        return(NA)
+
+    as.integer(gsub(".*\\(([0-9]+) total, Query took.*", "\\1", xmlValue(node[[1]])))
 }
