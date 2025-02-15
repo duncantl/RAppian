@@ -18,24 +18,16 @@ sql =
     #
 function(query, cookie, token = NA, url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), maxRecords = Inf, ...)
 {
-    bdy = mkPOSTBody(query, token)
-    z = httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
-
-    ct = attr(z, "Content-Type")
-    if(ct[1] == "text/html")
-        stop("query returned HTML. Probably stale cookie and/or token")
-
-    ans = readDBResults(z)
+    ans = sqlGetNextPage(query, cookie, token, pos = 0L, url = url, ...)
 
     nr = attr(ans, "totalRecords")
 
     if(!is.na(nr)) {
         while(nrow(ans) < nr && nrow(ans) < maxRecords) {
-            z = sqlGetNextPage(query, cookie, token, pos = nrow(ans) - 1L, url = url)
-            tmp = readDBResults(z)
+            # message("next page ", nrow(ans))
+            tmp = sqlGetNextPage(query, cookie, token, pos = nrow(ans) - 1L, url = url)
             ans = rbind(ans, tmp)
         }
-
     }
 
     ans
@@ -45,7 +37,13 @@ sqlGetNextPage =
 function(query, cookie, token, pos = 25L, url, ...)
 {
     bdy = mkPOSTBody(query, token, pos = pos)
-    httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
+    z = httpPOST(url, postfields = bdy, cookie = cookie, followlocation = TRUE, ...) # , verbose = TRUE)
+
+    ct = attr(z, "Content-Type")
+    if(ct[1] == "text/html")
+        stop("query returned HTML. Probably stale cookie and/or token")
+
+    ans = readDBResults(z)    
 }
 
 
