@@ -76,6 +76,7 @@ dbListTables =
     #
 function(instance =  appianInstance(), token = dbToken(inst), dbName = "Appian")
 {
-   sql('SELECT table_name FROM information_schema.tables WHERE table_schema = "Appian";',
-        inst = "test", token = token)[,1]
+    # From https://stackoverflow.com/questions/8334493/get-table-names-using-select-statement-in-mysql
+   sql(sprintf('SELECT table_name FROM information_schema.tables WHERE table_schema = "%s";', dbName)
+        inst = inst, token = token)[,1]
 }
