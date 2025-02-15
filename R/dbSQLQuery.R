@@ -1,22 +1,23 @@
 sql =
     #
-    # Need the token (?)
+    # Need the token 
     # Don't need to escape the query.
     #
     # z = sql("SELECT * FROM EFRM_TASK_LOG WHERE REQUEST_ID = 355", k)
-    # For now, can only get maximum of 25 records.
-    # Have the code somewhere to set this via the an HTTP request.
     #
     # z = sql("SELECT * FROM EFRM_TASK_LOG WHERE REQUEST_ID = 355 AND ACCEPTED_BY = 'sbdriver'") 
     # z = sql("SELECT * FROM EFRM_TASK_LOG WHERE REQUEST_ID = 355 AND ACCEPTED_BY IN ('sbdriver', 'sligday')", k)
     #  
     #
-    # "https://ucdavisdev.appiancloud.com/database/index.php?route=/import"
+    # "https://gradspheredev.ucdavis.edu/database/index.php?route=/import"
     #
-    # Need to get next pages of results.
-    # 
+    # √ Need to get next pages of results.
     #
-function(query, cookie, token = NA, url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), maxRecords = Inf, ...)
+    # Now gets the cookie and token by reading db<instance>.cookie and .token
+    #
+    #  o = sql("SELECT * FROM EFRM_DEGREE_PLAN_MAP",  maxRecords = 100)
+    #
+function(query, cookie = dbCookie(), token = dbToken(), url = gsub("/export$", "/import", dbURL(inst)), inst = appianInstance(), maxRecords = Inf, ...)
 {
     ans = sqlGetNextPage(query, cookie, token, pos = 0L, url = url, ...)
 
