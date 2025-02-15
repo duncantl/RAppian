@@ -1,20 +1,19 @@
 dbCookie =
     #
-    # 
+    # suffix can be cookie or token
     #
-function(fromFile = FALSE, inst = appianInstance(), setOpt = TRUE)    
+function(fromFile = TRUE, inst = appianInstance(), setOpt = TRUE, suffix = "cookie")    
 {
     ans = if(fromFile)
               NA        
           else
               getOption("DBCookie", NA)
 
-
     # XXX add check to see if it is expired.
     # If it is, don't return and read from the file.
     
     if(is.na(ans)) {
-        fn = sprintf("db%s.cookie",  inst)
+        fn = sprintf("db%s.%s",  inst, suffix)
         fls = c(fn, file.path("~", fn))
         ex = file.exists(fls)
         if(!any(ex))
@@ -36,6 +35,8 @@ function(fromFile = FALSE, inst = appianInstance(), setOpt = TRUE)
 }
 
 
+dbToken = dbCookie
+formals(dbToken)$suffix = "token"
 
 
 getDBCookie =
@@ -48,7 +49,13 @@ getDBCookie =
     #
 function()
 {
-    ff = c("~/appiandev.cookie", "~/appian.cookie", "appian.cookie")
+    mostRecentFile(c("~/appiandev.cookie", "~/appian.cookie", "appian.cookie"))
+}
+
+mostRecentFile =
+function(files)
+{
+    ff = files
     w = file.exists(ff)
     if(!any(w))
         stop("cannot find Gradhub cookie")
