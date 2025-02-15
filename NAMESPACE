@@ -61,7 +61,8 @@ export(mapName)
 
 
 export(readDBDump)
-export(dbDump)
+export(dbDump, dbTable)
+export(sql)
 export(dbCookie)
 
 export(mapConsValue,
@@ -133,8 +134,6 @@ export(genRecordTypeCode)
 export(getTestCases)
 
 
-export(sql)
-
 export(listLogs, downloadLogs, readTomcatLog)
 
 
@@ -160,4 +159,4 @@ export(mkPMCallGraph,
 
 export(getPMCode)
 
-export(assignedTo, requestTasks, requestEmails)
+export(assignedTo, assignedToDB, requestTasks, requestEmails)

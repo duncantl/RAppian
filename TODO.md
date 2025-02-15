@@ -1,5 +1,10 @@
 # To-Do List for RAppian
 
++ Implement dbTable() which gets a single table using the cookie.
+   + could use dbSQLQuery() but token
+   + See why we need token only sometimes. 
+      + dbSQLQuery() examples don't seem to need it.
+
 + process a decision object.
    + e.g. EFRM_Culminating_Work
  
