@@ -63,7 +63,8 @@ export(mapName)
 export(readDBDump)
 export(dbDump, dbTable)
 export(sql)
-export(dbCookie)
+export(dbListTables)
+export(dbCookie, dbToken)
 
 export(mapConsValue,
        getDescription,

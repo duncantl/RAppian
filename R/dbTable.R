@@ -50,6 +50,9 @@ function(table, cookie = dbCookie(inst = inst), params = DBTableParams,
     if(any(grepl("html", attr(z, "Content-Type"))))
         stop("request to database failed")
 
+    if(grepl('class="alert alert-dange".*You have an error in your SQL syntax', z))
+        stop("is ", table, " an actual table name in the database?")
+    
     tableFromJSON(z)
 }
 
@@ -59,7 +62,20 @@ function(js)
     if(is.character(js))
         js = fromJSON(js)
 
+    
+    
     vals = js[[3]]
     RAppian:::mkDBTable(vals)
 }
 
+
+
+dbListTables =
+    #
+    # We do need the token for this SQL query, but not always for others.
+    #
+function(instance =  appianInstance(), token = dbToken(inst), dbName = "Appian")
+{
+   sql('SELECT table_name FROM information_schema.tables WHERE table_schema = "Appian";',
+        inst = "test", token = token)[,1]
+}
