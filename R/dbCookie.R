@@ -19,12 +19,14 @@ function(fromFile = TRUE, inst = appianInstance(), setOpt = TRUE, suffix = "cook
         if(!any(ex))
             stop("Cannot find ", fn)
 
-        fl = fls[which(ex)[1]]
-        delta = difftime(Sys.time(), file.info(fl)[1, "mtime"], "mins")
-        if(delta > 23)
+        fls = fls[ex]
+        info = file.info(fls)
+        delta = difftime(Sys.time(), info[, "mtime"], "mins")
+        i = which.min(delta)
+        if(delta[i] > 23)
             warning("cookie has probably expired")
-        
-        ans = cookie(fl)
+
+        ans = cookie(fls[i])
     }
 
     if(setOpt && !is.na(ans))
