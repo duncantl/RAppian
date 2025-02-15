@@ -12,7 +12,7 @@ function(rid, db = dbDump(), current = TRUE)
     tasks
 }
 
-assignedTo =
+assignedToDB =
     #
     # Determine to whom a specific request is currently assigned
     # or the history of who dealt with that request
@@ -28,6 +28,13 @@ function(rid, db = dbDump(), current = TRUE,
         names(els) = trimws(gsub(".*\\|([^|]+)\\|.*", "\\1", tasks$TASK_NAME))
         els
     }
+}
+
+assignedTo =
+function(rid, cookie = dbCookie(inst = inst), token = dbToken(inst = inst), inst = appianInstance())    
+{
+    qry = sprintf("SELECT * FROM EFRM_TASK_LOG WHERE REQUEST_ID = %s;", rid)
+    sql(qry, cookie, token, inst = inst)
 }
 
 
