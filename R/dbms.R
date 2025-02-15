@@ -42,7 +42,6 @@ function(x)
     a = as.data.frame(do.call(rbind, x$data))
     a[] = lapply(a, cvtDBColumn)
     a
-#    sapply(a, 
 }
 
 cvtDBColumn =
