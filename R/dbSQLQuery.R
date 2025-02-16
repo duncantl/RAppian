@@ -38,6 +38,7 @@ function(query, cookie = dbCookie(), token = dbToken(),
         }
     }
 
+    ans[] = lapply(ans, cvtDBColumn)
     ans
 }
 
@@ -83,7 +84,10 @@ function(x, results = fromJSON(x))
 {
     if(!results$success) {
         # Get the message from text. Not useful. We didn't lint.
-        stop("SQL query wasn't succesful")
+        #
+        doc = htmlParse(results$error)
+        err = getNodeSet(doc, "//code[starts-with(., '#')]")
+        stop("SQL query wasn't succesful: ", xmlValue(err[[1]]))
     }
     
     readDBResultsFromHTML(htmlParse(results$message))
