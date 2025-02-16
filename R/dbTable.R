@@ -61,8 +61,6 @@ function(js)
 {
     if(is.character(js))
         js = fromJSON(js)
-
-    
     
     vals = js[[3]]
     RAppian:::mkDBTable(vals)
@@ -77,6 +75,6 @@ dbListTables =
 function(instance =  appianInstance(), token = dbToken(inst), dbName = "Appian")
 {
     # From https://stackoverflow.com/questions/8334493/get-table-names-using-select-statement-in-mysql
-   sql(sprintf('SELECT table_name FROM information_schema.tables WHERE table_schema = "%s";', dbName)
+   sql(sprintf('SELECT table_name FROM information_schema.tables WHERE table_schema = "%s";', dbName),
         inst = inst, token = token)[,1]
 }
