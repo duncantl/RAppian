@@ -31,10 +31,19 @@ function(rid, db = dbDump(), current = TRUE,
 }
 
 assignedTo =
+    # replaced below since this needs the token
 function(rid, cookie = dbCookie(inst = inst), token = dbToken(inst = inst), inst = appianInstance())    
 {
     qry = sprintf("SELECT * FROM EFRM_TASK_LOG WHERE REQUEST_ID = %s;", rid)
     sql(qry, cookie, token, inst = inst)
+}
+
+
+assignedTo =
+function(rid, cookie = dbCookie(inst = inst), token = dbToken(inst = inst), inst = appianInstance())    
+{
+    tbl = dbTable("EFRM_TASK_LOG", cookie)
+    subset(tbl, REQUEST_ID == rid)
 }
 
 
