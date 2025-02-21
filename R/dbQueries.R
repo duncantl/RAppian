@@ -13,3 +13,17 @@ function(rid, cookie = dbCookie(),
 {
     subset(tbl, REQUEST_ID == rid)
 }
+
+
+requestEmails =
+function(rid, db = dbDump(, cooky, instance = inst), cooky = dbCookie(inst = inst),
+         inst = appianInstance())
+{
+
+    tbl = if(missing(db))
+              dbTable("EFRM_NOTIFICATION_LOG", cookie = cooky)
+          else
+              db$NOTIFICATION_LOG
+
+    subset(tbl, REQUEST_ID == rid)
+}
