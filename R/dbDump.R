@@ -44,7 +44,7 @@ yaml_structure_or_data = "data")
 
 
 # Was
-list(db = "Appian", table = "", export_type = "database", export_method = "quick", 
+tmp = list(db = "Appian", table = "", export_type = "database", export_method = "quick", 
 template_id = "", token = "6442594b6250503c40446b46547b6834", 
 quick_or_custom = "quick", what = "json", structure_or_data_forced = "1", 
 `table_select[]` = "CMN_APPLICATION", `table_select[]` = "CMN_LOOKUP", 
@@ -198,7 +198,6 @@ dbDump =
     #    https://ucdavisdev.appiancloud.com/database/index.php
     #  with the previous token?
     #
-    #
 function(con = mkDBCon(cookie, ...),
          cookie = dbCookie(), params = DBParams,
          instance = appianInstance(),
@@ -220,6 +219,8 @@ function(con = mkDBCon(cookie, ...),
     else
         json
 }
+
+
 
 mkDBCon =
 function(cookie = getDBCookie(), ...)

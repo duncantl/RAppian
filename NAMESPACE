@@ -161,3 +161,7 @@ export(mkPMCallGraph,
 export(getPMCode)
 
 export(assignedTo, assignedToDB, requestTasks, requestEmails)
+
+
+export(progQEMemberInfo,
+       studentDetailsForRequestId)
