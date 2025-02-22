@@ -68,6 +68,20 @@ function(loginId = NA, rid = NA, db = dbDump(, cooky, instance = inst), cooky = 
 }
 
 
+getFiling =
+function(loginId = NA, rid = NA, db = dbDump(, cooky, instance = inst), cooky = dbCookie(inst = inst),
+         inst = appianInstance())    
+{
+    fun = function(rid, db) {
+        list(filing = subset(db$FILING_DETAILS, REQUEST_ID == rid),
+             members = subset(db$COMMITTEE_MEMBERS, REQUEST_ID == rid)
+            )        
+    }
+    
+    getRequestForFormType("Filing Process", loginId, rid, db, FUN = fun)
+}
+
+
 mergeRequestStuDetails =
 function(db)
 {
