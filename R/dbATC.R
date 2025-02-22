@@ -22,9 +22,8 @@ function(loginId = NA, rid = NA, db = dbDump())
 
 getRequestForFormType =
     #
-    # Doesn't use rid currently.
     #
-function(formDesc, loginId = NA, rid = NA, db = dbDump(), FUN = NULL)    
+function(formDesc, loginId = NA, rid = NA, db = dbDump(), FUN = NULL, all = FALSE)    
 {
     rq = mergeRequestStuDetails(db)
 
@@ -34,13 +33,16 @@ function(formDesc, loginId = NA, rid = NA, db = dbDump(), FUN = NULL)
     if(is.na(loginId) && is.na(rid))
         return(subset(rq, E_FORM_ID %in% fids))
 
-    if(!is.na(loginId)) {
+    if(is.na(rid) && !is.na(loginId)) {
         rec = subset(rq, E_FORM_ID %in% fids  & LOGIN_ID == loginId)
         if(nrow(rec) == 0)
             return(rec)
-        
-        rid = max(rec$REQUEST_ID)
-    }    
+
+        if(!all)
+            rid = max(rec$REQUEST_ID)
+    }
+
+    #XXX figure out what to do if all = TRUE
 
     ans = list(rid = rid,
                student = subset(db$STUDENT_DETAILS, REQUEST_ID == rid)
