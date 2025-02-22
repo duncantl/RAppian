@@ -165,5 +165,5 @@ export(assignedTo, assignedToDB, requestTasks, requestEmails)
 
 export(progQEMemberInfo,
        studentDetailsForRequestId)
-export(getATC, getQEApp, getFiling)
+export(getATC, getQEApp, getFiling, getQEReport)
 export(requestEmails)

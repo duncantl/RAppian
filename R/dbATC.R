@@ -36,7 +36,7 @@ function(formDesc, loginId = NA, rid = NA, db = dbDump(), FUN = NULL, all = FALS
     if(is.na(rid) && !is.na(loginId)) {
         rec = subset(rq, E_FORM_ID %in% fids  & LOGIN_ID == loginId)
         if(nrow(rec) == 0)
-            return(rec)
+            return(NULL)
 
         if(!all)
             rid = max(rec$REQUEST_ID)
@@ -66,6 +66,21 @@ function(loginId = NA, rid = NA, db = dbDump(, cooky, instance = inst), cooky = 
     
     getRequestForFormType("Qualifying Examination Application", loginId, rid, db, FUN = fun)
 }
+
+
+getQEReport =
+function(loginId = NA, rid = NA, db = dbDump(, cooky, instance = inst), cooky = dbCookie(inst = inst),
+         inst = appianInstance())    
+{
+    fun = function(rid, db) {
+        list(qeApp = subset(db$QE_REPORT, REQUEST_ID == rid),
+             members = subset(db$COMMITTEE_MEMBERS, REQUEST_ID == rid)
+            )        
+    }
+    
+    getRequestForFormType("Qualifying Examination Report", loginId, rid, db, FUN = fun)
+}
+
 
 
 getFiling =
