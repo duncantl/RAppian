@@ -27,3 +27,5 @@ function(rid, db = dbDump(, cooky, instance = inst), cooky = dbCookie(inst = ins
 
     subset(tbl, REQUEST_ID == rid)
 }
+
+
