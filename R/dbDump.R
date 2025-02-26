@@ -195,11 +195,11 @@ function(inst)
 dbDump =
     #
     #  Can we renew the token by visiting
-    #    https://ucdavisdev.appiancloud.com/database/index.php
+    #    https://gradsphere<inst>.ucdavis.edu/database/index.php
     #  with the previous token?
     #
 function(con = mkDBCon(cookie, ...),
-         cookie = dbCookie(), params = DBParams,
+         cookie = dbCookie(inst = instance), params = DBParams,
          instance = appianInstance(),
          url = dbURL(instance), 
          read = TRUE, removePrefix = TRUE, efrmOnly = TRUE, ...)
