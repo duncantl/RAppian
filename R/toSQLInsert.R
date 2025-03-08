@@ -23,17 +23,64 @@ function(rows, table, tableDef = NULL, requestId = NA,
     values = values[w]
 
     isString = grep("varchar|datetime", tableDef$Type[w])
-    values[isString] = sprintf("'%s'", values[isString])
+
+    # should process other characters such as ;
+#    w = grepl("'", values)
+#    values[w] = sapply(values[w], sqlAposQuote)    
+#        sprintf("'%s'", values[isString])
+    values[isString] = sapply(values[isString], sqlAposQuote)
 
     i = which(colNames == "REQUEST_ID")
     if(length(i))
         values[i] = requestId
 
-    # Leave datetime fields as character
     
+    # Leave datetime fields as character
     sprintf("INSERT INTO %s\n (%s) \n VALUES (%s);",
             table,
             paste(colNames, collapse = ", "),
             paste(values, collapse = ", "))
 }
 
+if(FALSE) {
+    tst = c("'abc'xyz", "Ellen Hartigan-O'Connor", "abc'")
+    sapply(tst, sqlAposQuote)
+}
+
+sqlAposQuote =
+    # This is for creating a literal string or a call to CONCAT()
+    # so the result can be used in a SQL query.
+    #
+    # Turns a string into either
+    #   single-quoted, e.g., 'xyz'
+    #   call to CONCAT(), replacing ' with CHAR(39)
+    #
+    # Takes a single string for now.
+function(x, value = "CHAR(39)")
+{
+    if(!grepl("'", x))
+        return(sprintf("'%s'", x))
+
+    # Now deal with a ' in the string and create
+    #  CONCAT( part1, CHAR(39), part2, CHAR(39), ...)
+    # But have to deal with ' at the start or the end.
+    
+    els = strsplit(x, "'")[[1]]
+    atStart = grepl("^'", x)
+    if(atStart)
+        els = els[-1]
+
+    els = sprintf("'%s'", els)    
+
+    tmp = paste(els, collapse = paste0(", ", value, ", "))
+
+    
+    if(grepl("'$", x))
+        tmp = paste0(tmp, ", ", value)
+    if(atStart) 
+        tmp = paste0(value, ", ", tmp)
+    
+    sprintf("CONCAT(%s)", tmp)
+}
+
+        
