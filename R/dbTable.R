@@ -38,7 +38,6 @@ yaml_structure_or_data = "data")
 
 dbTable =
     #
-    # Not working yet.
     #
 function(table, cookie = dbCookie(inst = inst), params = DBTableParams,
              url = dbURL(inst), inst = appianInstance(), ...)    
