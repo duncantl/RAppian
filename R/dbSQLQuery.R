@@ -27,7 +27,7 @@ function(query, cookie = dbCookie(), token = dbToken(),
 
     nr = attr(ans, "totalRecords")
 
-    if(!is.na(nr)) {
+    if(length(nr) && !is.na(nr)) {
         if(verbose)
             message(nr, " total records ", ceiling(nr/25), " requests")
         while(nrow(ans) < nr && nrow(ans) < maxRecords) {
