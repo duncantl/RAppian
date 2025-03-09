@@ -12,7 +12,6 @@ function(x, map = NULL)
         ans$description = ""
         if(any(m != 0)) 
             ans$description[m != 0] = map$description[m]
-        
     }
 
     ans

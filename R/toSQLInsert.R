@@ -25,9 +25,6 @@ function(rows, table, tableDef = NULL, requestId = NA,
     isString = grep("varchar|datetime", tableDef$Type[w])
 
     # should process other characters such as ;
-#    w = grepl("'", values)
-#    values[w] = sapply(values[w], sqlAposQuote)    
-#        sprintf("'%s'", values[isString])
     values[isString] = sapply(values[isString], sqlAposQuote)
 
     i = which(colNames == "REQUEST_ID")
