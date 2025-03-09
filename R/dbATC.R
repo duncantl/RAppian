@@ -2,6 +2,7 @@
 # Move to RAppian/examples/
 # or make a function in RAppian
 
+
 getATC =
     #
     #  getATC(rid = 1600, db = db)
@@ -103,6 +104,19 @@ function(db)
     m = match(db$REQUEST_DETAILS$REQUEST_ID, db$STUDENT_DETAILS$REQUEST_ID)
     rq = cbind(db$REQUEST_DETAILS, db$STUDENT_DETAILS[m,])
 }
+
+
+mergeStuDetails =
+    # Sligtly more general version of mergeRequestStuDetails()
+    # in that can specify a different table name.
+    # Can set mergeRequestStuDetails() to this.
+function(db, with = "REQUEST_DETAILS")
+{
+    m = match(db[[with]]$REQUEST_ID, db$STUDENT_DETAILS$REQUEST_ID)
+    rq = cbind(db[[with]], db$STUDENT_DETAILS[m,])
+}
+
+
 
 getFormIDs =
 function(db, name)
