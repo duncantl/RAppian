@@ -53,6 +53,9 @@ export(compareTypeCounts)
 export(#uses, ruses,
        toplevelUUIDs)
 
+export(mergeStuDetails)
+export(findStudentATC)
+
 export(rewriteCode, mkCountDfs, table2df, procModelUses, mergeCounts)
 export(pmWriteRecords, getPMWriteTypes)
 export(customInputs, customOutputs) # called by procModelUses but make them available directly.
@@ -65,6 +68,8 @@ export(dbDump, dbTable)
 export(sql)
 export(dbListTables)
 export(dbCookie, dbToken)
+export(toSQLInsert)
+
 
 export(mapConsValue,
        getDescription,
