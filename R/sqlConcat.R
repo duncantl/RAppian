@@ -12,7 +12,7 @@ if(FALSE) {
 CharMap = c("'" = 39, "&" = 38)
 CharMap[] = sprintf("CHAR(%d)", CharMap)
 
-foo =
+sqlQuote =
 function(x, map = CharMap)
 {
 
