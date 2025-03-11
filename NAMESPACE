@@ -165,7 +165,7 @@ export(mkPMCallGraph,
 
 export(getPMCode)
 
-export(assignedTo, assignedToDB, requestTasks, requestEmails)
+export(assignedTo, assignedToLogins, assignedToDB, requestTasks, requestEmails)
 
 
 export(progQEMemberInfo,

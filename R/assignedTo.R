@@ -46,6 +46,13 @@ function(rid, cookie = dbCookie(inst = inst), token = dbToken(inst = inst), inst
     subset(tbl, REQUEST_ID == rid)
 }
 
+assignedToLogins =
+function(rid)    
+{
+    subset(assignedTo(rid), IS_COMPLETED == 0)$ASSIGNED_TO
+}
+
+
 
 requestEmails =
     #
