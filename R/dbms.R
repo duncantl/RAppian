@@ -33,8 +33,29 @@ function(file = mostRecent("127_0_0_1.*\\.json$", dir), dir = ".", removePrefix 
         ans = lapply(ans, cvtTimestamps, tz = convertTimestamps)
 
 
+    ans = xpdRequestDetails(ans)
+
     structure(ans, class = c("GradsphereDB", "AppianDB", "MySQLDB")) 
 }
+
+
+xpdRequestDetails =
+    #
+    # resolve the stage and status for each request to get the
+    # human-readable stage and status.
+    #
+function(db)
+{
+    tmp = db$REQUEST_DETAILS
+    v = c("STAGE", "STATUS")
+    tmp[ tolower(v) ] = lapply(v, function(v) 
+                                      db$LOOKUP$LOOKUP_VALUE[  match(tmp[[v]], db$LOOKUP$LOOKUP_ID) ]
+                               )
+
+    db$REQUEST_DETAILS = tmp
+    invisible(db)
+}
+
 
 mkDBTable =
 function(x)
