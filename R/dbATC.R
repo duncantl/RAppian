@@ -55,6 +55,42 @@ function(formDesc, loginId = NA, rid = NA, db = dbDump(), FUN = NULL, all = FALS
 }
 
 
+getRequestStageStatus =
+function(rid, db)    
+{
+    req = db$REQUEST_DETAILS[db$REQUEST_DETAILS$REQUEST_ID == rid,]
+    v = c("STAGE", "STATUS")
+    i = req[1, v]
+    m = match(i, db$LOOKUP$LOOKUP_ID)
+    structure(db$LOOKUP$LOOKUP_VALUE[m], names = v)
+}
+
+isRequestCompleted =
+function(rid, db, approved = TRUE)    
+{
+    #    st2 = getRequestStageStatus(rid, db)
+    r = subset(db$REQUEST_DETAILS, REQUEST_ID == rid)
+    tolower(r$stage) == "upload to banner" && if(approved) r$status %in% c("Approved", "Completed") else TRUE
+}
+
+
+#   i = grep(what, db$LOOKUP_CATEGORY$CATEGORY_NAME, ignore.case = TRUE)
+#   v = structure(db$CAT_ID, db$LOOKUP_CATEGORY$CATEGORY_NAME[i])
+#
+#   tmp = subset(db$LOOKUP, CAT_ID %in% v)
+#   tmp2 = split(tmp, tmp$CAT_ID)
+getStageValues =
+    # Not used (yet)
+function(db, what = "stage")    
+{
+    lookup = db$LOOKUP
+    m = match(lookup$CAT_ID, db$LOOKUP_CATEGORY$CAT_ID)
+    lookup$CATEGORY_NAME = db$LOOKUP_CATEGORY$CATEGORY_NAME[m]
+
+    g = split(lookup, lookup$CATEGORY_NAME)
+    g[ grepl(what, names(g), ignore.case = TRUE) ]
+}
+
 getQEApp =
 function(loginId = NA, rid = NA, db = dbDump(, cooky, instance = inst), cooky = dbCookie(inst = inst),
          inst = appianInstance())    
