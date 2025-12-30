@@ -66,11 +66,20 @@ function(x, parse = FALSE, procModel = FALSE, rmTrailingCommas = TRUE)
     x = gsub('([a-z]+|AC)!([a-zA-Z0-9_]+)', "`\\1!\\2`", x)
 
     # change  'argName: '   to 'argName ='
-    # XXX should tick the argName.
+    # XXX need to tick the argName if it is just numbers
     x = gsub(": ", " = ", x)
-    x = gsub("[[:space:]]?([0-9]+) ?= ", " `\\1` = ", x)
-#    x = gsub("([[:space:]]?[^`]+): ", "`\\1` = ", x)
+    #    x = gsub("([[:space:]]?)([0-9]+) ?= ", "\\1`\\2` = ", x, perl = TRUE)
 
+#######    
+    # This is not quite right. It converts xyz1 to xyz1``.
+    # For now, remove empty ``. Too extreme.
+#    x = gsub("(?![a-zA-Z!])([0-9]+) ?= ", "\\1`\\2` = ", x, perl = TRUE)
+#    x = gsub("``", "", x)
+
+    # 
+    x = gsub(" ([0-9]+) ?= ", "`\\1` = ", x, perl = TRUE)
+    ######
+    
     # R treats repeat() and if() specially so can't use those reserved words
     # so capitalize them.
     # (could do in one regex if the set of names grows.)
