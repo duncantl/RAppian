@@ -1,5 +1,20 @@
 # parse(text = '"abc" & "xyz"')
 
+# Fixes (Dec 30, 2025)
+# √ Removing "" when it is an argument 
+#  + EFRM_filingFee  line 76
+#  + in fixAdjStrings()
+# √ , with no following argument
+#  + EFRM_filingFee
+# √ "= " at the start
+#  + EFRM_Purge_getApplicationChoices, EFRM_Purge_getCandidateDocs
+# √ "227 ="
+#  + EFRM_mkDropdownReviewOptions
+# √ fn!override_exception_appian_internal(  Include _ in part of fn! name
+#  + EFRM_Degree_Objective_Styled, EFRM_committeeValidation
+
+
+
 if(FALSE)
     x = test.code$code[69]
 
