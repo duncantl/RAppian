@@ -105,6 +105,11 @@ function(x, parse = FALSE, procModel = FALSE, rmTrailingCommas = TRUE)
 
     # if end up with ====
     x = gsub("====", "==", x)
+
+
+    x = gsub('([( ])#"urn:', '\\1"urn:', x) # , perl = TRUE) 
+
+
     if(rmTrailingCommas) 
         x = gsub(",\\\n[[:space:]]+\\)", ")", x)
 
