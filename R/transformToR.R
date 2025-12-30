@@ -63,7 +63,7 @@ function(x, parse = FALSE, procModel = FALSE)
     # Can't have  dom::name as when R sees dom::name = value
     # the parser throws an error.
     # So have to enclose in `` and in that case, no benefit to using :: versus !.
-    x = gsub('([a-z]+|AC)!([a-zA-Z0-9]+)', "`\\1!\\2`", x)
+    x = gsub('([a-z]+|AC)!([a-zA-Z0-9_]+)', "`\\1!\\2`", x)
 
     # change  'argName: '   to 'argName ='
     # XXX should tick the argName.
