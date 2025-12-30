@@ -62,8 +62,11 @@ function(x, parse = FALSE, procModel = FALSE)
     # So have to enclose in `` and in that case, no benefit to using :: versus !.
     x = gsub('([a-z]+|AC)!([a-zA-Z0-9]+)', "`\\1!\\2`", x)
 
-    # change  'argName: '   to 'argName =' 
+    # change  'argName: '   to 'argName ='
+    # XXX should tick the argName.
     x = gsub(": ", " = ", x)
+    x = gsub("[[:space:]]?([0-9]+) ?= ", " `\\1` = ", x)
+#    x = gsub("([[:space:]]?[^`]+): ", "`\\1` = ", x)
 
     # R treats repeat() and if() specially so can't use those reserved words
     # so capitalize them.
