@@ -153,6 +153,7 @@ function(x)
     # Works for now. Should make the original regexp smarter.
     x = gsub(' "",', ' "XXXXXXXXXXXXXXXXXX",', x)
     x = gsub(' ""\\)', ' "XXXXXXXXXXXXXXXXXX")', x)
+    x = gsub(' ""\\\n', ' "XXXXXXXXXXXXXXXXXX"', x)    
     
     while(grepl('"([^"]+)""([^"]*)"', x)) {
         x = gsub('"([^"]+)""([^"]*)"', '"\\1\\2"', x)
