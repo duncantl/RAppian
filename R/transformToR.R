@@ -5,7 +5,7 @@ if(FALSE)
 
 
 StoR =
-function(x, parse = FALSE, procModel = FALSE)
+function(x, parse = FALSE, procModel = FALSE, rmTrailingCommas = TRUE)
 {
     # clean any trailing , and nonsense.
     x = gsub(",[[:space:]]*$", "", x)
@@ -96,6 +96,9 @@ function(x, parse = FALSE, procModel = FALSE)
 
     # if end up with ====
     x = gsub("====", "==", x)
+    if(rmTrailingCommas) 
+        x = gsub(",\\\n[[:space:]]+\\)", ")", x)
+
     
     if(parse) {
        ans =  tryCatch(parse(text = x, keep.source = FALSE),
