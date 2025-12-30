@@ -17,6 +17,9 @@ function(x, parse = FALSE, procModel = FALSE)
     
     x = removeComments(x, procModel = procModel)
 
+    # Remove an '\n= ' at the start of the code.
+    x = gsub("^[[:space:]]+= ", "", x)
+
     # Do we need this given fixAdjStrings above?
     # Appears we don't 
     #    x = combineStringLiterals(x)
