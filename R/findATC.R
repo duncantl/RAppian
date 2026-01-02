@@ -1,5 +1,7 @@
 findStudentATC =
     #
+    # How does this differ from getATC()
+    #
     # student is either the SID, loginId or email (full or "xyz@")
     #
     # If token is specified, then we use a SQL query to get the rows of the joined table we want.
