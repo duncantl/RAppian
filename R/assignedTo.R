@@ -40,16 +40,20 @@ function(rid, cookie = dbCookie(inst = inst), token = dbToken(inst = inst), inst
 
 
 assignedTo =
-function(rid, cookie = dbCookie(inst = inst), token = dbToken(inst = inst), inst = appianInstance())    
+function(rid, cookie = dbCookie(inst = inst), token = dbToken(inst = inst), inst = appianInstance(),
+         completed = FALSE)    
 {
     tbl = dbTable("EFRM_TASK_LOG", cookie)
-    subset(tbl, REQUEST_ID == rid)
+    ans = subset(tbl, REQUEST_ID == rid)
+    if(!completed)
+        ans = ans[is.na(ans$COMPLETED_ON),]
+    ans
 }
 
 assignedToLogins =
-function(rid)    
+function(rid, completed = FALSE, ...)    
 {
-    subset(assignedTo(rid), IS_COMPLETED == 0)$ASSIGNED_TO
+    assignedTo(rid, completed = completed, ...)$ASSIGNED_TO
 }
 
 
