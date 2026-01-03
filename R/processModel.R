@@ -202,6 +202,18 @@ function(x)
                parameter = xmlValue(x[["parameter"]]))
 }
 
+runAs =
+function(doc)
+{
+    if(is.character(doc))
+        doc = xmlParse(mapFile(doc, map))
+    
+    ans = xpathSApply(doc, "//x:runAs", xmlValue, namespaces = c(x = "http://www.appian.com/ae/types/2009"))
+    if(length(ans))
+        names(ans) = c("0" = "Initiator", "1" = "Process designer")[ans]
+    ans
+}
+
 
 lanes =
 function(doc, map = NULL)
