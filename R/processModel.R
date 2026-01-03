@@ -203,15 +203,22 @@ function(x)
 }
 
 runAs =
-function(doc)
+function(doc, nodes = procModelNodes(doc))
 {
     if(is.character(doc))
         doc = xmlParse(mapFile(doc, map))
+
+    map = c("0" = "Initiator", "1" = "Process designer")
     
-    ans = xpathSApply(doc, "//x:runAs", xmlValue, namespaces = c(x = "http://www.appian.com/ae/types/2009"))
-    if(length(ans))
-        names(ans) = c("0" = "Initiator", "1" = "Process designer")[ans]
-    ans
+    lanes = getNodeSet(doc, "//x:lanes/x:lane", c(x = "http://www.appian.com/ae/types/2009"))
+    ans = sapply(lanes, function(x) map[xmlValue(x[["runAs"]]) ])
+    names(ans) = sapply(lanes, \(x) xmlValue(x[["laneLabel"]]))
+    # allow caller to specify NULL for nodes to avoid the cost of computing the number of nodes.
+    if(is.null(nodes))
+        return(ans)
+    
+    tt = table(nodes$lane)
+    data.frame(as = ans, numNodes = unclass(tt[names(ans)]))
 }
 
 
