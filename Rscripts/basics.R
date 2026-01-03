@@ -33,6 +33,7 @@ map$LOC = sapply(strsplit(map$code, "\n"), length)
 code = mkCodeInfo(dir)
 rcode = lapply(code$code, function(x) try(StoR(x, TRUE)))
 names(rcode) = code$name
+err0 = sapply(rcode, inherits, 'try-error')
 rcode2 = lapply(rcode, function(x) try(rewriteCode(x, map)))
 err = sapply(rcode2, inherits, 'try-error')
 # stopifnot(!any(err))
