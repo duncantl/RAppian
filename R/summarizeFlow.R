@@ -23,8 +23,8 @@ function(name, map = mkSummary())
     ff = mkDoc(ff)
     
     co = customOutputs(ff)
-    structure(list(nodes = procModelNodes(ff),
-                   processVars = procVars(ff),
+    structure(list(nodes = procModelNodes(ff, map),
+                   processVars = procVars(ff, map),
                    interfaceInfo = interfaceInfo(ff, map),
                    customOutputs = co,
                    outputVarFuns = outputInfo(co, map),
@@ -133,4 +133,14 @@ function(e, map)
           sep = ".")
 }
 
-       
+
+pmOutForType =
+    # Find the name of the variables that have type <type>  (array or singleton)
+    # Then find where those nodes are assigned in output expressions
+    # and return that information as a data.frame
+function(pm = summarizeProcModel(doc, map), type, doc, map = NULL)
+{
+    rx = paste0(type, "\\?")
+    i = grep(rx, pm$processVars$type)
+    pm$outputVarFuns[ pm$outputVarFuns$outVar %in% pm$processVars$name[i], ]
+}

@@ -179,3 +179,4 @@ export(getStageValues)
 
 
 export(runAs)
+export(pmOutForType)
